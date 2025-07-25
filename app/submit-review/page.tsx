@@ -51,7 +51,7 @@ const SubmitReview = () => {
       // Prepare template parameters including the recipient email
       const templateParams = {
         ...formData,
-        to_email: 'operations@primevistaholidayhomes.com',
+        to_email: 'operations@mybookings.ae',
         from_name: formData.name,
         reply_to: formData.email,
       };
