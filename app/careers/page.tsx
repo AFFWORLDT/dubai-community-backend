@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { CareerShowcase } from "@/components/careers/career-showcase"
 
 export const metadata: Metadata = {
-  title: "Careers | Primevista Holidayhomes",
+  title: "Careers | MY Bookings",
   description: "Join our team and help shape the future of luxury stays in Dubai",
 }
 

@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Progress } from "@/components/ui/progress"
 
 export const metadata: Metadata = {
-  title: "List Your Property | Primevista Holidayhomes",
+  title: "List Your Property | MY Bookings",
   description: "Join Dubai's premier luxury vacation rental platform. List your property and maximize your rental income with professional management and global marketing.",
 }
 
@@ -50,7 +50,7 @@ export default function ListPropertyPage() {
                   Turn Your <span className="text-[#E53935]">Luxury Property</span> Into a Premium Income Stream
                 </h1>
                 <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-xl">
-                  Join Primevista Holidayhomes, Dubai's most exclusive property rental platform. We handle everything from marketing to guest services, maximizing your property's value and occupancy.
+                  Join MY Bookings, Dubai's most exclusive property rental platform. We handle everything from marketing to guest services, maximizing your property's value and occupancy.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <Button 

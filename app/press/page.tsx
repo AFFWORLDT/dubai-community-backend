@@ -10,17 +10,17 @@ import { LoadingCard } from "@/components/loading-card"
 import { ErrorBoundary } from "@/components/error-boundary"
 
 export const metadata: Metadata = {
-  title: "Press & Media | Primevista Holidayhomes",
-  description: "Latest news, press releases, and media resources from Primevista Holidayhomes - Dubai's premier luxury stays platform",
+  title: "Press & Media | MY Bookings",
+  description: "Latest news, press releases, and media resources from MY Bookings - Dubai's premier luxury stays platform",
   openGraph: {
-    title: "Press & Media | Primevista Holidayhomes",
-    description: "Latest news, press releases, and media resources from Primevista Holidayhomes",
+    title: "Press & Media | MY Bookings",
+    description: "Latest news, press releases, and media resources from MY Bookings",
     images: [
       {
         url: "/og-press.jpg",
         width: 1200,
         height: 630,
-        alt: "Primevista Holidayhomes Press Room"
+        alt: "MY Bookings Press Room"
       }
     ]
   }

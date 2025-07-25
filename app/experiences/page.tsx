@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { ExperienceShowcase } from "@/components/experiences/experience-showcase"
 
 export const metadata: Metadata = {
-  title: "Luxury Experiences | Primevista Holidayhomes",
+  title: "Luxury Experiences | MY Bookings",
   description: "Discover and book exclusive experiences in Dubai",
 }
 

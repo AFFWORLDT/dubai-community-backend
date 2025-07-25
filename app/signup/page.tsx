@@ -143,7 +143,7 @@ export default function SignUpPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60 rounded-2xl" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome to Primevista Holidayhomes</h2>
+            <h2 className="text-3xl font-bold mb-2">Welcome to MY Bookings</h2>
             <p className="text-lg">Your gateway to luxury living in Dubai</p>
             <div className="mt-6 space-y-4">
               <div className="flex items-center gap-2">

@@ -8,7 +8,7 @@ const testimonials = [
     property: "Luxury Villa",
     image: "/dummy-profiles/profile1.jpg",
     propertyImage: "/dummy-properties/luxury-villa.jpg",
-    quote: "Partnering with Primevista Holidayhomes has been incredible. Their professional approach and attention to detail have made managing my property effortless.",
+    quote: "Partnering with MY Bookings has been incredible. Their professional approach and attention to detail have made managing my property effortless.",
     rating: 5,
     location: "Palm Jumeirah"
   },
@@ -17,7 +17,7 @@ const testimonials = [
     property: "Premium Apartment",
     image: "/dummy-profiles/profile2.jpg",
     propertyImage: "/dummy-properties/premium-apartment.jpg",
-    quote: "The team at Primevista Holidayhomes has exceeded my expectations. Their marketing efforts have significantly increased my property's visibility and bookings.",
+    quote: "The team at MY Bookings has exceeded my expectations. Their marketing efforts have significantly increased my property's visibility and bookings.",
     rating: 5,
     location: "Downtown Dubai"
   },
@@ -26,7 +26,7 @@ const testimonials = [
     property: "Penthouse Suite",
     image: "/dummy-profiles/profile3.jpg",
     propertyImage: "/dummy-properties/penthouse-suite.jpg",
-    quote: "The support and guidance provided by Primevista Holidayhomes have been exceptional. They truly understand the luxury market in Dubai.",
+    quote: "The support and guidance provided by MY Bookings have been exceptional. They truly understand the luxury market in Dubai.",
     rating: 5,
     location: "Dubai Marina"
   },
@@ -113,7 +113,7 @@ export function HostTestimonials() {
             </div>
             <h3 className="text-3xl font-bold">See How Our Hosts Are Succeeding</h3>
             <p className="text-lg text-muted-foreground">
-              Watch testimonials from our property owners who have transformed their rental income with Primevista Holidayhomes.
+              Watch testimonials from our property owners who have transformed their rental income with MY Bookings.
             </p>
             <ul className="space-y-4">
               <li className="flex items-start gap-2">

@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { PropertyGrid } from "@/components/property-grid"
 
 export const metadata: Metadata = {
-  title: "Properties | Primevista Holidayhomes",
+  title: "Properties | MY Bookings",
   description: "Browse our collection of luxury properties in Dubai",
 }
 

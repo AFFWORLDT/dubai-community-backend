@@ -48,7 +48,7 @@ export function Footer() {
               <img
                 src="./../assets/logo.png"
                 className="w-56 sm:w-72 h-12 sm:h-16 object-contain"
-                alt="Primevista Holidayhomes Logo"
+                alt="MY Bookings Logo"
               />
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
@@ -135,7 +135,7 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Primevista Holidayhomes. All rights reserved.
+            © {new Date().getFullYear()} MY Bookings. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Button variant="link" size="sm" className="text-muted-foreground" asChild>
