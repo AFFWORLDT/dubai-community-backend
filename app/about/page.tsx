@@ -41,25 +41,25 @@ const testimonials = [
     name: "Alexander Williams",
     role: "Property Owner",
     image: "/placeholder-user.jpg",
-    quote: "Partnering with Prime Vista Holiday Homes has been incredible. Their professional approach and attention to detail have made managing my property effortless."
+    quote: "Partnering with MY Bookings Holiday Homes has been incredible. Their professional approach and attention to detail have made managing my property effortless."
   },
   {
     name: "Sophia Chen",
     role: "Property Owner",
     image: "/placeholder-user.jpg",
-    quote: "The team at Prime Vista Holiday Homes has exceeded my expectations. Their marketing efforts have significantly increased my property's visibility and bookings."
+    quote: "The team at MY Bookings Holiday Homes has exceeded my expectations. Their marketing efforts have significantly increased my property's visibility and bookings."
   },
   {
     name: "Rajan Patel",
     role: "Property Owner",
     image: "/placeholder-user.jpg",
-    quote: "The support and guidance provided by Prime Vista Holiday Homes have been exceptional. They truly understand the luxury market in Dubai."
+    quote: "The support and guidance provided by MY Bookings Holiday Homes have been exceptional. They truly understand the luxury market in Dubai."
   },
   {
     name: "Elena Rodriguez",
     role: "Frequent Guest",
     image: "/placeholder-user.jpg",
-    quote: "Every stay booked through Prime Vista has been nothing short of extraordinary. The attention to detail and personalized service is unmatched."
+    quote: "Every stay booked through MY Bookings has been nothing short of extraordinary. The attention to detail and personalized service is unmatched."
   },
 ];
 
@@ -150,7 +150,7 @@ export default function AboutPage() {
               Why Choose Us
             </Badge>
             <h2 className="text-5xl md:text-6xl font-bold mb-8">
-              The <span className="text-primary font-extrabold">Prime Vista</span> Difference
+              The <span className="text-primary font-extrabold">MY Bookings</span> Difference
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               What sets us apart from other holiday home providers in Dubai
@@ -201,7 +201,7 @@ export default function AboutPage() {
                 Exclusive Guest Benefits
               </h3>
               <p className="text-muted-foreground text-lg leading-relaxed">
-                Enjoy special privileges at Dubai's top restaurants, spas, and attractions as a Prime Vista guest.
+                Enjoy special privileges at Dubai's top restaurants, spas, and attractions as a MY Bookings guest.
               </p>
               <div className="mt-6 flex items-center text-primary font-medium group-hover:translate-x-2 transition-transform duration-300">
                 <span>View benefits</span>
@@ -246,7 +246,7 @@ export default function AboutPage() {
                   <div className="text-primary font-bold text-2xl sm:text-3xl md:text-4xl">2018</div>
                   <h3 className="text-xl sm:text-2xl font-bold">Foundation</h3>
                   <p className="text-base sm:text-lg text-muted-foreground">
-                    Prime Vista Holiday Homes was founded with a vision to transform Dubai's luxury accommodation market, starting with just 5 properties.
+                    MY Bookings Holiday Homes was founded with a vision to transform Dubai's luxury accommodation market, starting with just 5 properties.
                   </p>
                 </div>
                 <div className="absolute left-4 sm:left-8 md:left-1/2 transform md:-translate-x-1/2 mt-1 md:mt-0">
@@ -355,11 +355,11 @@ export default function AboutPage() {
                 <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                 Our Inspiring Journey
               </Badge>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">The Prime Vista <span className="text-primary font-extrabold">Story</span></h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">The MY Bookings <span className="text-primary font-extrabold">Story</span></h2>
               <Separator className="w-24 sm:w-32 h-1 sm:h-1.5 bg-primary rounded-full" />
               <div className="space-y-4 sm:space-y-6">
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
-                  Founded in 2018, Prime Vista Holiday Homes began with a simple yet ambitious vision: to transform the luxury accommodation experience in Dubai.
+                  Founded in 2018, MY Bookings Holiday Homes began with a simple yet ambitious vision: to transform the luxury accommodation experience in Dubai.
                 </p>
                 <p className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
                   Our founder recognized a gap in the market for truly exceptional holiday homes that combined the privacy and space of a residence with the amenities and services of a five-star hotel.
@@ -382,7 +382,7 @@ export default function AboutPage() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl h-[350px] sm:h-[450px] md:h-[550px] lg:h-[650px] border-4 sm:border-8 border-white">
                 <Image 
                   src="/assets/about-story.jpg" 
-                  alt="Prime Vista Story" 
+                  alt="MY Bookings Story" 
                   fill 
                   className="object-cover hover:scale-105 transition-transform duration-700" 
                 />
@@ -967,7 +967,7 @@ export default function AboutPage() {
           {/* Video description */}
           <div className="mt-16 text-center">
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Our showcase videos offer a glimpse into the extraordinary experiences that await you in our luxury properties. From breathtaking views to designer interiors, immerse yourself in the Prime Vista lifestyle.
+              Our showcase videos offer a glimpse into the extraordinary experiences that await you in our luxury properties. From breathtaking views to designer interiors, immerse yourself in the MY Bookings lifestyle.
             </p>
             <Button variant="outline" className="mt-8 gap-2 text-primary border-primary rounded-full px-8 py-6 text-lg hover:bg-primary hover:text-white transition-all duration-300 group">
               <Link href="/properties" className="flex items-center">
