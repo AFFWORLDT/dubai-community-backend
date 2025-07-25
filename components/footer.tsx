@@ -68,7 +68,7 @@ export function Footer() {
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://www.instagram.com/primevistaholidayhomes/" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/MY Bookingsholidayhomes/" target="_blank" rel="noopener noreferrer">
                   <Instagram className="h-4 w-4" />
                   <span className="sr-only">Instagram</span>
                 </a>

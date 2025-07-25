@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Primevistaholidayhomes - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
-    creator: "@primevista.holiday.homes",
+    creator: "@MY Bookings.holiday.homes",
   },
   icons: {
     icon: "/favicon.ico",
