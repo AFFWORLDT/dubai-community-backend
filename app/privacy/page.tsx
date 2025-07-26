@@ -5,8 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Shield, Mail, Cookie, UserCog, Database, Layout } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | PrimevistaHolidayhomes",
-  description: "Privacy policy and data protection information for PrimevistaHolidayhomes users",
+  title: "Privacy Policy | Mybookings",
+  description: "Privacy policy and data protection information for Mybookings users",
 };
 
 const PolicySection = ({ title, icon, children }:any) => (
@@ -125,10 +125,10 @@ export default function PrivacyPage() {
             <p className="text-gray-600 leading-relaxed text-lg">
               If you have any questions about our Privacy Policy, please contact us at{" "}
               <a 
-                href="mailto:Operations@Primevistaholidayhomes.com" 
+                href="mailto:Operations@Mybookings.com" 
                 className="text-primary hover:text-primary/90 underline transition-colors"
               >
-                Operations@Primevistaholidayhomes.com
+                Operations@Mybookings.com
               </a>
             </p>
           </PolicySection>

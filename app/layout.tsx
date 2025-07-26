@@ -11,32 +11,32 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    default: "Primevistaholidayhomes - Luxury Stays in Dubai",
-    template: "%s | Primevistaholidayhomes"
+    default: "Mybookings - Luxury Stays in Dubai",
+    template: "%s | Mybookings"
   },
   description: "Find and book luxury stays in Dubai with AI-powered recommendations",
   keywords: ["Dubai", "Luxury", "Accommodation", "Booking", "Travel", "Vacation Rentals"],
-  authors: [{ name: "Primevistaholidayhomes" }],
-  creator: "Primevistaholidayhomes",
+  authors: [{ name: "Mybookings" }],
+  creator: "Mybookings",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://mybookings.ae",
-    title: "Primevistaholidayhomes - Luxury Stays in Dubai",
+    title: "Mybookings - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
-    siteName: "Primevistaholidayhomes",
+    siteName: "Mybookings",
     images: [
       {
         url: "/assets/logo.png",
         width: 800,
         height: 600,
-        alt: "Primevistaholidayhomes Logo",
+        alt: "Mybookings Logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Primevistaholidayhomes - Luxury Stays in Dubai",
+    title: "Mybookings - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
     creator: "@MY Bookings.holiday.homes",
   },

@@ -35,7 +35,7 @@ const Navbar = () => {
               <img
                 src="/assets/logo.png"
                 className="h-20 w-auto object-contain"
-                alt="Primevistaholidayhomes Logo"
+                alt="Mybookings Logo"
               />
             </Link>
           </div>
@@ -144,7 +144,7 @@ const Navbar = () => {
     <img
       src="/assets/logo.png"
       className="h-20 w-auto object-contain mx-auto"
-      alt="Primevistaholidayhomes Logo"
+      alt="Mybookings Logo"
     />
   </SheetHeader>
   

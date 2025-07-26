@@ -9,7 +9,7 @@ const offices = [
   {
     city: "Dubai",
     address: "The Onyx - Tower 2 Office 512 - The Greens - Dubai",
-    email: "Operations@Primevistaholidayhomes.com",
+    email: "Operations@Mybookings.com",
   },
   // {
   //   city: "Abu Dhabi",

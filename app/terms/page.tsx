@@ -6,8 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import Head from "next/head";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | PrimevistaHolidayhomes",
-  description: "Terms and conditions for using PrimevistaHolidayhomes",
+  title: "Terms & Conditions | Mybookings",
+  description: "Terms and conditions for using Mybookings",
 };
 
 const sections = [
@@ -30,8 +30,8 @@ export default function TermsPage() {
   return (
     <>
       <Head>
-        <title>Terms & Conditions | PrimevistaHolidayhomes</title>
-        <description>Terms and conditions for using PrimevistaHolidayhomes</description>
+        <title>Terms & Conditions | Mybookings</title>
+        <description>Terms and conditions for using Mybookings</description>
       </Head>
       
       <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-purple-50">
@@ -86,7 +86,7 @@ export default function TermsPage() {
                   </div>
                   <div className="mt-6 space-y-4 text-gray-600 dark:text-gray-400">
                     <p>
-                      Welcome to PrimevistaHolidayhomes. These terms and conditions outline the rules and regulations for the use of our
+                      Welcome to Mybookings. These terms and conditions outline the rules and regulations for the use of our
                       website and services.
                     </p>
                   </div>
@@ -100,7 +100,7 @@ export default function TermsPage() {
                   </div>
                   <div className="mt-6 space-y-4 text-gray-600 dark:text-gray-400">
                     <p>
-                      By booking through PrimevistaHolidayhomes, you agree to the following terms:
+                      By booking through Mybookings, you agree to the following terms:
                     </p>
                     <ul className="list-none space-y-2 bg-white/60 rounded-xl overflow-hidden">
                       {[
@@ -146,7 +146,7 @@ export default function TermsPage() {
                   </div>
                   <div className="mt-6 space-y-4 text-gray-600 dark:text-gray-400">
                     <p>
-                      Users of PrimevistaHolidayhomes agree to:
+                      Users of Mybookings agree to:
                     </p>
                     <ul className="list-none space-y-2 bg-white/60 rounded-xl overflow-hidden">
                       {[
@@ -181,8 +181,8 @@ export default function TermsPage() {
                   </div>
                   <p className="text-gray-600 leading-relaxed text-lg">
                     If you have any questions about these Terms & Conditions, please contact us at{" "}
-                    <a href="mailto:Operations@Primevistaholidayhomes.com" className="text-teal-600 hover:text-teal-700 underline transition-colors">
-                      Operations@Primevistaholidayhomes.com
+                    <a href="mailto:Operations@Mybookings.com" className="text-teal-600 hover:text-teal-700 underline transition-colors">
+                      Operations@Mybookings.com
                     </a>
                   </p>
                 </section>

@@ -8,13 +8,13 @@ import { Mail, Phone, Globe, Clock } from 'lucide-react'
 const contacts = [
   {
     title: "Media Inquiries",
-    email: "Operations@Primevistaholidayhomes.com",
+    email: "Operations@Mybookings.com",
     phone: "+971 55 506 7557",
     icon: Mail,
   },
   {
     title: "Corporate Communications",
-    email: "Operations@Primevistaholidayhomes.com",
+    email: "Operations@Mybookings.com",
     phone: "+971 55 506 7557",
     icon: Globe,
   },

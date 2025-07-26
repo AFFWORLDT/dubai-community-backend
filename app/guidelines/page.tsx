@@ -189,10 +189,10 @@ export default function GuidelinesPage() {
                 If you have questions about our guidelines or need to report a violation,
                 please contact us at{" "}
                 <a 
-                  href="mailto:Operations@Primevistaholidayhomes.com" 
+                  href="mailto:Operations@Mybookings.com" 
                   className="text-primary hover:underline font-medium inline-flex items-center gap-1"
                 >
-                  Operations@Primevistaholidayhomes.com
+                  Operations@Mybookings.com
                   <MessageSquare className="w-4 h-4" />
                 </a>
               </p>
