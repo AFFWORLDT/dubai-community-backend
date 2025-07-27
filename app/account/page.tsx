@@ -6,8 +6,8 @@ import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 
 export const metadata: Metadata = {
-  title: "Account Settings | ComsosMybookings",
-  description: "Manage your ComsosMybookings account settings and preferences",
+  title: "Account Settings |  Mybookings",
+  description: "Manage your  Mybookings account settings and preferences",
 }
 
 const settingsCategories = [
@@ -62,7 +62,7 @@ const settingsCategories = [
   {
     icon: Building2,
     title: "Professional hosting tools",
-    description: "Get professional tools if you manage several properties on ComsosMybookings",
+    description: "Get professional tools if you manage several properties on  Mybookings",
     href: "/account/hosting-tools",
   },
   {

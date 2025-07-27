@@ -33,7 +33,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
               <Building2 className="h-6 w-6" />
-              <span className="font-bold">ComsosMybookings</span>
+              <span className="font-bold"> Mybookings</span>
             </Link>
           </div>
         </div>
@@ -54,7 +54,7 @@ const Navbar = () => {
               <img
                 src="/assets/logo.png"
                 className="w-32 sm:w-40 h-8 object-contain transition-all duration-200"
-                alt="ComsosMybookings Logo"
+                alt=" Mybookings Logo"
               />
             </div>
             <div className="hidden md:flex items-center space-x-8 ml-10">
@@ -140,7 +140,7 @@ const Navbar = () => {
     <img
       src="/assets/logo.png"
       className="w-32 h-8 object-contain"
-      alt="ComsosMybookings Logo"
+      alt=" Mybookings Logo"
     />
   </SheetHeader>
   

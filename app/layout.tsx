@@ -11,26 +11,26 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    default: "ComsosMybookings - Luxury Stays in Dubai",
-    template: "%s | ComsosMybookings"
+    default: " Mybookings - Luxury Stays in Dubai",
+    template: "%s |  Mybookings"
   },
   description: "Find and book luxury stays in Dubai with AI-powered recommendations",
   keywords: ["Dubai", "Luxury", "Accommodation", "Booking", "Travel", "Vacation Rentals"],
-  authors: [{ name: "ComsosMybookings" }],
-  creator: "ComsosMybookings",
+  authors: [{ name: " Mybookings" }],
+  creator: " Mybookings",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://ComsosMybookings.com",
-    title: "ComsosMybookings - Luxury Stays in Dubai",
+    url: "https:// Mybookings.com",
+    title: " Mybookings - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
-    siteName: "ComsosMybookings",
+    siteName: " Mybookings",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ComsosMybookings - Luxury Stays in Dubai",
+    title: " Mybookings - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
-    creator: "@ComsosMybookings",
+    creator: "@ Mybookings",
   },
   icons: {
     icon: "/favicon.ico",

@@ -33,7 +33,7 @@ export function FeaturedArticle() {
             className="space-y-4"
           >
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">
-              ComsosMybookings Revolutionizes Luxury Travel with AI-Powered Experiences
+               Mybookings Revolutionizes Luxury Travel with AI-Powered Experiences
             </h2>
             <p className="text-white/90 max-w-2xl">
               Leading travel platform introduces cutting-edge AI technology to deliver personalized luxury stays, setting new standards in hospitality innovation.

@@ -10,17 +10,17 @@ import { LoadingCard } from "@/components/loading-card"
 import { ErrorBoundary } from "@/components/error-boundary"
 
 export const metadata: Metadata = {
-  title: "Press & Media | ComsosMybookings",
-  description: "Latest news, press releases, and media resources from ComsosMybookings - Dubai's premier luxury stays platform",
+  title: "Press & Media |  Mybookings",
+  description: "Latest news, press releases, and media resources from  Mybookings - Dubai's premier luxury stays platform",
   openGraph: {
-    title: "Press & Media | ComsosMybookings",
-    description: "Latest news, press releases, and media resources from ComsosMybookings",
+    title: "Press & Media |  Mybookings",
+    description: "Latest news, press releases, and media resources from  Mybookings",
     images: [
       {
         url: "/og-press.jpg",
         width: 1200,
         height: 630,
-        alt: "ComsosMybookings Press Room"
+        alt: " Mybookings Press Room"
       }
     ]
   }

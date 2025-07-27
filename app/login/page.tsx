@@ -87,7 +87,7 @@ export default function LoginPage() {
           />
           <div className="absolute inset-0 bg-black/20 rounded-2xl" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome to ComsosMybookings</h2>
+            <h2 className="text-3xl font-bold mb-2">Welcome to  Mybookings</h2>
             <p className="text-lg">Your gateway to luxury Mybookings in Dubai</p>
           </div>
         </div>

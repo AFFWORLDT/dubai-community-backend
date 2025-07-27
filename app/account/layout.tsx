@@ -10,8 +10,8 @@ import {
 import { Menu } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: "Account | ComsosMybookings",
-  description: "Manage your ComsosMybookings account",
+  title: "Account |  Mybookings",
+  description: "Manage your  Mybookings account",
 }
 
 export default function AccountLayout({
@@ -25,7 +25,7 @@ export default function AccountLayout({
         <div className="container flex h-14 max-w-6xl items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="font-semibold">
-              ComsosMybookings
+               Mybookings
             </Link>
             <nav className="hidden md:flex items-center gap-6">
               <Link

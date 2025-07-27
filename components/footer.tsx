@@ -47,7 +47,7 @@ export function Footer() {
               <img
                 src="./../assets/logo.png"
                 className="w-40 sm:w-56 h-8 sm:h-12 object-contain"
-                alt="ComsosMybookings Logo"
+                alt=" Mybookings Logo"
               />
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
@@ -134,7 +134,7 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} ComsosMybookings. All rights reserved.
+            © {new Date().getFullYear()}  Mybookings. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Button variant="link" size="sm" className="text-muted-foreground" asChild>

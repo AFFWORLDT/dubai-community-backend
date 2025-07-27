@@ -21,7 +21,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   // In a real app, fetch property data here
   return {
-    title: "Luxury Penthouse with Burj Khalifa View | ComsosMybookings",
+    title: "Luxury Penthouse with Burj Khalifa View |  Mybookings",
     description: "Experience luxury Mybookings with breathtaking views of the Burj Khalifa and Dubai skyline",
   }
 }
