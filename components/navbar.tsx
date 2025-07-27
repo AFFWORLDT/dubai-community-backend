@@ -53,7 +53,7 @@ const Navbar = () => {
             >
               <img
                 src="/assets/logo.png"
-                className="w-32 sm:w-40 h-8 object-contain transition-all duration-200"
+                className="w-40 sm:w-48 h-10 object-contain transition-all duration-200"
                 alt=" Mybookings Logo"
               />
             </div>
