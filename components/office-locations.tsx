@@ -63,7 +63,7 @@ export function OfficeLocations() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-4 h-4 text-primary" />
-                    <a href="tel:+971509677988" className="text-primary font-medium">+971 50 967 7988</a>
+                    <a href="tel:+971509677988" className="text-primary font-medium"> ‪+971 56 635 4324‬</a>
                     </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-4 h-4 text-primary" />
