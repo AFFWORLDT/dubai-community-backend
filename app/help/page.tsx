@@ -3,7 +3,7 @@ import { HelpCenter } from "@/components/help/help-center"
 
 export const metadata: Metadata = {
   title: "Help Center",
-  description: "Get help and support for your ComsosLiving experience",
+  description: "Get help and support for your ComsosMybookings experience",
 }
 
 export default function HelpPage() {

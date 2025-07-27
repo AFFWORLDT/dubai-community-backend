@@ -18,7 +18,7 @@ export function PressHero() {
         >
           <Badge className="mb-4">Press Room</Badge>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
-            ComsosLiving Press & Media Center
+            ComsosMybookings Press & Media Center
           </h1>
           <p className="text-xl text-muted-foreground">
             Get the latest news, press releases, and media resources from Dubai's premier luxury stays platform

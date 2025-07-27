@@ -49,7 +49,7 @@ const popularCities = [
     image: "/placeholder.svg?height=100&width=100",
     type: "area",
     icon: Building2,
-    description: "Iconic island living",
+    description: "Iconic island Mybookings",
   },
   {
     name: "Downtown Dubai",

@@ -41,7 +41,7 @@ export function MarketStats() {
       <div className="text-center max-w-2xl mx-auto">
         <h2 className="text-3xl font-bold mb-4">Dubai Property Market Stats</h2>
         <p className="text-muted-foreground text-lg">
-          See why property owners choose ComsosLiving for maximum returns
+          See why property owners choose ComsosMybookings for maximum returns
         </p>
       </div>
 

@@ -9,20 +9,20 @@ const offices = [
   {
     city: "Dubai",
     address: "Office 118, Building Al Attar Business Centre, Al Barsha, beside ibis hotel, al barsha 1, Dubai,",
-    email: "hello@cosmosliving.ae",
+    email: "hello@MybookingsMybookings.ae",
   },
   // {
   //   city: "Abu Dhabi",
   //   address: "Al Maryah Island, Abu Dhabi Global Market Square",
   //   phone: "+971 2 123 4567",
-  //   email: "abudhabi@ComsosLiving.com",
+  //   email: "abudhabi@ComsosMybookings.com",
   //   image: "/placeholder.svg?height=200&width=300",
   // },
   // {
   //   city: "Sharjah",
   //   address: "Al Majaz Waterfront, Corniche Street",
   //   phone: "+971 6 123 4567",
-  //   email: "sharjah@ComsosLiving.com",
+  //   email: "sharjah@ComsosMybookings.com",
   //   image: "/placeholder.svg?height=200&width=300",
   // },
 ]

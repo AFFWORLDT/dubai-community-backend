@@ -24,7 +24,7 @@ const hotelReviews: Review[] = [
     },
     rating: 5,
     comment:
-      "Absolutely loved my stay at Cosmos Living! The modern amenities and stunning city views exceeded my expectations. The staff was incredibly attentive, and the rooftop pool is a must-visit spot. Will definitely be returning for my next business trip.",
+      "Absolutely loved my stay at Mybookings Mybookings! The modern amenities and stunning city views exceeded my expectations. The staff was incredibly attentive, and the rooftop pool is a must-visit spot. Will definitely be returning for my next business trip.",
     date: "February 10, 2024",
   },
   {
@@ -45,7 +45,7 @@ const hotelReviews: Review[] = [
     },
     rating: 5,
     comment:
-      "The attention to detail at Cosmos Living is remarkable. From the welcome amenities to the daily housekeeping, everything was perfect. The in-room coffee machine and smart TV were great touches.",
+      "The attention to detail at Mybookings Mybookings is remarkable. From the welcome amenities to the daily housekeeping, everything was perfect. The in-room coffee machine and smart TV were great touches.",
     date: "January 28, 2024",
   },
   {

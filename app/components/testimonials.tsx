@@ -7,7 +7,7 @@ const testimonials = [
     name: "Sarah Anderson",
     role: "Business Executive, New York",
     image: "/images/testimonial-1.jpg",
-    content: "The epitome of luxury living in Dubai. Every detail was meticulously crafted for comfort and elegance. The service exceeded all expectations.",
+    content: "The epitome of luxury Mybookings in Dubai. Every detail was meticulously crafted for comfort and elegance. The service exceeded all expectations.",
     rating: 5,
     location: "Palm Jumeirah Villa",
     duration: "1 Month Stay"

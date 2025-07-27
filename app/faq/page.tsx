@@ -10,8 +10,8 @@ import { Separator } from "@/components/ui/separator"
 import { NewsletterSignup } from "@/components/newsletter-signup"
 
 export const metadata: Metadata = {
-  title: "FAQ | ComsosLiving",
-  description: "Frequently asked questions about ComsosLiving",
+  title: "FAQ | ComsosMybookings",
+  description: "Frequently asked questions about ComsosMybookings",
 }
 
 const faqs = {
@@ -58,7 +58,7 @@ export default function FAQPage() {
         <Badge className="mb-4">FAQ</Badge>
         <h1 className="text-3xl font-bold mb-4">Frequently Asked Questions</h1>
         <p className="text-muted-foreground text-lg">
-          Find answers to common questions about ComsosLiving
+          Find answers to common questions about ComsosMybookings
         </p>
       </div>
 

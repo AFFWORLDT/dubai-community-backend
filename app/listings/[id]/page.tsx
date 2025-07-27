@@ -21,8 +21,8 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   // In a real app, fetch property data here
   return {
-    title: "Luxury Penthouse with Burj Khalifa View | ComsosLiving",
-    description: "Experience luxury living with breathtaking views of the Burj Khalifa and Dubai skyline",
+    title: "Luxury Penthouse with Burj Khalifa View | ComsosMybookings",
+    description: "Experience luxury Mybookings with breathtaking views of the Burj Khalifa and Dubai skyline",
   }
 }
 
@@ -38,7 +38,7 @@ const getPropertyData = async (id: string) => {
     price: 1200,
     rating: 4.9,
     reviews: 128,
-    description: "Experience luxury living with breathtaking views of the Burj Khalifa and Dubai skyline. This stunning penthouse features modern amenities and premium furnishings.",
+    description: "Experience luxury Mybookings with breathtaking views of the Burj Khalifa and Dubai skyline. This stunning penthouse features modern amenities and premium furnishings.",
     images: [
       "/placeholder.svg?height=800&width=1200",
       "/placeholder.svg?height=800&width=800",
