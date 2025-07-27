@@ -169,7 +169,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       const token = getCookie("accessToken")
       console.log("this is token", token)
 
-      const response = await axios.post("https://hhownersbackendnode.vercel.app/api/v1/booking/checkout", formData, {
+      const response = await axios.post("https://24-bookingbackeend.vercel.app/api/v1/booking/checkout", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
