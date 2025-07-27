@@ -8,7 +8,7 @@ import { MapPin, Phone, Mail } from 'lucide-react'
 const offices = [
   {
     city: "Dubai",
-    address: "Office 118, Building Al Attar Business Centre, Al Barsha, beside ibis hotel, al barsha 1, Dubai,",
+    address: "Coming Soon",
     email: "hello@MybookingsMybookings.ae",
   },
   // {
