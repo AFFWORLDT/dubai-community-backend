@@ -19,6 +19,8 @@ import { Toaster } from "@/components/ui/toaster"
 import { useRouter } from "next/navigation"
 import { login } from "@/service/Auth"
 import { AxiosError } from "axios"
+import { useState } from "react"
+import { Eye, EyeOff } from "lucide-react"
 
 interface LoginFormData {
   email: string
@@ -29,6 +31,7 @@ export default function LoginPage() {
   const setAuth = useAuthStore((state) => state.login)
   const router = useRouter()
   const { toast } = useToast()
+  const [showPassword, setShowPassword] = useState(false)
   const {
     register,
     handleSubmit,
@@ -65,8 +68,11 @@ export default function LoginPage() {
   });
 
   const onSubmit = (data: LoginFormData) => {
-
    mutation.mutate(data)
+  }
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword)
   }
 
   return (
@@ -81,7 +87,7 @@ export default function LoginPage() {
           />
           <div className="absolute inset-0 bg-black/20 rounded-2xl" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome to MY Bookings</h2>
+            <h2 className="text-3xl font-bold mb-2">Welcome to ComsosLiving</h2>
             <p className="text-lg">Your gateway to luxury living in Dubai</p>
           </div>
         </div>
@@ -126,17 +132,31 @@ export default function LoginPage() {
                     Forgot password?
                   </Link>
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 8,
-                      message: "Password must be at least 8 characters",
-                    },
-                  })}
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 8,
+                        message: "Password must be at least 8 characters",
+                      },
+                    })}
+                  />
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    onClick={togglePasswordVisibility}
+                    tabIndex={-1}
+                  >
+                    {showPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-sm text-red-500">{errors.password.message}</p>
                 )}

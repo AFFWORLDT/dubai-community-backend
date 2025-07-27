@@ -12,10 +12,10 @@ import { ArrowRight } from 'lucide-react'
 const pressReleases = [
   {
     id: 1,
-    title: "MY Bookings Announces Record Growth in Luxury Property Listings",
+    title: "ComsosLiving Announces Record Growth in Luxury Property Listings",
     date: "January 5, 2025",
     category: "Company News",
-    excerpt: "MY Bookings sees 200% year-over-year growth in premium property listings, solidifying its position as Dubai's leading luxury stays platform.",
+    excerpt: "ComsosLiving sees 200% year-over-year growth in premium property listings, solidifying its position as Dubai's leading luxury stays platform.",
     image: "/placeholder.svg?height=400&width=600",
   },
   {
@@ -28,7 +28,7 @@ const pressReleases = [
   },
   {
     id: 3,
-    title: "MY Bookings Launches Sustainable Tourism Initiative",
+    title: "ComsosLiving Launches Sustainable Tourism Initiative",
     date: "December 1, 2024",
     category: "Sustainability",
     excerpt: "New program focuses on promoting eco-friendly practices in luxury accommodations across Dubai.",

@@ -28,7 +28,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Phone Support</h3>
                 <p className="text-muted-foreground">24/7 Concierge Service</p>
-                <a href="tel:+971555067557" className="text-primary font-medium">+971 55 506 7557</a>
+                <a href="tel:+971509677988" className="text-primary font-medium">+971 50 967 7988</a>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Email</h3>
                 <p className="text-muted-foreground">Response within 24 hours</p>
-                <a href="mailto:Operations@Mybookings.com" className="text-primary font-medium">Operations@Mybookings.com</a>
+                <a href="mailto:hello@cosmosliving.ae" className="text-primary font-medium">hello@cosmosliving.ae</a>
                 </div>
             </div>
 

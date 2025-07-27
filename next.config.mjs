@@ -15,7 +15,6 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-    domains: ['img.freepik.com'],
   },
   experimental: {
     webpackBuildWorker: true,

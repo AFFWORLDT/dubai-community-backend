@@ -145,10 +145,10 @@ const CookiePolicy = () => {
               <p className="text-muted-foreground">
                 If you have any questions about our Cookie Policy, please contact us at{" "}
                 <a 
-                  href="mailto:Operations@Mybookings.com" 
+                  href="mailto:privacy@dubaistays.com" 
                   className="text-primary hover:underline font-medium inline-flex items-center gap-1"
                 >
-                  Operations@Mybookings.com
+                  privacy@dubaistays.com
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </p>

@@ -114,7 +114,7 @@ export default function GuidelinesPage() {
             <Card className="border-none shadow-lg bg-gradient-to-r from-primary/10 to-primary/5">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                  At Primevista, we believe in creating a respectful, inclusive, and safe
+                  At DubaiStays, we believe in creating a respectful, inclusive, and safe
                   community for all our users. These guidelines help ensure everyone has a
                   positive experience.
                 </p>
@@ -189,10 +189,10 @@ export default function GuidelinesPage() {
                 If you have questions about our guidelines or need to report a violation,
                 please contact us at{" "}
                 <a 
-                  href="mailto:Operations@Mybookings.com" 
+                  href="mailto:support@dubaistays.com" 
                   className="text-primary hover:underline font-medium inline-flex items-center gap-1"
                 >
-                  Operations@Mybookings.com
+                  support@dubaistays.com
                   <MessageSquare className="w-4 h-4" />
                 </a>
               </p>

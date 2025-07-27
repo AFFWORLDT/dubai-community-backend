@@ -32,11 +32,8 @@ const Navbar = () => {
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
-              <img
-                src="/assets/logo.png"
-                className="h-20 w-auto object-contain"
-                alt="Mybookings Logo"
-              />
+              <Building2 className="h-6 w-6" />
+              <span className="font-bold">ComsosLiving</span>
             </Link>
           </div>
         </div>
@@ -46,36 +43,35 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background shadow-sm border-b">
-      <div className=" max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 ">
+      <div className=" sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Desktop Navigation */}
-          <div className="flex items-center ">
+          <div className="flex items-center">
             <div 
               onClick={() => window.location.href = '/'}
               className="flex items-center space-x-2 cursor-pointer"
             >
               <img
                 src="/assets/logo.png"
-                className="h-20 w-auto object-contain"
-                alt="Primevista Logo"
+                className="w-32 sm:w-40 h-8 object-contain transition-all duration-200"
+                alt="ComsosLiving Logo"
               />
             </div>
             <div className="hidden md:flex items-center space-x-8 ml-10">
               <div
                 onClick={() => window.location.href = '/properties'}
-                className="text-sm font-medium text-foreground/80 transition-colors duration-200 relative group cursor-pointer"
+                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200 relative group cursor-pointer"
               >
                 Properties
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 transition-transform duration-200" />
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
               </div>
               <div
                 onClick={() => window.location.href = '/about'}
-                className="text-sm font-medium text-foreground/80 transition-colors duration-200 relative group cursor-pointer"
+                className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors duration-200 relative group cursor-pointer"
               >
                 About
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 transition-transform duration-200" />
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
               </div>
-             
             </div>
           </div>
 
@@ -138,13 +134,13 @@ const Navbar = () => {
               </SheetTrigger>
               <SheetContent 
   side="right" 
-  className="w-[280px] sm:w-[320px] bg-gradient-to-b "
+  className="w-[280px] sm:w-[320px] bg-gradient-to-b from-teal-50 to-teal-100 dark:from-teal-900 dark:to-teal-950"
 >
   <SheetHeader className="border-b pb-4 mb-6">
     <img
       src="/assets/logo.png"
-      className="h-20 w-auto object-contain mx-auto"
-      alt="Mybookings Logo"
+      className="w-32 h-8 object-contain"
+      alt="ComsosLiving Logo"
     />
   </SheetHeader>
   
@@ -172,7 +168,7 @@ const Navbar = () => {
     </div>
     
     {isAuthenticated ? (
-      <div className="space-y-2 pt-4 border-t ">
+      <div className="space-y-2 pt-4 border-t border-teal-200 dark:border-teal-800">
         <div
           onClick={() => {
             window.location.href = '/profile';
@@ -204,7 +200,7 @@ const Navbar = () => {
         </button>
       </div>
     ) : (
-      <div className="space-y-3 pt-4 border-t">
+      <div className="space-y-3 pt-4 border-t border-teal-200 dark:border-teal-800">
         <Button 
           asChild 
           variant="outline" 
@@ -217,7 +213,7 @@ const Navbar = () => {
         
         <Button 
           asChild 
-          className="w-full h-12 text-lg"
+          className="w-full h-12 text-lg bg-teal-600 hover:bg-teal-700 dark:bg-teal-500 dark:hover:bg-teal-600"
         >
           <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
             Sign up

@@ -15,7 +15,6 @@ const footerLinks = {
     { label: "Safety", href: "/safety" },
     { label: "Cancellation", href: "/cancellation" },
     { label: "FAQ", href: "/faq" },
-    { label: "Submit Review", href: "/submit-review" },
   ],
   legal: [
     { label: "Terms", href: "/terms" },
@@ -30,7 +29,7 @@ export function Footer() {
     <footer className="border-t bg-background w-full">
       <div className=" px-4 py-12">
         {/* Property Host CTA */}
-        <div className="mb-12 p-6 bg-gradient-to-r from-blue-500 to-blue-800 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mb-12 p-6  bg-gradient-to-r from-teal-500 to-teal-800 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">Become a Property Host</h3>
             <p className="text-white">
@@ -47,8 +46,8 @@ export function Footer() {
           <Link href="/" className="flex items-center space-x-2">
               <img
                 src="./../assets/logo.png"
-                className="w-56 sm:w-72 h-12 sm:h-16 object-contain"
-                alt="MY Bookings Logo"
+                className="w-40 sm:w-56 h-8 sm:h-12 object-contain"
+                alt="ComsosLiving Logo"
               />
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
@@ -68,7 +67,7 @@ export function Footer() {
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://www.instagram.com/MY Bookingsholidayhomes/" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/cosmoslivingdubai/" target="_blank" rel="noopener noreferrer">
                   <Instagram className="h-4 w-4" />
                   <span className="sr-only">Instagram</span>
                 </a>
@@ -135,7 +134,7 @@ export function Footer() {
 
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} MY Bookings. All rights reserved.
+            © {new Date().getFullYear()} ComsosLiving. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Button variant="link" size="sm" className="text-muted-foreground" asChild>

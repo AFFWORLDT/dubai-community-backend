@@ -21,8 +21,6 @@ import { AxiosError } from "axios"
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { useAuthStore } from "@/Providers/auth-provider"
-import { Eye, EyeOff, CheckCircle2, XCircle, AlertCircle, Mail, User, Phone, Lock, ArrowRight, Loader2 } from "lucide-react"
-import { Progress } from "@/components/ui/progress"
 
 // Types for our form
 interface SignUpFormData {
@@ -38,8 +36,6 @@ export default function SignUpPage() {
   const setAuth = useAuthStore((state) => state.login)
   const { toast } = useToast()
   const [error, setError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [passwordStrength, setPasswordStrength] = useState(0)
 
   const {
     register,
@@ -47,30 +43,6 @@ export default function SignUpPage() {
     formState: { errors },
     watch
   } = useForm<SignUpFormData>()
-
-  const password = watch("password", "")
-  
-  // Calculate password strength
-  const calculatePasswordStrength = (password: string) => {
-    if (!password) return 0
-    
-    let strength = 0
-    
-    // Length check
-    if (password.length >= 8) strength += 25
-    
-    // Character variety checks
-    if (/[A-Z]/.test(password)) strength += 25
-    if (/[0-9]/.test(password)) strength += 25
-    if (/[^A-Za-z0-9]/.test(password)) strength += 25
-    
-    return strength
-  }
-  
-  // Update password strength whenever password changes
-  useState(() => {
-    setPasswordStrength(calculatePasswordStrength(password))
-  })
 
   const mutation = useMutation({
     mutationFn: signup,
@@ -113,24 +85,6 @@ export default function SignUpPage() {
     } 
   }
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword)
-  }
-
-  const getStrengthColor = () => {
-    if (passwordStrength < 25) return "bg-red-500"
-    if (passwordStrength < 50) return "bg-orange-500"
-    if (passwordStrength < 75) return "bg-yellow-500"
-    return "bg-green-500"
-  }
-
-  const getStrengthText = () => {
-    if (passwordStrength < 25) return "Weak"
-    if (passwordStrength < 50) return "Fair"
-    if (passwordStrength < 75) return "Good"
-    return "Strong"
-  }
-
   return (
     <div className="flex min-h-screen">
       {/* Left side - Illustration */}
@@ -141,220 +95,122 @@ export default function SignUpPage() {
             alt="Dubai Skyline"
             className="rounded-2xl object-cover w-full h-full"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60 rounded-2xl" />
+          <div className="absolute inset-0 bg-black/20 rounded-2xl" />
           <div className="absolute bottom-8 left-8 text-white">
-            <h2 className="text-3xl font-bold mb-2">Welcome to MY Bookings</h2>
+            <h2 className="text-3xl font-bold mb-2">Welcome to ComsosLiving</h2>
             <p className="text-lg">Your gateway to luxury living in Dubai</p>
-            <div className="mt-6 space-y-4">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="text-[#60A5FA] w-5 h-5" />
-                <span>Premium properties in exclusive locations</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="text-[#60A5FA] w-5 h-5" />
-                <span>24/7 concierge and support services</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="text-[#60A5FA] w-5 h-5" />
-                <span>Seamless booking experience</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
       {/* Right side - Sign up form */}
-      <div className="flex w-full lg:w-1/2 items-center justify-center p-4 sm:p-8">
-        <Card className="w-full max-w-md shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-          <CardHeader className="space-y-1 pb-2">
-            <div className="flex justify-center mb-2">
-              <img
-                src="/assets/logo.png"
-                alt="Primevista Logo"
-                className="h-12 object-contain"
-              />
-            </div>
-            <CardTitle className="text-2xl font-bold text-center">Create an account</CardTitle>
-            <CardDescription className="text-center">
+      <div className="flex w-full lg:w-1/2 items-center justify-center p-8">
+        <Card className="w-full max-w-md">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl">Create an account</CardTitle>
+            <CardDescription>
               Enter your information to create your account
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <CardContent className="grid gap-5 pt-4">
+            <CardContent className="grid gap-4">
               {error && (
-                <div className="text-sm bg-red-50 text-red-500 p-3 rounded-md flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
+                <div className="text-sm text-red-500">
                   {error}
                 </div>
               )}
-              
-              <div className="grid gap-3">
-                <div className="grid gap-2">
-                  <Label htmlFor="name" className="text-sm font-medium">
-                    Full Name
-                  </Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="name"
-                      className="pl-10 h-11 border-gray-300 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
-                      placeholder="Enter your full name"
-                      {...register("fullName", {
-                        required: "Name is required",
-                        minLength: {
-                          value: 2,
-                          message: "Name must be at least 2 characters",
-                        },
-                      })}
-                    />
-                  </div>
-                  {errors.fullName && (
-                    <span className="text-sm text-red-500 flex items-center gap-1">
-                      <XCircle className="w-4 h-4" />
-                      {errors.fullName.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-sm font-medium">
-                    Email Address
-                  </Label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="email"
-                      type="email"
-                      className="pl-10 h-11 border-gray-300 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
-                      placeholder="Enter your email address"
-                      {...register("email", {
-                        required: "Email is required",
-                        pattern: {
-                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                          message: "Invalid email address",
-                        },
-                      })}
-                    />
-                  </div>
-                  {errors.email && (
-                    <span className="text-sm text-red-500 flex items-center gap-1">
-                      <XCircle className="w-4 h-4" />
-                      {errors.email.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="phone" className="text-sm font-medium">
-                    Phone Number
-                  </Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      className="pl-10 h-11 border-gray-300 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
-                      placeholder="Enter your phone number"
-                      {...register("phone", {
-                        required: "Phone number is required",
-                      })}
-                    />
-                  </div>
-                  {errors.phone && (
-                    <span className="text-sm text-red-500 flex items-center gap-1">
-                      <XCircle className="w-4 h-4" />
-                      {errors.phone.message}
-                    </span>
-                  )}
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                    <Input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      className="pl-10 pr-10 h-11 border-gray-300 focus-visible:ring-2 focus-visible:ring-offset-0 focus-visible:ring-primary"
-                      placeholder="Create a secure password"
-                      {...register("password", {
-                        required: "Password is required",
-                        minLength: {
-                          value: 8,
-                          message: "Password must be at least 8 characters",
-                        },
-                      })}
-                      onChange={(e) => setPasswordStrength(calculatePasswordStrength(e.target.value))}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="absolute right-1 top-1 h-9 w-9 p-0 text-gray-400"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                      <span className="sr-only">
-                        {showPassword ? "Hide password" : "Show password"}
-                      </span>
-                    </Button>
-                  </div>
-                  {errors.password && (
-                    <span className="text-sm text-red-500 flex items-center gap-1">
-                      <XCircle className="w-4 h-4" />
-                      {errors.password.message}
-                    </span>
-                  )}
-
-                  {/* Password strength meter */}
-                  {password && (
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-xs">
-                        <span>Password strength:</span>
-                        <span className={passwordStrength >= 75 ? "text-green-500" : passwordStrength >= 50 ? "text-yellow-500" : "text-red-500"}>
-                          {getStrengthText()}
-                        </span>
-                      </div>
-                      <Progress value={passwordStrength} className={`h-1.5 ${getStrengthColor()}`} />
-                    </div>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col gap-4 pb-6 pt-2">
-              <Button 
-                type="submit" 
-                className="w-full h-11 bg-[#60A5FA] hover:bg-[#3B82F6] text-white transition-all duration-200"
-                disabled={mutation.isPending}
-              >
-                {mutation.isPending ? (
-                  <div className="flex items-center justify-center">
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating account...
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center">
-                    Create Account
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </div>
+              <div className="grid gap-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  {...register("fullName", {
+                    required: "Name is required",
+                    minLength: {
+                      value: 2,
+                      message: "Name must be at least 2 characters",
+                    },
+                  })}
+                />
+                {errors.fullName && (
+                  <span className="text-sm text-red-500">
+                    {errors.fullName.message}
+                  </span>
                 )}
-              </Button>
-
-              <div className="text-center text-sm">
-                <span className="text-gray-600">Already have an account? </span>
-                <Link href="/login" className="text-[#60A5FA] hover:text-[#3B82F6] font-medium">
-                  Login instead
-                </Link>
               </div>
 
-              <div className="text-center text-xs text-gray-600">
-                By signing up, you agree to our{" "}
-                <Link href="/terms" className="text-[#60A5FA] hover:text-[#3B82F6]">
-                  Terms of Service
-                </Link>{" "}
-                and{" "}
-                <Link href="/privacy" className="text-[#60A5FA] hover:text-[#3B82F6]">
-                  Privacy Policy
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                      message: "Invalid email address",
+                    },
+                  })}
+                />
+                {errors.email && (
+                  <span className="text-sm text-red-500">
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="phone">Phone No.</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  {...register("phone", {
+                    required: "Please Enter phone",
+                   
+                  })}
+                />
+                {errors.phone && (
+                  <span className="text-sm text-red-500">
+                    {errors.phone.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must be at least 8 characters",
+                    },
+                  })}
+                />
+                {errors.password && (
+                  <span className="text-sm text-red-500">
+                    {errors.password.message}
+                  </span>
+                )}
+              </div>
+
+             
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Button 
+                className="w-full" 
+                type="submit"
+                disabled={mutation.isPending }
+              >
+                {mutation.isPending ? "Creating Account..." : "Create Account"}
+              </Button>
+              <div className="text-sm text-center text-muted-foreground">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="text-primary underline-offset-4 hover:underline"
+                >
+                  Login
                 </Link>
               </div>
             </CardFooter>

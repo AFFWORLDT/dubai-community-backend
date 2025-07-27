@@ -3,7 +3,7 @@ import { SafetyInformation } from "@/components/safety/safety-information"
 
 export const metadata: Metadata = {
   title: "Safety Information",
-  description: "Safety guidelines and emergency information for MY Bookings guests",
+  description: "Safety guidelines and emergency information for ComsosLiving guests",
 }
 
 export default function SafetyPage() {

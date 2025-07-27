@@ -5,8 +5,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Shield, Mail, Cookie, UserCog, Database, Layout } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Mybookings",
-  description: "Privacy policy and data protection information for Mybookings users",
+  title: "Privacy Policy | DubaiStays",
+  description: "Privacy policy and data protection information for DubaiStays users",
 };
 
 const PolicySection = ({ title, icon, children }:any) => (
@@ -122,13 +122,13 @@ export default function PrivacyPage() {
             title="Contact Us" 
             icon={<Mail className="h-6 w-6 text-primary dark:text-blue-400"/>}
           >
-            <p className="text-gray-600 leading-relaxed text-lg">
-              If you have any questions about our Privacy Policy, please contact us at{" "}
+            <p className="text-muted-foreground dark:text-gray-400">
+              If you have any questions about this Privacy Policy, please contact us at{" "}
               <a 
-                href="mailto:Operations@Mybookings.com" 
-                className="text-primary hover:text-primary/90 underline transition-colors"
+                href="mailto:privacy@dubaistays.com" 
+                className="text-primary dark:text-blue-400 hover:underline font-medium"
               >
-                Operations@Mybookings.com
+                privacy@dubaistays.com
               </a>
             </p>
           </PolicySection>

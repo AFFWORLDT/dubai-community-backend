@@ -5,7 +5,7 @@ import { MessageSquare } from "lucide-react"
 
 export function WhatsAppAssistant() {
 
-  const phoneNumber = "+971555067557" // Replace with the actual Dubai phone number
+  const phoneNumber = "+971509677988" // Replace with the actual Dubai phone number
 
   const message = "Hi! I'm interested in booking a stay in Dubai."
 
@@ -19,7 +19,7 @@ export function WhatsAppAssistant() {
       <Button
         size="lg"
         onClick={handleWhatsAppClick}
-        className="rounded-full shadow-lg gap-2 bg-[#2563eb] hover:bg-[#1d4ed8] text-white"
+        className="rounded-full shadow-lg gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white"
       >
         <MessageSquare className="w-5 h-5" />
         <span>Chat on WhatsApp</span>

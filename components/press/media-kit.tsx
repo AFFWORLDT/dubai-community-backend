@@ -46,7 +46,7 @@ export function MediaKit() {
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-3xl font-bold">Media Kit</h2>
             <p className="text-muted-foreground text-lg">
-              Download official MY Bookings media resources, including logos, images, and press materials
+              Download official ComsosLiving media resources, including logos, images, and press materials
             </p>
           </div>
 

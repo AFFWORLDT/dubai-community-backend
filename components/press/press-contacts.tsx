@@ -8,14 +8,14 @@ import { Mail, Phone, Globe, Clock } from 'lucide-react'
 const contacts = [
   {
     title: "Media Inquiries",
-    email: "Operations@Mybookings.com",
-    phone: "+971 55 506 7557",
+    email: "press@ComsosLiving.com",
+    phone: "+971 4 123 4567",
     icon: Mail,
   },
   {
     title: "Corporate Communications",
-    email: "Operations@Mybookings.com",
-    phone: "+971 55 506 7557",
+    email: "communications@ComsosLiving.com",
+    phone: "+971 4 123 4568",
     icon: Globe,
   },
 ]

@@ -17,8 +17,6 @@ import { login, signup } from "@/service/Auth"
 import toast, { Toaster } from "react-hot-toast"
 import { AxiosError } from "axios"
 import { useAuthStore } from "@/Providers/auth-provider"
-import Link from "next/link"
-import { Loader2 } from "lucide-react"
 
 interface AuthFormProps {
   open: boolean
@@ -29,7 +27,6 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
   const [isSignup, setIsSignup] = useState(false)
   const setAuth = useAuthStore((state) => state.login)
   const [error, setError] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
 
   const mutation = useMutation({
     mutationFn: isSignup ? signup : login,
@@ -51,7 +48,6 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError("")
-    setIsLoading(true)
 
     try {
       const formData = new FormData(e.currentTarget)
@@ -72,8 +68,6 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
      
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
-    } finally {
-      setIsLoading(false)
     } 
   }
 
@@ -146,35 +140,28 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
               />
             </div>
           )}
-          <Button
-            type="submit"
-            className="w-full bg-[#60A5FA] hover:bg-[#3B82F6] text-white transition-all duration-200"
-            disabled={isLoading}
+          <Button 
+            type="submit" 
+            className="w-full h-10 sm:h-12 text-sm sm:text-base mt-6" 
+            disabled={mutation.isPending }
           >
-            {isLoading ? (
-              <div className="flex items-center justify-center">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
-              </div>
-            ) : (
-              "Create Account"
-            )}
+            {mutation.isPending 
+              ? (isSignup ? "Signing up..." : "Logging in...") 
+              : (isSignup ? "Sign up" : "Log in")
+            }
           </Button>
-          <div className="mt-4 text-center">
-            <span className="text-gray-600">Already have an account? </span>
-            <Link href="/login" className="text-[#60A5FA] hover:text-[#3B82F6] font-medium">
-              Login instead
-            </Link>
-          </div>
-          <div className="mt-4 text-center text-sm text-gray-600">
-            By signing up, you agree to our{" "}
-            <Link href="/terms" className="text-[#60A5FA] hover:text-[#3B82F6]">
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link href="/privacy" className="text-[#60A5FA] hover:text-[#3B82F6]">
-              Privacy Policy
-            </Link>
+          <div className="text-center text-sm sm:text-base mt-4">
+            <span className="text-muted-foreground">
+              {isSignup ? "Already have an account? " : "Don't have an account? "}
+            </span>
+            <Button
+              variant="link"
+              className="p-0 h-auto font-normal text-sm sm:text-base"
+              onClick={toggleMode}
+              type="button"
+            >
+              {isSignup ? "Log in" : "Sign up"}
+            </Button>
           </div>
         </form>
       </DialogContent>

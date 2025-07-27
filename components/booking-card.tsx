@@ -89,6 +89,19 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
     setBookingStatus({ type: "", message: "" })
   }
 
+  const api = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  
+  // Reset dates function
+  const resetDates = () => {
+    setSelectedDates(undefined);
+    setSelectedMode('checkin');
+  }
+
   const disabledDates = useMemo(() => {
     if (!booking?.data?.bookings) return []
     return booking.data.bookings.map((booking: any) => ({
@@ -107,11 +120,19 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   const calculateTotal = (from: Date | undefined, to: Date | undefined) => {
     if (!from || !to) return { subtotal: 0, nights: 0 }
 
+    // For same day bookings (check-in and check-out on the same day)
+    if (format(from, "yyyy-MM-dd") === format(to, "yyyy-MM-dd")) {
+      const dateStr = format(from, "yyyy-MM-dd")
+      const dailyRate = priceByDate.get(dateStr) || price
+      return { subtotal: dailyRate, nights: 1 }
+    }
+
     let total = 0
     let current = from
     let nights = 0
 
-    while (current <= to) {
+    // Calculate nights between check-in and check-out (inclusive of check-in, exclusive of check-out)
+    while (current < to) {
       const dateStr = format(current, "yyyy-MM-dd")
       const dailyRate = priceByDate.get(dateStr) || price
       total += dailyRate
@@ -142,22 +163,25 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
     setIsProcessing(true)
     try {
+      // Ensure we're using the correct pricing for the booking
+      const bookingTotal = total;
+      
       const formData = {
         userId,
         checkIn: selectedDates.from.toISOString(),
         checkOut: selectedDates.to.toISOString(),
         guest: guestName.trim(),
         property: id,
-        manualPrice: total,
+        manualPrice: bookingTotal,
         intrest: 10,
         line_items: [
           {
             price_data: {
               currency: "aed",
               product_data: {
-                name: "Booking for " + guestName.trim(),
+                name: `Booking for ${guestName.trim()} - ${nights} ${nights === 1 ? 'night' : 'nights'}`,
               },
-              unit_amount: total * 100,
+              unit_amount: bookingTotal * 100,
             },
             quantity: 1,
           },
@@ -169,7 +193,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       const token = getCookie("accessToken")
       console.log("this is token", token)
 
-      const response = await axios.post("https://24-bookingbackeend.vercel.app/api/v1/booking/checkout", formData, {
+      const response = await api.post(`/api/v1/booking/checkout`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -201,11 +225,14 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
     }
 
     try {
+      // Ensure we're using the correct pricing for the booking
+      const bookingTotal = total;
+      
       const bookingDetails: BookingDetails = {
         checkIn: selectedDates?.from,
         checkOut: selectedDates?.to,
         guest: guestName.trim(),
-        manualPrice: total,
+        manualPrice: bookingTotal,
         property: id,
         userId,
       }
@@ -214,7 +241,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
       setBookingStatus({
         type: "success",
-        message: "Booking request submitted successfully!",
+        message: `Booking for ${nights} ${nights === 1 ? 'night' : 'nights'} submitted successfully!`,
       })
 
       setTimeout(() => {
@@ -272,7 +299,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       if (selectedMode === 'checkout' && selectedDates?.from) {
         disabledRanges.push({ 
           from: new Date(0), // Beginning of time
-          to: addDays(selectedDates.from, -1) // Day before check-in
+          to: selectedDates.from // Include check-in date for same-day booking
         });
       }
       
@@ -284,19 +311,40 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       
       return disabledRanges;
     };
-  
+
+    // Reset date selection function
+    const handleResetDates = () => {
+      setSelectedDates(undefined);
+      setSelectedMode('checkin');
+    };
+
     return (
       <Dialog open={showCalendar} onOpenChange={setShowCalendar}>
         <DialogContent className="sm:max-w-[800px] p-0 h-full sm:h-auto">
           <DialogHeader className="p-6 pb-0">
-            <DialogTitle>
-              {selectedMode === 'checkin' ? 'Select check-in date' : 'Select check-out date'}
-            </DialogTitle>
-            <DialogDescription>
-              {selectedMode === 'checkin' 
-                ? 'Pick your check-in date'
-                : 'Pick your check-out date'}
-            </DialogDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle>
+                  {selectedMode === 'checkin' ? 'Select check-in date' : 'Select check-out date'}
+                </DialogTitle>
+                <DialogDescription>
+                  {selectedMode === 'checkin' 
+                    ? 'Pick your check-in date'
+                    : selectedDates?.from && format(selectedDates.from, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
+                      ? 'You can select the same day for a single night stay'
+                      : 'Pick your check-out date'}
+                </DialogDescription>
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={handleResetDates}
+                className="flex items-center gap-1"
+              >
+                <X className="h-3 w-3" />
+                Reset
+              </Button>
+            </div>
           </DialogHeader>
           <div className="p-6">
             <DayPicker
@@ -401,7 +449,19 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                   <div className="p-4 space-y-6">
                     {/* Date Selection */}
                     <div className="space-y-2">
-                      <h3 className="font-medium">Dates</h3>
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-medium">Dates</h3>
+                        {(selectedDates?.from || selectedDates?.to) && (
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={resetDates}
+                            className="h-6 px-2 text-xs"
+                          >
+                            Reset dates
+                          </Button>
+                        )}
+                      </div>
                       <div className="p-4 bg-muted/50 rounded-lg space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1.5">
@@ -417,6 +477,8 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   <Calendar className="mr-2 h-4 w-4" />
   {selectedDates?.from ? format(selectedDates.from, "MMM d, yyyy") : "Select date"}
 </Button>
+
+
 
                           </div>
                           <div className="space-y-1.5">
@@ -456,13 +518,17 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                       </div>
                     </div>
 
-                    {/* Price Breakdown */}
+                    {/* Price Breakdown in mobile view */}
                     <div className="space-y-2">
                       <h3 className="font-medium">Price details</h3>
                       <div className="p-4 bg-muted/50 rounded-lg space-y-4">
                         <div className="space-y-3">
                           <div className="flex justify-between">
-                            <span>Price × {nights} nights</span>
+                            <span>
+                              {nights === 1 
+                                ? "Price for 1 night" 
+                                : `Price × ${nights} nights`}
+                            </span>
                             <span>{formatPrice(subtotal)} AED</span>
                           </div>
                           <div className="flex justify-between">
@@ -478,7 +544,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                             <span>{formatPrice(vat)} AED</span>
                           </div>
                           <div className="flex justify-between">
-                            <span>DTCM fee ({nights} nights × 15 AED)</span>
+                            <span>
+                              {nights === 1 
+                                ? "DTCM fee (1 night × 15 AED)" 
+                                : `DTCM fee (${nights} nights × 15 AED)`}
+                            </span>
                             <span>{formatPrice(dtcmFee)} AED</span>
                           </div>
                         </div>
@@ -575,32 +645,44 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         {/* Replace the grid div containing the check-in/check-out buttons with: */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1">
-            <label className="text-sm font-medium text-foreground">Check-in</label>
+            <div className="flex items-center justify-between">
+              <label className="text-sm font-medium text-foreground">Check-in</label>
+              {selectedDates?.from && (
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={resetDates}
+                  className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  Reset
+                </Button>
+              )}
+            </div>
             <Button
-  variant="outline"
-  className="w-full justify-start text-left font-normal"
-  onClick={() => {
-    setSelectedMode('checkin');
-    setShowCalendar(true);
-  }}
->
-  <Calendar className="mr-2 h-4 w-4" />
-  {selectedDates?.from ? format(selectedDates.from, "MMM d, yyyy") : null}
-</Button>
+              variant="outline"
+              className="w-full justify-start text-left font-normal"
+              onClick={() => {
+                setSelectedMode('checkin');
+                setShowCalendar(true);
+              }}
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              {selectedDates?.from ? format(selectedDates.from, "MMM d, yyyy") : "Select date"}
+            </Button>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium text-foreground">Check-out</label>
             <Button
-  variant="outline"
-  className="w-full justify-start text-left font-normal"
-  onClick={() => {
-    setSelectedMode('checkout');
-    setShowCalendar(true);
-  }}
->
-  <Calendar className="mr-2 h-4 w-4" />
-  {selectedDates?.to ? format(selectedDates.to, "MMM d, yyyy") :null}
-</Button>
+              variant="outline"
+              className="w-full justify-start text-left font-normal"
+              onClick={() => {
+                setSelectedMode('checkout');
+                setShowCalendar(true);
+              }}
+            >
+              <Calendar className="mr-2 h-4 w-4" />
+              {selectedDates?.to ? format(selectedDates.to, "MMM d, yyyy") : "Select date"}
+            </Button>
           </div>
         </div>
 
@@ -625,21 +707,39 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         </div>
 
         <div className="space-y-3 p-4 bg-muted/50 dark:bg-muted/10 rounded-lg">
-        
-          <Separator />
-          <div className="flex justify-between font-semibold text-lg text-foreground">
-  <span 
-    onClick={() => setShowPriceBreakdown(true)}
-    className="flex items-center gap-2 cursor-pointer hover:text-gray-600 text-sm"
-  >
-    Total before taxes
-    <ChevronDown className="h-4 w-4" />
-  </span>
-  <span>
-    {formatPrice(total)} AED
-  </span>
-</div>
+  {selectedDates?.from && selectedDates?.to && (
+    <div className="space-y-2">
+      <div className="flex justify-between text-sm">
+        <span>
+          {nights === 1 
+            ? "Price for 1 night" 
+            : `Price × ${nights} nights`}
+        </span>
+        <span>{formatPrice(subtotal)} AED</span>
+      </div>
+      {nights > 0 && (
+        <div className="text-xs text-muted-foreground">
+          {nights === 1 
+            ? "Single night rate applied" 
+            : "Variable daily rates applied for your stay"}
         </div>
+      )}
+    </div>
+  )}
+  <Separator />
+  <div className="flex justify-between font-semibold text-lg text-foreground">
+    <span 
+      onClick={() => setShowPriceBreakdown(true)}
+      className="flex items-center gap-2 cursor-pointer hover:text-gray-600 text-sm"
+    >
+      Total before taxes
+      <ChevronDown className="h-4 w-4" />
+    </span>
+    <span>
+      {formatPrice(total)} AED
+    </span>
+  </div>
+</div>
       </CardContent>
 
       <CardFooter className="flex-col gap-4 p-4 sm:p-6">
@@ -669,7 +769,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Confirm Your Booking</DialogTitle>
-            <DialogDescription>Please review the details below</DialogDescription>
+            <DialogDescription>
+              {nights === 1 
+                ? "Please review your 1-night stay details" 
+                : `Please review your ${nights}-night stay details`}
+            </DialogDescription>
           </DialogHeader>
 
           {bookingStatus.message && (
@@ -703,10 +807,21 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                 {guests} {Number.parseInt(guests) === 1 ? "guest" : "guests"}
               </p>
             </div>
+            <div>
+              <h4 className="font-medium text-foreground">Duration</h4>
+              <p className="text-sm text-muted-foreground">
+                {nights} {nights === 1 ? "night" : "nights"}
+              </p>
+            </div>
             <Separator />
             <div>
               <h4 className="font-medium text-foreground">Total Price</h4>
               <p className="text-2xl font-bold text-foreground">{formatPrice(total)} AED</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {nights === 1 
+                  ? "Single night rate with applicable fees" 
+                  : "Includes all applicable fees and taxes"}
+              </p>
             </div>
           </div>
           <DialogFooter className="gap-2 mt-6">
@@ -734,69 +849,90 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Price Breakdown</DialogTitle>
-            <DialogDescription>Detailed breakdown of your stay</DialogDescription>
+            <DialogDescription>
+              {nights === 1 
+                ? "Detailed breakdown for your 1-night stay" 
+                : `Detailed breakdown for your ${nights}-night stay`}
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-          <div className="flex justify-between text-foreground">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="flex items-center gap-1">
-                  <span>Price × {nights} nights</span>
-                  <Info className="w-4 h-4" />
-                </TooltipTrigger>
-                <TooltipContent>Variable daily rates applied</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span className="font-medium">{formatPrice(subtotal)}AED</span>
+            <div className="flex justify-between text-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex items-center gap-1">
+                    <span>
+                      {nights === 1 
+                        ? "Price for 1 night" 
+                        : `Price × ${nights} nights`}
+                    </span>
+                    <Info className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    {nights === 1 
+                      ? "Single night rate" 
+                      : "Variable daily rates applied"}
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span className="font-medium">{formatPrice(subtotal)} AED</span>
+            </div>
+            <div className="flex justify-between text-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex items-center gap-1">
+                    <span>Cleaning fee</span>
+                    <Info className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>One-time cleaning fee</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span>{formatPrice(cleaningFee)} AED</span>
+            </div>
+            <div className="flex justify-between text-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex items-center gap-1">
+                    <span>Service fee</span>
+                    <Info className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>Platform service charge</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span>{formatPrice(serviceFee)} AED</span>
+            </div>
+            <div className="flex justify-between text-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex items-center gap-1">
+                    <span>VAT (5%)</span>
+                    <Info className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>Value Added Tax applied on subtotal</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span>{formatPrice(vat)} AED</span>
+            </div>
+            <div className="flex justify-between text-foreground">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="flex items-center gap-1 text-sm">
+                    <span>
+                      {nights === 1 
+                        ? "DTCM fee (1 night × 15 AED)" 
+                        : `DTCM fee (${nights} nights × 15 AED)`}
+                    </span>
+                    <Info className="w-4 h-4" />
+                  </TooltipTrigger>
+                  <TooltipContent>Dubai Tourism Dirham fee</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span>{formatPrice(dtcmFee)} AED</span>
+            </div>
           </div>
-          <div className="flex justify-between text-foreground">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="flex items-center gap-1">
-                  <span>Cleaning fee</span>
-                  <Info className="w-4 h-4" />
-                </TooltipTrigger>
-                <TooltipContent>One-time cleaning fee</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span>{formatPrice(cleaningFee)} AED</span>
-          </div>
-          <div className="flex justify-between text-foreground">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="flex items-center gap-1">
-                  <span>Service fee</span>
-                  <Info className="w-4 h-4" />
-                </TooltipTrigger>
-                <TooltipContent>Platform service charge</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span>{formatPrice(serviceFee)} AED</span>
-          </div>
-          <div className="flex justify-between text-foreground">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="flex items-center gap-1">
-                  <span>VAT (5%)</span>
-                  <Info className="w-4 h-4" />
-                </TooltipTrigger>
-                <TooltipContent>Value Added Tax applied on subtotal</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span>{formatPrice(vat)} AED</span>
-          </div>
-          <div className="flex justify-between text-foreground">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger className="flex items-center gap-1 text-sm">
-                  <span>DTCM fee ({nights} nights × 15 AED)</span>
-                  <Info className="w-4 h-4" />
-                </TooltipTrigger>
-                <TooltipContent>Dubai Tourism Dirham fee</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span>{formatPrice(dtcmFee)} AED</span>
-          </div>
+          <Separator className="my-4" />
+          <div className="flex justify-between font-semibold text-lg">
+            <span>Total</span>
+            <span>{formatPrice(total)} AED</span>
           </div>
         </DialogContent>
       </Dialog>

@@ -24,12 +24,16 @@ import {
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useUser from "@/features/user/useUser";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import useToggleWatchlist from "@/features/Booking/useToggleWatchList";
 import { Toaster } from "@/components/ui/toaster";
 import EditModal from "@/features/user/EditModal";
 import { useRouter } from "next/navigation";
+import api from "@/utils/ApiUrl";
+import axios from "axios";
+import { useAuthStore } from "@/Providers/auth-provider";
+
 interface Booking {
   checkIn: string;
 }
@@ -59,7 +63,7 @@ export default function UserProfile() {
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data, isLoading } = useUser();
+  const { data, isLoading, error } = useUser();
   const user = data?.data?.data?.user;
   const booking = data?.data?.data?.bookings;
   const watchlist = data?.data?.data?.watchlist;
@@ -114,6 +118,51 @@ export default function UserProfile() {
   const handleViewDetails = (propertyId: string) => {
     router.push(`/properties/${propertyId}`);
   };
+
+  const handleDeleteAccount = async () => {
+    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      return;
+    }
+    try {
+      const response = await api.delete('/api/v1/bookinguser/account');
+      const data = response.data;
+      const logout = useAuthStore.getState().logout;
+      logout();
+      // Clear all caches
+      if (window.caches) {
+        caches.keys().then(function(names) {
+          for (let name of names) caches.delete(name);
+        });
+      }
+      localStorage.clear();
+      sessionStorage.clear();
+      toast({
+        title: 'Account Deleted',
+        description: data.message || 'Your account has been deleted successfully.',
+      });
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 500);
+    } catch (error) {
+      let message = 'An error occurred while deleting your account.';
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        message = error.response.data.message;
+      }
+      toast({
+        variant: 'destructive',
+        title: 'Failed to Delete Account',
+        description: message,
+      });
+    }
+  };
+
+  const { isAuthenticated } = useAuthStore();
+
+  useEffect(() => {
+    if (!isAuthenticated || (!isLoading && (!user || error))) {
+      router.replace('/login');
+    }
+  }, [isAuthenticated, isLoading, user, error, router]);
 
   if (isLoading) {
     return <Skeleton />;
@@ -422,6 +471,13 @@ export default function UserProfile() {
               {/* <Badge variant="outline">Phone Verified</Badge>
               <Badge variant="outline">ID Verified</Badge> */}
             </div>
+            <Button
+              variant="destructive"
+              className="mt-4"
+              onClick={handleDeleteAccount}
+            >
+              Delete Account
+            </Button>
           </CardContent>
         </Card>
       </div>

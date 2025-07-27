@@ -8,8 +8,8 @@ import { MapPin, Phone, Mail } from 'lucide-react'
 const offices = [
   {
     city: "Dubai",
-    address: "The Onyx - Tower 2 Office 512 - The Greens - Dubai",
-    email: "Operations@Mybookings.com",
+    address: "Office 118, Building Al Attar Business Centre, Al Barsha, beside ibis hotel, al barsha 1, Dubai,",
+    email: "hello@cosmosliving.ae",
   },
   // {
   //   city: "Abu Dhabi",
@@ -63,8 +63,8 @@ export function OfficeLocations() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-4 h-4 text-primary" />
-                    <a href="tel:+971555067557" className="text-sm text-primary">+971 55 506 7557</a>
-                  </div>
+                    <a href="tel:+971509677988" className="text-primary font-medium">+971 50 967 7988</a>
+                    </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-4 h-4 text-primary" />
                     <p className="text-sm text-muted-foreground">{office.email}</p>
