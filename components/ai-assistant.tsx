@@ -5,7 +5,7 @@ import { MessageSquare } from "lucide-react"
 
 export function WhatsAppAssistant() {
 
-  const phoneNumber = "‪+971566354324‬" // Replace with the actual Dubai phone number
+  const phoneNumber = "+971566354324" // Replace with the actual Dubai phone number
 
   const message = "Hi! I'm interested in booking a stay in Dubai."
 
