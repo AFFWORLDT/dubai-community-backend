@@ -28,7 +28,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Phone Support</h3>
                 <p className="text-muted-foreground">24/7 Concierge Service</p>
-                <a href="tel:+971566354324‬" className="text-primary font-medium"> ‪+971 56 635 4324‬</a>
+                <a href="tel:‪+971566354324‬" className="text-primary font-medium"> ‪+971 56 635 4324‬</a>
                 </div>
             </div>
 
