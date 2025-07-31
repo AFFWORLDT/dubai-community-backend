@@ -51,7 +51,7 @@ export function OfficeLocations() {
                   src="./../assets/logo.png"
                   alt={office.city}
                   fill
-                  className="object-contain"
+                  className="object-contain p-4"
                 />
               </div>
               <CardContent className="p-6">

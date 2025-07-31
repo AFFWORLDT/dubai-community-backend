@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "@/components/ui/sheet"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { useAuthStore } from "@/Providers/auth-provider"
+import { Logo } from "@/components/ui/logo"
 
 const Navbar = () => {
   const router = useRouter()
@@ -51,11 +52,7 @@ const Navbar = () => {
               onClick={() => window.location.href = '/'}
               className="flex items-center space-x-2 cursor-pointer"
             >
-              <img
-                src="/assets/logo.png"
-                className="w-32 sm:w-40 md:w-48 h-8 sm:h-10 object-contain transition-all duration-200"
-                alt=" Mybookings Logo"
-              />
+              <Logo variant="default" />
             </div>
             <div className="hidden md:flex items-center space-x-8 ml-10">
               <div
@@ -137,11 +134,7 @@ const Navbar = () => {
   className="w-[280px] sm:w-[320px] bg-gradient-to-b from-teal-50 to-teal-100 dark:from-teal-900 dark:to-teal-950"
 >
   <SheetHeader className="border-b pb-4 mb-6">
-    <img
-      src="/assets/logo.png"
-      className="w-32 h-8 object-contain"
-      alt=" Mybookings Logo"
-    />
+    <Logo variant="small" />
   </SheetHeader>
   
   <div className="flex flex-col space-y-6">

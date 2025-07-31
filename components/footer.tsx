@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Building2, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { Logo } from "@/components/ui/logo"
 
 const footerLinks = {
   company: [
@@ -44,11 +45,7 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           <div className="col-span-1 sm:col-span-2 md:col-span-1">
           <Link href="/" className="flex items-center space-x-2">
-              <img
-                src="./../assets/logo.png"
-                className="w-32 sm:w-40 md:w-56 h-6 sm:h-8 md:h-12 object-contain"
-                alt=" Mybookings Logo"
-              />
+              <Logo variant="large" />
             </Link>
             <p className="text-sm text-muted-foreground mb-4">
               Your premier destination for luxury stays in Dubai.
