@@ -267,39 +267,39 @@ export function HeroSection() {
                   {/* Enhanced Search Button */}
                   <button
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white rounded-xl md:rounded-full px-6 sm:px-8 py-4 sm:py-5 flex items-center justify-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-3 shadow-xl shadow-primary-600/30 hover:shadow-primary-700/40 w-full md:w-auto hover:scale-105 transform font-bold border border-primary-500/20"
+                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl md:rounded-full px-6 sm:px-8 py-4 sm:py-5 flex items-center justify-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-3 shadow-xl shadow-red-500/30 hover:shadow-red-600/40 w-full md:w-auto hover:scale-105 transform font-bold border border-red-400/20"
                   >
-                    <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <Search className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-2" />
                     <span className="font-bold text-base sm:text-lg text-white">Search</span>
                   </button>
                 </div>
               </div>
               {/* Date Dialog Popup */}
               <Dialog open={isDateDialogOpen} onOpenChange={setIsDateDialogOpen}>
-                <DialogContent className="max-w-2xl">
-                  <DialogHeader>
-                    <DialogTitle>Select Dates</DialogTitle>
-                    <DialogDescription>Check in - Check out</DialogDescription>
+                <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto">
+                  <DialogHeader className="pb-4">
+                    <DialogTitle className="text-xl sm:text-2xl">Select Dates</DialogTitle>
+                    <DialogDescription className="text-sm sm:text-base">Check in - Check out</DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col items-center justify-center">
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div>
-                        <span className="block text-sm font-medium mb-2">Check in</span>
+                    <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 w-full">
+                      <div className="w-full lg:w-1/2">
+                        <span className="block text-sm sm:text-base font-medium mb-3 sm:mb-4">Check in</span>
                         <CalendarComponent
                           mode="single"
                           selected={tempDate.from}
                           onSelect={(day) => setTempDate({ ...tempDate, from: day })}
-                          className="rounded-xl border-0"
+                          className="rounded-xl border-0 w-full"
                         />
                       </div>
-                      <div>
-                        <span className="block text-sm font-medium mb-2">Check out</span>
+                      <div className="w-full lg:w-1/2">
+                        <span className="block text-sm sm:text-base font-medium mb-3 sm:mb-4">Check out</span>
                         <CalendarComponent
                           mode="single"
                           selected={tempDate.to}
                           onSelect={(day) => setTempDate({ ...tempDate, to: day })}
                           disabled={(day) => (tempDate.from ? day <= tempDate.from : false)}
-                          className="rounded-xl border-0"
+                          className="rounded-xl border-0 w-full"
                         />
                       </div>
                     </div>
@@ -309,11 +309,11 @@ export function HeroSection() {
 
               {/* Guests Dialog Popup */}
               <Dialog open={isGuestsDialogOpen} onOpenChange={setIsGuestsDialogOpen}>
-                <DialogContent className="max-w-md">
-                  <DialogHeader>
-                    <DialogTitle>Select Guests</DialogTitle>
+                <DialogContent className="max-w-md w-[95vw] max-h-[90vh] overflow-y-auto">
+                  <DialogHeader className="pb-4">
+                    <DialogTitle className="text-xl sm:text-2xl">Select Guests</DialogTitle>
                   </DialogHeader>
-                  <div className="divide-y">
+                  <div className="divide-y space-y-2">
                     {[
                       {
                         title: "Adults",
@@ -337,23 +337,23 @@ export function HeroSection() {
                         min: 0,
                       },
                     ].map((item, index) => (
-                      <div key={item.title} className="flex items-center justify-between py-6 first:pt-0 last:pb-0">
-                        <div>
-                          <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                          <p className="text-sm text-gray-500">{item.description}</p>
+                      <div key={item.title} className="flex items-center justify-between py-4 sm:py-6 first:pt-0 last:pb-0">
+                        <div className="flex-1 mr-4">
+                          <h4 className="font-semibold text-gray-900 text-base sm:text-lg">{item.title}</h4>
+                          <p className="text-sm text-gray-500 mt-1">{item.description}</p>
                         </div>
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <button
                             onClick={() => item.onChange(Math.max(item.min, item.value - 1))}
                             disabled={item.value <= item.min}
-                            className={`w-10 h-10 rounded-full border flex items-center justify-center text-lg font-bold transition-all duration-300 ${item.value <= item.min ? 'border-gray-200 text-gray-200 cursor-not-allowed' : 'border-primary text-primary hover:bg-primary/10'}`}
+                            className={`w-12 h-12 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center text-lg font-bold transition-all duration-300 touch-manipulation ${item.value <= item.min ? 'border-gray-200 text-gray-200 cursor-not-allowed' : 'border-primary text-primary hover:bg-primary/10 active:bg-primary/20'}`}
                           >
                             –
                           </button>
-                          <span className="w-8 text-center font-medium text-gray-900">{item.value}</span>
+                          <span className="w-8 sm:w-8 text-center font-medium text-gray-900 text-base sm:text-lg">{item.value}</span>
                           <button
                             onClick={() => item.onChange(item.value + 1)}
-                            className="w-10 h-10 rounded-full border border-primary text-primary flex items-center justify-center text-lg font-bold hover:bg-primary/10 transition-all duration-300"
+                            className="w-12 h-12 sm:w-10 sm:h-10 rounded-full border border-primary text-primary flex items-center justify-center text-lg font-bold hover:bg-primary/10 active:bg-primary/20 transition-all duration-300 touch-manipulation"
                           >
                             +
                           </button>
