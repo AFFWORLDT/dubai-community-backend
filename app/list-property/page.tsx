@@ -1,5 +1,6 @@
+"use client"
+
 import { Suspense } from "react"
-import { Metadata } from "next"
 import { PropertyListingForm } from "@/components/property-listing/property-listing-form"
 import { PropertyBenefits } from "@/components/property-listing/property-benefits"
 import { ListingProcess } from "@/components/property-listing/listing-process"
