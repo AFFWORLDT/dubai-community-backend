@@ -172,8 +172,8 @@ export default function TermsPage() {
                 </div>
                 <p className="text-gray-600 leading-relaxed text-lg">
                   If you have any questions about these Terms & Conditions, please contact us at{" "}
-                  <a href="mailto:legal@mybookings.com" className="text-teal-600 hover:text-teal-700 underline transition-colors">
-                    legal@mybookings.com
+                  <a href="mailto:portal@mybookings.ae" className="text-teal-600 hover:text-teal-700 underline transition-colors">
+                    portal@mybookings.ae
                   </a>
                 </p>
               </section>
