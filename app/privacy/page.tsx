@@ -27,7 +27,6 @@ export default function PrivacyPage() {
       <div className="w-full px-4 py-32">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-4 dark:text-white">Privacy Policy</h1>
-          <p className="text-muted-foreground dark:text-gray-400">Last updated: January 5, 2025</p>
         </div>
 
         <ScrollArea className="space-y-6">

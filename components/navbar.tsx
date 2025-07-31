@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Building2, Menu } from "lucide-react"
+import { Menu } from "lucide-react"
 import { UserButton } from "@/components/user-button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"

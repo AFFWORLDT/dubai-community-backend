@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useState } from "react"
 
 interface LogoProps {
   className?: string
@@ -7,6 +8,8 @@ interface LogoProps {
 }
 
 export function Logo({ className = "", alt = "Mybookings Logo", variant = "default" }: LogoProps) {
+  const [imageError, setImageError] = useState(false)
+
   const getSizeClasses = () => {
     switch (variant) {
       case "small":
@@ -18,6 +21,15 @@ export function Logo({ className = "", alt = "Mybookings Logo", variant = "defau
     }
   }
 
+  // Fallback text logo if image fails to load
+  if (imageError) {
+    return (
+      <div className={`${getSizeClasses()} flex items-center justify-center bg-primary text-white font-bold rounded ${className}`}>
+        <span className="text-xs sm:text-sm md:text-base">Mybookings</span>
+      </div>
+    )
+  }
+
   return (
     <Image
       src="/assets/logo.png"
@@ -25,6 +37,8 @@ export function Logo({ className = "", alt = "Mybookings Logo", variant = "defau
       width={200}
       height={50}
       className={`${getSizeClasses()} object-contain transition-all duration-200 ${className}`}
+      onError={() => setImageError(true)}
+      priority
     />
   )
 } 

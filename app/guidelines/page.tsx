@@ -108,9 +108,7 @@ export default function GuidelinesPage() {
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               Community Guidelines
             </h1>
-            <Badge variant="secondary" className="mb-6">
-              Last updated: January 5, 2025
-            </Badge>
+
             <Card className="border-none shadow-lg bg-gradient-to-r from-primary/10 to-primary/5">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground leading-relaxed max-w-2xl mx-auto">

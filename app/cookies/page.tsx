@@ -51,9 +51,7 @@ const CookiePolicy = () => {
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               Cookie Policy
             </h1>
-            <Badge variant="secondary" className="mb-4">
-              Last updated: January 5, 2025
-            </Badge>
+
           </div>
 
           {/* What Are Cookies */}
