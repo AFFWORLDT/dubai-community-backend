@@ -39,7 +39,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="font-semibold">Email</h3>
                 <p className="text-muted-foreground">Response within 24 hours</p>
-                <a href="mailto:hello@MybookingsMybookings.ae" className="text-primary font-medium">hello@MybookingsMybookings.ae</a>
+                <a href="mailto:info@mybookings.ae" className="text-primary font-medium">info@mybookings.ae</a>
                 </div>
             </div>
 

@@ -9,7 +9,7 @@ const offices = [
   {
     city: "Dubai",
     address: "Coming Soon",
-    email: "hello@MybookingsMybookings.ae",
+    email: "info@mybookings.ae",
   },
   // {
   //   city: "Abu Dhabi",
