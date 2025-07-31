@@ -54,8 +54,7 @@ export default function ListPropertyPage() {
                   </Button>
                   <Button 
                     size="lg" 
-                    variant="outline" 
-                    className="text-white border-white hover:bg-white hover:text-black"
+                    className="bg-white text-black hover:bg-gray-100 border-2 border-white shadow-lg"
                   >
                     Calculate Revenue
                   </Button>
@@ -171,8 +170,7 @@ export default function ListPropertyPage() {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10"
+                className="bg-white text-primary hover:bg-gray-100 border-2 border-white shadow-lg"
               >
                 Speak to an Expert
               </Button>
