@@ -46,13 +46,13 @@ export function FeaturedProperties() {
   };
 
   return (
-    <section className="py-8 bg-gradient-to-b from-background to-muted/50">
-      <div className="px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+    <section className="py-8 sm:py-12 bg-gradient-to-b from-background to-muted/50">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Featured Properties
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Discover our handpicked selection of the most exclusive properties in Dubai
           </p>
         </div>
@@ -67,13 +67,13 @@ export function FeaturedProperties() {
 
           <div 
             ref={scrollContainerRef}
-            className="flex overflow-x-auto gap-6 pb-6 px-4 snap-x snap-mandatory scrollbar-hide"
+            className="flex overflow-x-auto gap-4 sm:gap-6 pb-6 px-2 sm:px-4 snap-x snap-mandatory scrollbar-hide"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {propertyList.map((property:any) => {
               const dailyPrice = getCurrentDailyPrice(property.dailyPrices);
               return(
-                <div key={property._id} className="min-w-[300px] lg:min-w-[400px] snap-start">
+                <div key={property._id} className="min-w-[280px] sm:min-w-[300px] lg:min-w-[400px] snap-start">
                   <Link href={`/properties/${property._id}`}>
                     <Card className="group cursor-pointer overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl">
                       <div className="relative aspect-[4/3]">

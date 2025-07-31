@@ -43,7 +43,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background shadow-sm border-b">
-      <div className=" sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
@@ -53,7 +53,7 @@ const Navbar = () => {
             >
               <img
                 src="/assets/logo.png"
-                className="w-40 sm:w-48 h-10 object-contain transition-all duration-200"
+                className="w-32 sm:w-40 md:w-48 h-8 sm:h-10 object-contain transition-all duration-200"
                 alt=" Mybookings Logo"
               />
             </div>

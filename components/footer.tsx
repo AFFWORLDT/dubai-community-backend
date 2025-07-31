@@ -27,9 +27,9 @@ const footerLinks = {
 export function Footer() {
   return (
     <footer className="border-t bg-background w-full">
-      <div className=" px-4 py-12">
+      <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Property Host CTA */}
-        <div className="mb-12 p-6  bg-gradient-to-r from-teal-500 to-teal-800 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mb-8 sm:mb-12 p-4 sm:p-6 bg-gradient-to-r from-teal-500 to-teal-800 rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">Become a Property Host</h3>
             <p className="text-white">
@@ -41,12 +41,12 @@ export function Footer() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="col-span-2 md:col-span-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          <div className="col-span-1 sm:col-span-2 md:col-span-1">
           <Link href="/" className="flex items-center space-x-2">
               <img
                 src="./../assets/logo.png"
-                className="w-40 sm:w-56 h-8 sm:h-12 object-contain"
+                className="w-32 sm:w-40 md:w-56 h-6 sm:h-8 md:h-12 object-contain"
                 alt=" Mybookings Logo"
               />
             </Link>

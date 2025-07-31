@@ -5,8 +5,8 @@ import { ChevronRight, BookOpen, Calendar, Shield, UserCircle2, Lock, Phone } fr
 import { Card, CardContent } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | DubaiStays",
-  description: "Terms and conditions for using DubaiStays",
+  title: "Terms & Conditions | mybookings",
+  description: "Terms and conditions for using mybookings",
 };
 
 const sections = [
@@ -78,7 +78,7 @@ export default function TermsPage() {
                   <h2 className="text-3xl font-semibold text-gray-900">Introduction</h2>
                 </div>
                 <p className="text-gray-600 leading-relaxed text-lg">
-                  Welcome to DubaiStays. These terms and conditions outline the rules and regulations for the use of our
+                  Welcome to mybookings. These terms and conditions outline the rules and regulations for the use of our
                   website and services.
                 </p>
               </section>
@@ -91,7 +91,7 @@ export default function TermsPage() {
                 </div>
                 <div className="space-y-6">
                   <p className="text-gray-600 leading-relaxed text-lg">
-                    By booking through DubaiStays, you agree to the following terms:
+                    By booking through mybookings, you agree to the following terms:
                   </p>
                   <ul className="list-none space-y-2 bg-white/60 rounded-xl overflow-hidden">
                     {[
@@ -137,7 +137,7 @@ export default function TermsPage() {
                 </div>
                 <div className="space-y-6">
                   <p className="text-gray-600 leading-relaxed text-lg">
-                    Users of DubaiStays agree to:
+                    Users of mybookings agree to:
                   </p>
                   <ul className="list-none space-y-2 bg-white/60 rounded-xl overflow-hidden">
                     {[
@@ -172,8 +172,8 @@ export default function TermsPage() {
                 </div>
                 <p className="text-gray-600 leading-relaxed text-lg">
                   If you have any questions about these Terms & Conditions, please contact us at{" "}
-                  <a href="mailto:legal@dubaistays.com" className="text-teal-600 hover:text-teal-700 underline transition-colors">
-                    legal@dubaistays.com
+                  <a href="mailto:legal@mybookings.com" className="text-teal-600 hover:text-teal-700 underline transition-colors">
+                    legal@mybookings.com
                   </a>
                 </p>
               </section>

@@ -19,6 +19,16 @@ import { cn } from "@/lib/utils"
 import { useProperties } from "@/features/Properties/useProperties"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
 import { format } from "date-fns"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose
+} from "@/components/ui/dialog"
 
 type Property = {
   _id: string
@@ -173,6 +183,27 @@ export function HeroSection() {
     }
   }
 
+  const [isDateDialogOpen, setIsDateDialogOpen] = useState(false)
+  const [tempDate, setTempDate] = useState<{ from: Date | undefined; to: Date | undefined }>({ from: date.from, to: date.to })
+  const [isGuestsDialogOpen, setIsGuestsDialogOpen] = useState(false)
+  const [tempGuests, setTempGuests] = useState({ ...guests })
+
+  // Auto-save dates when both are selected
+  useEffect(() => {
+    if (tempDate.from && tempDate.to && isDateDialogOpen) {
+      setDate(tempDate);
+      setIsDateDialogOpen(false);
+    }
+  }, [tempDate.from, tempDate.to, isDateDialogOpen]);
+
+  // Auto-save guests when changed
+  useEffect(() => {
+    if (isGuestsDialogOpen && (tempGuests.adults !== guests.adults || tempGuests.children !== guests.children || tempGuests.infants !== guests.infants)) {
+      setGuests(tempGuests);
+      setIsGuestsDialogOpen(false);
+    }
+  }, [tempGuests, guests, isGuestsDialogOpen]);
+
   return (
     <section className="relative h-screen w-screen flex items-center justify-center overflow-hidden">
       {/* Video Background with enhanced overlay */}
@@ -187,107 +218,151 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 flex flex-col justify-center h-full">
-        <div className="w-full mx-auto grid lg:grid-cols-1 gap-16 items-center mt-[-50px]">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 flex flex-col justify-center h-full">
+        <div className="w-full mx-auto grid lg:grid-cols-1 gap-8 sm:gap-16 items-center mt-[-50px]">
           {/* Hero Text with enhanced animations */}
-          <div className="space-y-8 text-left">
+          <div className="space-y-6 sm:space-y-8 text-left">
             <div className="overflow-hidden">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.2] tracking-tight animate-fade-up [animation-delay:200ms] [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] sm:leading-[1.2] tracking-tight animate-fade-up [animation-delay:200ms] [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
                 Discover <br className="hidden sm:block" />
-                <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-widest inline-block bg-gradient-to-r from-white via-white to-white/70 text-transparent bg-clip-text">Ultimate</span>
+                <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light tracking-widest inline-block bg-gradient-to-r from-white via-white to-white/70 text-transparent bg-clip-text">Ultimate</span>
                 <span className="inline-block bg-gradient-to-r from-white via-white to-primary-200 text-transparent bg-clip-text"> Luxury</span>
               </h1>
             </div>
-            <p className="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl font-light leading-relaxed tracking-wide animate-fade-up [animation-delay:400ms] [text-shadow:_0_2px_8px_rgb(0_0_0_/_10%)]">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl font-light leading-relaxed tracking-wide animate-fade-up [animation-delay:400ms] [text-shadow:_0_2px_8px_rgb(0_0_0_/_10%)]">
               Experience unparalleled luxury in Dubai's most prestigious locations
             </p>
           </div>
 
           {/* Search Bar Container with enhanced styling */}
           <div ref={searchRef} className="relative animate-fade-up [animation-delay:600ms] w-full max-w-[1000px]">
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 sm:gap-6">
               {/* Main Search Bar with glass effect */}
-              <div className="bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.20)] transition-all duration-500 flex flex-col md:flex-row items-stretch p-3 border border-white/20">
-                {/* Where Button */}
-                <button
-                  onClick={() => handleTabClick("location")}
-                  className={cn(
-                    "flex-1 flex flex-col justify-center text-left px-4 py-3 md:py-0 rounded-xl md:rounded-full transition-all duration-300",
-                    activeTab === "location"
-                      ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)] scale-[1.02]"
-                      : "hover:bg-gray-50",
-                  )}
-                >
-                  <span className="text-xs font-semibold text-gray-800">Where</span>
-                  <span className="text-sm text-gray-600 truncate mt-0.5">{searchQuery || "Search destinations"}</span>
-                </button>
-
-                {/* Horizontal Divider for mobile */}
-                <div className="h-px w-full bg-gray-200 my-1 md:hidden" />
-
+              <div className="bg-white/90 backdrop-blur-xl rounded-2xl md:rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.20)] transition-all duration-500 flex flex-col md:flex-row items-stretch p-2 sm:p-3 border border-white/20">
                 {/* Check in Button */}
                 <button
-                  onClick={() => handleTabClick("dates")}
+                  onClick={() => { setTempDate(date); setIsDateDialogOpen(true); }}
                   className={cn(
-                    "flex-1 flex flex-col justify-center text-left px-4 py-3 md:py-0 rounded-xl md:rounded-full transition-all duration-300",
-                    activeTab === "dates"
-                      ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)] scale-[1.02]"
-                      : "hover:bg-gray-50",
+                    "flex-1 flex flex-col justify-center text-left px-3 sm:px-4 py-3 md:py-0 rounded-xl md:rounded-full transition-all duration-300",
                   )}
                 >
-                  <span className="text-xs font-semibold text-gray-800">Check in</span>
+                  <span className="text-xs font-semibold text-gray-800">Dates</span>
                   <span className="text-sm text-gray-600 truncate mt-0.5">
-                    {date.from ? format(date.from, "MMM d") : "Add dates"}
+                    {date.from && date.to ? `${format(date.from, "MMM d")} - ${format(date.to, "MMM d")}` : "Add dates"}
                   </span>
                 </button>
-
                 {/* Horizontal Divider for mobile */}
                 <div className="h-px w-full bg-gray-200 my-1 md:hidden" />
-
-                {/* Check out Button */}
-                <button
-                  onClick={() => handleTabClick("dates")}
-                  className={cn(
-                    "flex-1 flex flex-col justify-center text-left px-4 py-3 md:py-0 rounded-xl md:rounded-full transition-all duration-300",
-                    activeTab === "dates"
-                      ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)] scale-[1.02]"
-                      : "hover:bg-gray-50",
-                  )}
-                >
-                  <span className="text-xs font-semibold text-gray-800">Check out</span>
-                  <span className="text-sm text-gray-600 truncate mt-0.5">
-                    {date.to ? format(date.to, "MMM d") : "Add dates"}
-                  </span>
-                </button>
-
-                {/* Horizontal Divider for mobile */}
-                <div className="h-px w-full bg-gray-200 my-1 md:hidden" />
-
                 {/* Who Button with Search */}
                 <div className="flex-1 flex flex-col md:flex-row items-center">
                   <button
-                    onClick={() => handleTabClick("guests")}
+                    onClick={() => { setTempGuests(guests); setIsGuestsDialogOpen(true); }}
                     className={cn(
-                      "flex-1 w-full flex flex-col justify-center text-left px-4 py-3 md:py-0 rounded-xl md:rounded-l-full md:rounded-r-none transition-all duration-300 h-full",
-                      activeTab === "guests"
-                        ? "bg-white shadow-[0_6px_20px_rgba(0,0,0,0.12)] scale-[1.02]"
-                        : "hover:bg-gray-50",
+                      "flex-1 w-full flex flex-col justify-center text-left px-3 sm:px-4 py-3 md:py-0 rounded-xl md:rounded-l-full md:rounded-r-none transition-all duration-300 h-full",
                     )}
                   >
                     <span className="text-xs font-semibold text-gray-800">Who</span>
                     <span className="text-sm text-gray-600 truncate mt-0.5">{getTotalGuests()}</span>
                   </button>
-
                   {/* Enhanced Search Button */}
                   <button
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600 text-white rounded-xl md:rounded-full px-6 py-4 flex items-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-2 shadow-lg shadow-primary-400/20 hover:shadow-primary-500/30 w-full md:w-auto justify-center"
+                    className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white rounded-xl md:rounded-full px-6 sm:px-8 py-4 sm:py-5 flex items-center justify-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-3 shadow-xl shadow-primary-600/30 hover:shadow-primary-700/40 w-full md:w-auto hover:scale-105 transform font-bold border border-primary-500/20"
                   >
-                    <Search className="w-5 h-5" />
-                    <span className="font-semibold text-sm">Search</span>
+                    <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <span className="font-bold text-base sm:text-lg text-white">Search</span>
                   </button>
                 </div>
               </div>
+              {/* Date Dialog Popup */}
+              <Dialog open={isDateDialogOpen} onOpenChange={setIsDateDialogOpen}>
+                <DialogContent className="max-w-2xl">
+                  <DialogHeader>
+                    <DialogTitle>Select Dates</DialogTitle>
+                    <DialogDescription>Check in - Check out</DialogDescription>
+                  </DialogHeader>
+                  <div className="flex flex-col items-center justify-center">
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div>
+                        <span className="block text-sm font-medium mb-2">Check in</span>
+                        <CalendarComponent
+                          mode="single"
+                          selected={tempDate.from}
+                          onSelect={(day) => setTempDate({ ...tempDate, from: day })}
+                          className="rounded-xl border-0"
+                        />
+                      </div>
+                      <div>
+                        <span className="block text-sm font-medium mb-2">Check out</span>
+                        <CalendarComponent
+                          mode="single"
+                          selected={tempDate.to}
+                          onSelect={(day) => setTempDate({ ...tempDate, to: day })}
+                          disabled={(day) => (tempDate.from ? day <= tempDate.from : false)}
+                          className="rounded-xl border-0"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              {/* Guests Dialog Popup */}
+              <Dialog open={isGuestsDialogOpen} onOpenChange={setIsGuestsDialogOpen}>
+                <DialogContent className="max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Select Guests</DialogTitle>
+                  </DialogHeader>
+                  <div className="divide-y">
+                    {[
+                      {
+                        title: "Adults",
+                        description: "Ages 13 or above",
+                        value: tempGuests.adults,
+                        onChange: (value: number) => setTempGuests({ ...tempGuests, adults: value }),
+                        min: 1,
+                      },
+                      {
+                        title: "Children",
+                        description: "Ages 2-12",
+                        value: tempGuests.children,
+                        onChange: (value: number) => setTempGuests({ ...tempGuests, children: value }),
+                        min: 0,
+                      },
+                      {
+                        title: "Infants",
+                        description: "Under 2",
+                        value: tempGuests.infants,
+                        onChange: (value: number) => setTempGuests({ ...tempGuests, infants: value }),
+                        min: 0,
+                      },
+                    ].map((item, index) => (
+                      <div key={item.title} className="flex items-center justify-between py-6 first:pt-0 last:pb-0">
+                        <div>
+                          <h4 className="font-semibold text-gray-900">{item.title}</h4>
+                          <p className="text-sm text-gray-500">{item.description}</p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => item.onChange(Math.max(item.min, item.value - 1))}
+                            disabled={item.value <= item.min}
+                            className={`w-10 h-10 rounded-full border flex items-center justify-center text-lg font-bold transition-all duration-300 ${item.value <= item.min ? 'border-gray-200 text-gray-200 cursor-not-allowed' : 'border-primary text-primary hover:bg-primary/10'}`}
+                          >
+                            –
+                          </button>
+                          <span className="w-8 text-center font-medium text-gray-900">{item.value}</span>
+                          <button
+                            onClick={() => item.onChange(item.value + 1)}
+                            className="w-10 h-10 rounded-full border border-primary text-primary flex items-center justify-center text-lg font-bold hover:bg-primary/10 transition-all duration-300"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
 
               {/* Enhanced Location Dropdown */}
               {activeTab === "location" && (
@@ -488,76 +563,16 @@ export function HeroSection() {
               )}
 
               {/* Enhanced Guests Dropdown */}
-              {activeTab === "guests" && (
-                <div className="absolute right-0 md:right-0 left-0 md:left-auto top-[calc(100%+12px)] bg-white/95 backdrop-blur-xl rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.12)] p-4 sm:p-6 md:p-8 w-full md:w-96 animate-fade-in">
-                  {[
-                    {
-                      title: "Adults",
-                      description: "Ages 13 or above",
-                      value: guests.adults,
-                      onChange: (value: number) => setGuests({ ...guests, adults: value }),
-                      min: 1,
-                    },
-                    {
-                      title: "Children",
-                      description: "Ages 2-12",
-                      value: guests.children,
-                      onChange: (value: number) => setGuests({ ...guests, children: value }),
-                      min: 0,
-                    },
-                    {
-                      title: "Infants",
-                      description: "Under 2",
-                      value: guests.infants,
-                      onChange: (value: number) => setGuests({ ...guests, infants: value }),
-                      min: 0,
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={item.title}
-                      className={cn(
-                        "flex items-center justify-between py-4",
-                        index !== 2 && "border-b border-gray-200",
-                      )}
-                    >
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                        <p className="text-sm text-gray-500">{item.description}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => item.onChange(Math.max(item.min, item.value - 1))}
-                          disabled={item.value <= item.min}
-                          className={cn(
-                            "w-8 h-8 rounded-full border transition-all duration-300 flex items-center justify-center",
-                            item.value <= item.min
-                              ? "border-gray-200 text-gray-200 cursor-not-allowed"
-                              : "border-gray-300 text-gray-700 hover:border-gray-900 hover:bg-gray-50",
-                          )}
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center font-medium text-gray-900">{item.value}</span>
-                        <button
-                          onClick={() => item.onChange(item.value + 1)}
-                          className="w-8 h-8 rounded-full border border-gray-300 text-gray-700 flex items-center justify-center hover:border-gray-900 hover:bg-gray-50 transition-all duration-300"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              {/* This section is removed as guests are now in a dialog */}
             </div>
           </div>
         </div>
       </div>
 
       {/* Enhanced Floating Features with glass effect */}
-      <div className="absolute bottom-4 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent py-4 z-20">
-        <div className="container mx-auto px-4">
-          <div className="flex gap-2 flex-wrap justify-center">
+      <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent py-2 sm:py-4 z-20">
+        <div className="container mx-auto px-2 sm:px-4">
+          <div className="flex gap-1 sm:gap-2 flex-wrap justify-center">
             {[
               { icon: "✨", label: "Exclusive Properties" },
               { icon: "🔐", label: "VIP Concierge Service" },
@@ -567,10 +582,10 @@ export function HeroSection() {
             ].map((feature) => (
               <div
                 key={feature.label}
-                className="flex items-center gap-2 bg-white/15 backdrop-blur-xl rounded-full px-3 py-1.5 text-white hover:bg-white/25 transition-all duration-300 border border-white/10 shadow-lg hover:scale-105 transform whitespace-nowrap"
+                className="flex items-center gap-1 sm:gap-2 bg-white/15 backdrop-blur-xl rounded-full px-2 sm:px-3 py-1 sm:py-1.5 text-white hover:bg-white/25 transition-all duration-300 border border-white/10 shadow-lg hover:scale-105 transform whitespace-nowrap"
               >
-                <span className="text-base">{feature.icon}</span>
-                <span className="text-xs font-medium tracking-wide">{feature.label}</span>
+                <span className="text-sm sm:text-base">{feature.icon}</span>
+                <span className="text-xs font-medium tracking-wide hidden sm:inline">{feature.label}</span>
               </div>
             ))}
           </div>

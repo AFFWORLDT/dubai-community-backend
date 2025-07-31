@@ -21,18 +21,18 @@ const experiences = [
 
 export function ExperienceShowcase() {
   return (
-    <section className="py-24 bg-muted">
-      <div className=" px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+    <section className="py-12 sm:py-16 md:py-24 bg-muted">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Curated Experiences
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Enhance your stay with our exclusive collection of luxury experiences
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {experiences.map((experience) => (
             <div
               key={experience.title}

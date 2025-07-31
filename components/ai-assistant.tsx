@@ -15,14 +15,15 @@ export function WhatsAppAssistant() {
   }
 
   return (
-    <div className="fixed bottom-8 right-8 z-50">
+    <div className="fixed bottom-4 sm:bottom-8 right-4 sm:right-8 z-50">
       <Button
         size="lg"
         onClick={handleWhatsAppClick}
-        className="rounded-full shadow-lg gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white"
+        className="rounded-full shadow-lg gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white px-3 sm:px-4 py-2 sm:py-3"
       >
-        <MessageSquare className="w-5 h-5" />
-        <span>Chat on WhatsApp</span>
+        <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+        <span className="hidden sm:inline">Chat on WhatsApp</span>
+        <span className="sm:hidden">Chat</span>
       </Button>
     </div>
   )

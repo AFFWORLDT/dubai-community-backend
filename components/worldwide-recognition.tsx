@@ -40,29 +40,29 @@ const recognitions = [
 
 export function WorldwideRecognition() {
   return (
-    <section className="py-24 bg-muted">
-      <div className=" px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+    <section className="py-12 sm:py-16 md:py-24 bg-muted">
+      <div className="px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
           <Badge className="mb-4" variant="outline">Global Recognition</Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             Setting Global Standards in Luxury Travel
           </h2>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg">
             Trusted by millions worldwide for exceptional Dubai experiences
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-8 sm:mb-16">
           {statistics.map((stat) => {
             const Icon = stat.icon
             return (
               <Card key={stat.label} className="relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-primary/50 to-transparent" />
-                <CardContent className="pt-8 p-6 text-center">
-                  <Icon className="w-8 h-8 mx-auto mb-4 text-primary" />
-                  <div className="text-3xl font-bold mb-2">{stat.value}</div>
-                  <div className="font-medium mb-2">{stat.label}</div>
-                  <p className="text-sm text-muted-foreground">
+                <CardContent className="pt-6 sm:pt-8 p-4 sm:p-6 text-center">
+                  <Icon className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-3 sm:mb-4 text-primary" />
+                  <div className="text-2xl sm:text-3xl font-bold mb-2">{stat.value}</div>
+                  <div className="font-medium mb-2 text-sm sm:text-base">{stat.label}</div>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
                     {stat.description}
                   </p>
                 </CardContent>
@@ -71,20 +71,20 @@ export function WorldwideRecognition() {
           })}
         </div>
 
-        <div className="flex flex-wrap justify-center gap-4">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
           {recognitions.map((recognition) => (
             <Badge
               key={recognition}
               variant="secondary"
-              className="text-sm py-2 px-4 bg-background/50 backdrop-blur-sm"
+              className="text-xs sm:text-sm py-1 sm:py-2 px-2 sm:px-4 bg-background/50 backdrop-blur-sm"
             >
               {recognition}
             </Badge>
           ))}
         </div>
 
-        <div className="mt-16 text-center">
-          <p className="text-sm text-muted-foreground">
+        <div className="mt-8 sm:mt-16 text-center">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             Trusted by leading luxury hotel brands and verified by international travel associations
           </p>
         </div>

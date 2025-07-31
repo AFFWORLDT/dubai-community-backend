@@ -57,32 +57,32 @@ const amenities = [
 
 export function Amenities() {
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-muted/30">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+    <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-16">
           <Badge variant="secondary" className="mb-4">
             <Sparkles className="w-4 h-4 mr-2" />
             Premium Amenities
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             World-Class Facilities
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
             Indulge in luxury with our comprehensive range of premium amenities and services
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {amenities.map((amenity, index) => (
             <div
               key={index}
-              className="bg-background p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
+              className="bg-background p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
             >
-              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-4 sm:mb-6 group-hover:bg-primary/20 transition-colors">
                 <div className="text-primary">{amenity.icon}</div>
               </div>
-              <h3 className="text-xl font-semibold mb-3">{amenity.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{amenity.description}</p>
+              <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">{amenity.title}</h3>
+              <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">{amenity.description}</p>
             </div>
           ))}
         </div>

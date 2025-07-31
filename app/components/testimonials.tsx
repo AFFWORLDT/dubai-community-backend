@@ -34,26 +34,26 @@ const testimonials = [
 
 export function Testimonials() {
   return (
-    <section className="py-24 bg-gradient-to-b from-muted/50 to-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+    <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-muted/50 to-background">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-8 sm:mb-16">
           <Badge variant="secondary" className="mb-4">
             <Star className="w-4 h-4 mr-2" />
             Guest Experiences
           </Badge>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
             What Our Guests Say
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
             Discover why discerning travelers choose our luxury accommodations
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-background p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
+              className="bg-background p-6 sm:p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 group"
             >
               <Quote className="w-12 h-12 text-primary/10 absolute top-6 right-6" />
               <div className="flex items-center mb-6">
