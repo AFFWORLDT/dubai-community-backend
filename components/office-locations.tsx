@@ -15,14 +15,14 @@ const offices = [
   //   city: "Abu Dhabi",
   //   address: "Al Maryah Island, Abu Dhabi Global Market Square",
   //   phone: "+971 2 123 4567",
-  //   email: "abudhabi@ Mybookings.com",
+  //   email: "abudhabi@ mybookings.ae",
   //   image: "/placeholder.svg?height=200&width=300",
   // },
   // {
   //   city: "Sharjah",
   //   address: "Al Majaz Waterfront, Corniche Street",
   //   phone: "+971 6 123 4567",
-  //   email: "sharjah@ Mybookings.com",
+  //   email: "sharjah@ mybookings.ae",
   //   image: "/placeholder.svg?height=200&width=300",
   // },
 ]

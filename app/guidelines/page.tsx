@@ -187,10 +187,10 @@ export default function GuidelinesPage() {
                 If you have questions about our guidelines or need to report a violation,
                 please contact us at{" "}
                 <a 
-                  href="mailto:support@mybookings.com" 
+                  href="mailto:support@mybookings.ae" 
                   className="text-primary hover:underline font-medium inline-flex items-center gap-1"
                 >
-                  support@mybookings.com
+                  support@mybookings.ae
                   <MessageSquare className="w-4 h-4" />
                 </a>
               </p>

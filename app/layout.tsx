@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https:// Mybookings.com",
+    url: "https:// mybookings.ae",
     title: " Mybookings - Luxury Stays in Dubai",
     description: "Find and book luxury stays in Dubai with AI-powered recommendations",
     siteName: " Mybookings",
