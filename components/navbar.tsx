@@ -33,8 +33,7 @@ const Navbar = () => {
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Building2 className="h-6 w-6" />
-              <span className="font-bold"> Mybookings</span>
+              <Logo variant="default" />
             </Link>
           </div>
         </div>
