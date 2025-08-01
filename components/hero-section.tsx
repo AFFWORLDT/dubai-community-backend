@@ -188,13 +188,7 @@ export function HeroSection() {
   const [isGuestsDialogOpen, setIsGuestsDialogOpen] = useState(false)
   const [tempGuests, setTempGuests] = useState({ ...guests })
 
-  // Auto-save dates when both are selected
-  useEffect(() => {
-    if (tempDate.from && tempDate.to && isDateDialogOpen) {
-      setDate(tempDate);
-      setIsDateDialogOpen(false);
-    }
-  }, [tempDate.from, tempDate.to, isDateDialogOpen]);
+
 
   // Auto-save guests when changed
   useEffect(() => {
@@ -274,35 +268,30 @@ export function HeroSection() {
                   </button>
                 </div>
               </div>
-              {/* Date Dialog Popup */}
+              {/* Unified Date Dialog Popup */}
               <Dialog open={isDateDialogOpen} onOpenChange={setIsDateDialogOpen}>
-                <DialogContent className="max-w-2xl w-[95vw] max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] overflow-y-auto">
                   <DialogHeader className="pb-4">
                     <DialogTitle className="text-xl sm:text-2xl">Select Dates</DialogTitle>
                     <DialogDescription className="text-sm sm:text-base">Check in - Check out</DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col items-center justify-center">
-                    <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 w-full">
-                      <div className="w-full lg:w-1/2">
-                        <span className="block text-sm sm:text-base font-medium mb-3 sm:mb-4">Check in</span>
-                        <CalendarComponent
-                          mode="single"
-                          selected={tempDate.from}
-                          onSelect={(day) => setTempDate({ ...tempDate, from: day })}
-                          className="rounded-xl border-0 w-full"
-                        />
-                      </div>
-                      <div className="w-full lg:w-1/2">
-                        <span className="block text-sm sm:text-base font-medium mb-3 sm:mb-4">Check out</span>
-                        <CalendarComponent
-                          mode="single"
-                          selected={tempDate.to}
-                          onSelect={(day) => setTempDate({ ...tempDate, to: day })}
-                          disabled={(day) => (tempDate.from ? day <= tempDate.from : false)}
-                          className="rounded-xl border-0 w-full"
-                        />
-                      </div>
-                    </div>
+                    <CalendarComponent
+                      mode="range"
+                      selected={tempDate}
+                      onSelect={(range) => {
+                        if (range?.from && range?.to) {
+                          setTempDate({ from: range.from, to: range.to });
+                          setDate({ from: range.from, to: range.to });
+                          setIsDateDialogOpen(false);
+                        } else if (range?.from) {
+                          setTempDate({ from: range.from, to: undefined });
+                        }
+                      }}
+                      className="rounded-xl border-0 w-full"
+                      numberOfMonths={2}
+                      defaultMonth={tempDate.from || new Date()}
+                    />
                   </div>
                 </DialogContent>
               </Dialog>
