@@ -41,7 +41,6 @@ export default function HostTermsPage() {
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold mb-4 dark:text-white">Host Registration Terms and Conditions</h1>
           <div className="flex flex-col sm:flex-row gap-2 justify-center items-center">
-            <Badge variant="secondary" className="mb-2">Effective Date: January 5, 2025</Badge>
             <Badge variant="outline">Platform: Mybookings.ae</Badge>
           </div>
         </div>

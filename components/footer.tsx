@@ -22,6 +22,7 @@ const footerLinks = {
     { label: "Privacy", href: "/privacy" },
     { label: "Cookie Policy", href: "/cookies" },
     { label: "Guidelines", href: "/guidelines" },
+    { label: "Host Terms", href: "/host-terms" },
   ],
 }
 
