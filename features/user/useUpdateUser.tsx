@@ -2,7 +2,7 @@
 
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updateUser } from "@/service/Auth";
-import toast from "react-hot-toast";
+import { useToast } from "@/components/ui/use-toast";
 
 interface UseUpdateUsers {
   isPending: boolean;
@@ -11,11 +11,16 @@ interface UseUpdateUsers {
 
 const useUpdateUser = (): UseUpdateUsers => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
 
   const mutation = useMutation({
     mutationFn: updateUser,
     onSuccess: () => {
-      toast.success("User Update successFully")
+      toast({
+        title: "Success",
+        description: "User updated successfully",
+        duration: 3000,
+      })
       queryClient.invalidateQueries({ queryKey: ["user"] });
     },
     onError: (error) => {

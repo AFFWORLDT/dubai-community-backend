@@ -34,7 +34,8 @@ import { cn } from "@/lib/utils"
 import { useAuthStore } from "@/Providers/auth-provider"
 import { AuthForm } from "@/features/user/SignupForm"
 import axios from "axios"
-import toast, { Toaster } from "react-hot-toast"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 
 interface DailyPrice {
   date: string
@@ -81,6 +82,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   const userCookie = getCookie("user")
   const userId = userCookie?._id || ""
   const guestName = userCookie?.fullName
+  const { toast } = useToast()
 
   // Reset form function
   const resetForm = () => {
@@ -211,7 +213,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         })
       }
     } catch (error: any) {
-      toast.error(error?.response?.data?.message)
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error?.response?.data?.message || "Something went wrong",
+      })
     } finally {
       setIsProcessing(false)
     }

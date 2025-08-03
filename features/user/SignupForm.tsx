@@ -14,7 +14,8 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useMutation } from "@tanstack/react-query"
 import { login, signup } from "@/service/Auth"
-import toast, { Toaster } from "react-hot-toast"
+import { useToast } from "@/components/ui/use-toast"
+import { Toaster } from "@/components/ui/toaster"
 import { AxiosError } from "axios"
 import { useAuthStore } from "@/Providers/auth-provider"
 
@@ -27,6 +28,7 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
   const [isSignup, setIsSignup] = useState(false)
   const setAuth = useAuthStore((state) => state.login)
   const [error, setError] = useState("")
+  const { toast } = useToast()
 
   const mutation = useMutation({
     mutationFn: isSignup ? signup : login,
@@ -35,13 +37,27 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
       
       const { accessToken, refreshToken, user } = response.data.data
       setAuth({ accessToken, refreshToken }, user)
-      toast.success(response?.data?.message)
+      toast({
+        title: "Success",
+        description: response?.data?.message || "Login successful",
+        duration: 3000,
+      })
       onOpenChange(false)
     },
     onError: (error: AxiosError<{ message: string }>) => {
       if (error.response) {
-        toast.error(error?.response?.data?.message)
-      } 
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.response.data.message || "Something went wrong",
+        })
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message || "Something went wrong",
+        })
+      }
     }
   });
 

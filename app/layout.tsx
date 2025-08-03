@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 import QueryProvider from "@/Providers/querry-provider"
 

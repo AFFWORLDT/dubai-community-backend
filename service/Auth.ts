@@ -3,37 +3,36 @@ import api from "@/utils/ApiUrl";
 
 export const signup = async(payload:any)=>{
     try {
-        const res:any = api.post("/api/v1/bookinguser/create",payload)
+        const res:any = await api.post("/api/v1/bookinguser/create",payload)
         return res;
-    } catch (error) {
-        
+    } catch (error:any) {
+        throw error;
     }
 }
 export const login = async(payload:any)=>{
     try {
-        const res:any = api.post("/api/v1/bookinguser/login",payload)
+        const res:any = await api.post("/api/v1/bookinguser/login",payload)
         return res;
-    } catch (error) {
-        
+    } catch (error:any) {
+        throw error;
     }
 }
 
 export const getuserdetails =async ()=>{
     try {
-        const res:any = api.get("/api/v1/bookinguser/get-user-details")
+        const res:any = await api.get("/api/v1/bookinguser/get-user-details")
         return res;
-    } catch (error) {
-        console.log(error);
+    } catch (error:any) {
+        throw error;
     }
 }
  
 export const updateUser = async (payload:any)=>{
     try {
-        const res:any = api.put("/api/v1/bookinguser/update",payload)
+        const res:any = await api.put("/api/v1/bookinguser/update",payload)
         return res;
-    } catch (error) {
-        console.log(error);
-        
+    } catch (error:any) {
+        throw error;
     }
 }
 
