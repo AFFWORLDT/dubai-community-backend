@@ -106,15 +106,42 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
   const disabledDates = useMemo(() => {
     if (!booking?.data?.bookings) return []
-    return booking.data.bookings.map((booking: any) => ({
-      from: parseISO(booking.checkIn),
-      to: addDays(parseISO(booking.checkOut), -1),
-    }))
+    return booking.data.bookings
+      .map((booking: any) => {
+        try {
+          const checkIn = parseISO(booking.checkIn)
+          const checkOut = parseISO(booking.checkOut)
+          
+          // Validate that the dates are valid
+          if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+            console.warn('Invalid booking dates:', booking)
+            return null
+          }
+          
+          return {
+            from: checkIn,
+            to: addDays(checkOut, -1),
+          }
+        } catch (error) {
+          console.warn('Error parsing booking dates:', error, booking)
+          return null
+        }
+      })
+      .filter(Boolean) // Remove null entries
   }, [booking])
   const priceByDate = useMemo(() => {
     const map = new Map()
     dailyPrice.forEach(({ date, price }) => {
-      map.set(format(parseISO(date), "yyyy-MM-dd"), price)
+      try {
+        const parsedDate = parseISO(date)
+        if (!isNaN(parsedDate.getTime())) {
+          map.set(format(parsedDate, "yyyy-MM-dd"), price)
+        } else {
+          console.warn('Invalid date in dailyPrice:', date)
+        }
+      } catch (error) {
+        console.warn('Error parsing date in dailyPrice:', error, date)
+      }
     })
     return map
   }, [dailyPrice])
@@ -270,9 +297,19 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
     const dateStr = format(date, "yyyy-MM-dd")
     const dayPrice = priceByDate.get(dateStr) || price
 
-    const isBooked = disabledDates.some((interval: any) =>
-      isWithinInterval(date, { start: interval.from, end: interval.to }),
-    )
+    const isBooked = disabledDates.some((interval: any) => {
+      try {
+        // Additional validation to ensure interval dates are valid
+        if (!interval?.from || !interval?.to || 
+            isNaN(interval.from.getTime()) || isNaN(interval.to.getTime())) {
+          return false
+        }
+        return isWithinInterval(date, { start: interval.from, end: interval.to })
+      } catch (error) {
+        console.warn('Error checking if date is within interval:', error, interval)
+        return false
+      }
+    })
 
     return (
       <div className="relative flex flex-col items-center justify-center w-full h-14 p-1">
@@ -750,9 +787,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
       <CardFooter className="flex-col gap-4 p-4 sm:p-6">
         <div className="hidden md:flex flex-col w-full gap-4">
-          <Button className="w-full" size="lg" onClick={() => setShowBookingModal(true)} disabled={!isFormValid}>
+          {/* <Button className="w-full" size="lg" onClick={() => setShowBookingModal(true)} disabled={!isFormValid}>
             {isPending ? "Processing..." : "Reserve Now"}
-          </Button>
+          </Button> */}
           <Button className="w-full" size="lg" onClick={proceedToCheckout} disabled={!isFormValid || isProcessing}>
             {isProcessing ? "Processing Payment..." : "Pay Now"}
           </Button>
