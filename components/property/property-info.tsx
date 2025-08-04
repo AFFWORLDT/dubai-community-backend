@@ -2,9 +2,10 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Star, Users, Bed, Bath, Maximize, Medal } from "lucide-react"
+import { Star, Users, Bed, Bath, Maximize, Medal, MessageCircle } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
+import { ChatWithOwner } from "./chat-with-owner"
 
 interface PropertyInfoProps {
   title: string
@@ -18,6 +19,7 @@ interface PropertyInfoProps {
   reviews?: number
   isSuperhost?: boolean
   bedrooms?:any;
+  propertyId: string;
 }
 
 export function PropertyInfo({
@@ -30,7 +32,8 @@ export function PropertyInfo({
   rating = 4.9,
   reviews = 284,
   isSuperhost = true,
-  bedrooms
+  bedrooms,
+  propertyId
 }: PropertyInfoProps) {
   const [showFullDescription, setShowFullDescription] = useState(false)
 
@@ -54,24 +57,27 @@ export function PropertyInfo({
     >
       <div>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">{title}</h1>
-        <div className="flex items-center gap-4 flex-wrap text-sm">
-          <div className="flex items-center gap-2">
-            <Star className="w-4 h-4 fill-primary text-primary" />
-            <span className="font-medium">{rating}</span>
-            <span className="text-muted-foreground">·</span>
-            <button className="underline font-medium">{reviews} reviews</button>
-            <span className="text-muted-foreground">·</span>
-            <span>{location}</span>
-          </div>
-          {isSuperhost && (
-            <>
+        <div className="flex items-center justify-between flex-wrap">
+          <div className="flex items-center gap-4 flex-wrap text-sm">
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4 fill-primary text-primary" />
+              <span className="font-medium">{rating}</span>
               <span className="text-muted-foreground">·</span>
-              <Badge variant="outline" className="rounded-md font-normal border-primary/20">
-                <Medal className="w-3 h-3 mr-1 text-primary" />
-                Superhost
-              </Badge>
-            </>
-          )}
+              <button className="underline font-medium">{reviews} reviews</button>
+              <span className="text-muted-foreground">·</span>
+              <span>{location}</span>
+            </div>
+            {isSuperhost && (
+              <>
+                <span className="text-muted-foreground">·</span>
+                <Badge variant="outline" className="rounded-md font-normal border-primary/20">
+                  <Medal className="w-3 h-3 mr-1 text-primary" />
+                  Superhost
+                </Badge>
+              </>
+            )}
+          </div>
+          <ChatWithOwner propertyId={propertyId} variant="outline" />
         </div>
       </div>
 

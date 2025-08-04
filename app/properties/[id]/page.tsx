@@ -101,6 +101,7 @@ const PropertyPage = ({ params }: PageProps) => {
                   guests={property?.guest_no}
                   size={property?.size}
                   bedrooms={property?.bedrooms}
+                  propertyId={property?._id}
                 />
               </Suspense>
 

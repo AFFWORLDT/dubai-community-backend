@@ -4,6 +4,8 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
+import { ChatButton } from "@/components/chat/chat-button"
+import { ChatNotification } from "@/components/chat/chat-notification"
 import "./globals.css"
 import QueryProvider from "@/Providers/querry-provider"
 
@@ -60,6 +62,8 @@ export default function RootLayout({
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
+            <ChatButton />
+            <ChatNotification />
           </div>
           {/* <Toaster richColors closeButton position="top-center" /> */}
         </ThemeProvider>
