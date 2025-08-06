@@ -1,6 +1,16 @@
 import api from "@/utils/ApiUrl";
 import { AxiosResponse } from "axios";
 
+export const getMonthlyBookingPrice = async (): Promise<any> => {
+  try {
+    const response: AxiosResponse<any> = await api.get(`/api/v1/booking/monthly-booking-price`);
+    return response?.data;
+  } catch (error:any) {
+    console.error('Error getting monthly booking price:', error);
+    throw new Error(error);
+  }
+};
+
 export const createBooking = async (payload:any): Promise<any> => {
     try {
       const response: AxiosResponse<any> = await api.post(`/api/v1/booking/bookings`, payload);

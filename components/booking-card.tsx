@@ -37,6 +37,7 @@ import axios from "axios"
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { ChatWithOwner } from "@/components/property/chat-with-owner"
+import { getMonthlyBookingPrice } from "@/service/booking"
 
 interface DailyPrice {
   date: string
@@ -50,6 +51,7 @@ interface BookingDetails {
   manualPrice: number
   property: string
   userId: string
+  bookingType: 'day' | 'custom' | 'month'
 }
 
 interface BookingCardProps {
@@ -80,16 +82,37 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   const [numberOfMonths, setNumberOfMonths] = useState(window?.innerWidth >= 640 ? 2 : 1)
   const [isSheetOpen, setIsSheetOpen] = useState(false)
   const [selectedMode, setSelectedMode] = useState('checkin');
+  const [isMonthlyBooking, setIsMonthlyBooking] = useState(false)
+  const [monthlyPrice, setMonthlyPrice] = useState(0)
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false)
+  const [conflictDates, setConflictDates] = useState<Date[]>([])
   const userCookie = getCookie("user")
   const userId = userCookie?._id || ""
   const guestName = userCookie?.fullName
   const { toast } = useToast()
+
+  // Fetch monthly booking price
+  useEffect(() => {
+    if (isMonthlyBooking) {
+      const fetchMonthlyPrice = async () => {
+        try {
+          const result = await getMonthlyBookingPrice();
+          setMonthlyPrice(Number(result?.data) || price * 25); // Use the monthly price or fallback to 25 days of regular price
+        } catch (error) {
+          console.error('Failed to fetch monthly price:', error);
+          setMonthlyPrice(price * 25); // Fallback to 25 days of regular price
+        }
+      };
+      fetchMonthlyPrice();
+    }
+  }, [isMonthlyBooking, price]);
 
   // Reset form function
   const resetForm = () => {
     setSelectedDates(undefined)
     setGuests("1")
     setBookingStatus({ type: "", message: "" })
+    setIsMonthlyBooking(false)
   }
 
   const api = axios.create({
@@ -103,6 +126,36 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   const resetDates = () => {
     setSelectedDates(undefined);
     setSelectedMode('checkin');
+    setIsMonthlyBooking(false);
+  }
+
+  // Handle monthly booking selection
+  const handleMonthlyBooking = async () => {
+    try {
+      // Fetch monthly price first
+      const result = await getMonthlyBookingPrice();
+      setMonthlyPrice(Number(result?.data) || price * 25);
+      
+      // Set monthly booking mode
+      setIsMonthlyBooking(true);
+      
+      // Open calendar and set to monthly selection mode
+      setSelectedMode('monthly-select');
+      setShowCalendar(true);
+      
+      // Only show informational toast - this one is needed to guide the user
+      toast({
+        description: "Please select your preferred start date for a 30-day stay.",
+        duration: 3000
+      });
+    } catch (error) {
+      console.error('Failed to fetch monthly price:', error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to get monthly booking price. Please try again."
+      });
+    }
   }
 
   const disabledDates = useMemo(() => {
@@ -150,6 +203,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   const calculateTotal = (from: Date | undefined, to: Date | undefined) => {
     if (!from || !to) return { subtotal: 0, nights: 0 }
 
+    // For monthly bookings, use the monthly price
+    if (isMonthlyBooking) {
+      return { subtotal: monthlyPrice, nights: 30 }
+    }
+
     // For same day bookings (check-in and check-out on the same day)
     if (format(from, "yyyy-MM-dd") === format(to, "yyyy-MM-dd")) {
       const dateStr = format(from, "yyyy-MM-dd")
@@ -196,6 +254,21 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       // Ensure we're using the correct pricing for the booking
       const bookingTotal = total;
       
+      // Determine booking type based on selection and duration
+      const determineBookingType = () => {
+        if (isMonthlyBooking) return 'month';
+        
+        // Calculate nights between dates
+        const checkInDate = selectedDates.from;
+        const checkOutDate = selectedDates.to;
+        const daysInterval = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysInterval === 1) return 'day';
+        return 'custom';
+      };
+
+      const bookingType = determineBookingType();
+      
       const formData = {
         userId,
         checkIn: selectedDates.from.toISOString(),
@@ -204,12 +277,13 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         property: id,
         manualPrice: bookingTotal,
         intrest: 10,
+        bookingType,
         line_items: [
           {
             price_data: {
               currency: "aed",
               product_data: {
-                name: `Booking for ${guestName.trim()} - ${nights} ${nights === 1 ? 'night' : 'nights'}`,
+                name: `${bookingType === 'month' ? 'Monthly' : bookingType === 'day' ? 'Single-day' : 'Custom'} Booking for ${guestName.trim()} - ${nights} ${nights === 1 ? 'night' : 'nights'}`,
               },
               unit_amount: bookingTotal * 100,
             },
@@ -262,6 +336,21 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       // Ensure we're using the correct pricing for the booking
       const bookingTotal = total;
       
+      // Determine booking type based on selection and duration
+      const determineBookingType = () => {
+        if (isMonthlyBooking) return 'month';
+        
+        // Calculate nights between dates
+        const checkInDate = selectedDates!.from!;
+        const checkOutDate = selectedDates!.to!;
+        const daysInterval = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        if (daysInterval === 1) return 'day';
+        return 'custom';
+      };
+
+      const bookingType = determineBookingType();
+      
       const bookingDetails: BookingDetails = {
         checkIn: selectedDates?.from,
         checkOut: selectedDates?.to,
@@ -269,6 +358,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         manualPrice: bookingTotal,
         property: id,
         userId,
+        bookingType,
       }
 
       await createBookings(bookingDetails)
@@ -298,6 +388,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
     const dateStr = format(date, "yyyy-MM-dd")
     const dayPrice = priceByDate.get(dateStr) || price
 
+    // Check if this date is booked
     const isBooked = disabledDates.some((interval: any) => {
       try {
         // Additional validation to ensure interval dates are valid
@@ -311,22 +402,54 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         return false
       }
     })
+    
+    // Check if this date is part of a conflict for monthly booking
+    const isConflict = conflictDates.some(conflictDate => 
+      format(conflictDate, "yyyy-MM-dd") === dateStr
+    );
+    
+    // For monthly booking, show which dates would be selected
+    const isMonthlyPreview = selectedMode === 'monthly-select' && selectedDates?.from && 
+      isWithinInterval(date, {
+        start: selectedDates.from,
+        end: addDays(selectedDates.from, 29)
+      });
 
     return (
       <div className="relative flex flex-col items-center justify-center w-full h-14 p-1">
-        <div className={cn("text-sm font-medium mb-1", isBooked ? "text-muted-foreground" : "")}>
+        <div className={cn(
+          "text-sm font-medium mb-1", 
+          isBooked ? "text-muted-foreground" : "",
+          isConflict ? "text-red-500" : "",
+          isMonthlyPreview ? "text-blue-500 font-bold" : ""
+        )}>
           {format(date, "d")}
         </div>
         <div
           className={cn(
             "text-[10px] leading-none font-medium flex items-center gap-0.5",
             isBooked ? "text-muted-foreground" : "text-primary",
+            isConflict ? "text-red-500" : "",
+            isMonthlyPreview ? "text-blue-500" : ""
           )}
         >
-          <span>{dayPrice}</span>
-          <span className="text-[8px]">AED</span>
+          {isMonthlyPreview && selectedMode === 'monthly-select' ? (
+            <span className="text-xs animate-pulse">✓</span>
+          ) : (
+            <>
+              <span>{dayPrice}</span>
+              <span className="text-[8px]">AED</span>
+            </>
+          )}
         </div>
         {isBooked && <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />}
+        {isConflict && <div className="absolute inset-0 bg-red-100/50 dark:bg-red-900/25 rounded-md" />}
+        {isMonthlyPreview && <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800" />}
+        {isCheckingAvailability && selectedMode === 'monthly-select' && 
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-4 h-4 border-2 border-t-primary rounded-full animate-spin"></div>
+          </div>
+        }
       </div>
     )
   }
@@ -334,6 +457,81 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
   // Replace the existing CalendarDialog component with this:
   const CalendarDialog = () => {
     const today = new Date();
+    
+    // Check if a date would create conflicts for a 30-day booking
+    const checkMonthlyBookingConflicts = async (startDate: Date) => {
+      setIsCheckingAvailability(true);
+      try {
+        // Clear previous conflicts
+        setConflictDates([]);
+        
+        // Check each day in the 30-day period
+        let hasConflict = false;
+        const conflicts: Date[] = [];
+        
+        for (let i = 0; i < 30; i++) {
+          const currentDate = addDays(startDate, i);
+          const dateStr = format(currentDate, "yyyy-MM-dd");
+          
+          // Check if date is disabled (already booked)
+          const isDisabled = disabledDates.some((interval: any) => {
+            try {
+              if (!interval?.from || !interval?.to || 
+                  isNaN(interval.from.getTime()) || isNaN(interval.to.getTime())) {
+                return false;
+              }
+              return isWithinInterval(currentDate, { start: interval.from, end: interval.to });
+            } catch (error) {
+              return false;
+            }
+          });
+          
+          if (isDisabled) {
+            hasConflict = true;
+            conflicts.push(currentDate);
+          }
+        }
+        
+        if (hasConflict) {
+          setConflictDates(conflicts);
+          toast({
+            variant: "destructive",
+            title: "Booking Conflict",
+            description: `Some dates in the 30-day period are already booked. Please select another start date.`,
+            duration: 5000
+          });
+          return false;
+        } else {
+          // If no conflicts, set the dates
+          const endDate = addDays(startDate, 30);
+          setSelectedDates({
+            from: startDate,
+            to: endDate
+          });
+          
+          setShowCalendar(false);
+          // Only show toast if not already in monthly booking mode
+          if (!isMonthlyBooking) {
+            toast({
+              title: "Monthly Booking Confirmed",
+              description: `Your 30-day stay from ${format(startDate, "MMM d, yyyy")} to ${format(endDate, "MMM d, yyyy")} is available!`,
+              duration: 3000
+            });
+          }
+          return true;
+        }
+      } catch (error) {
+        console.error('Error checking availability:', error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to check availability. Please try again."
+        });
+        return false;
+      } finally {
+        setIsCheckingAvailability(false);
+      }
+    };
     
     // Combine existing disabled dates with dates before check-in for checkout selection
     const getDisabledDates = () => {
@@ -369,14 +567,20 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <div className="flex items-center justify-between">
               <div>
                 <DialogTitle>
-                  {selectedMode === 'checkin' ? 'Select check-in date' : 'Select check-out date'}
+                  {selectedMode === 'monthly-select' 
+                    ? 'Select monthly booking start date' 
+                    : selectedMode === 'checkin' 
+                      ? 'Select check-in date' 
+                      : 'Select check-out date'}
                 </DialogTitle>
                 <DialogDescription>
-                  {selectedMode === 'checkin' 
-                    ? 'Pick your check-in date'
-                    : selectedDates?.from && format(selectedDates.from, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
-                      ? 'You can select the same day for a single night stay'
-                      : 'Pick your check-out date'}
+                  {selectedMode === 'monthly-select'
+                    ? 'Pick your preferred start date for a 30-day stay'
+                    : selectedMode === 'checkin' 
+                      ? 'Pick your check-in date'
+                      : selectedDates?.from && format(selectedDates.from, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
+                        ? 'You can select the same day for a single night stay'
+                        : 'Pick your check-out date'}
                 </DialogDescription>
               </div>
               <Button 
@@ -397,7 +601,13 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               onSelect={(range) => {
                 if (!range) return;
                 
-                if (selectedMode === 'checkin') {
+                if (selectedMode === 'monthly-select') {
+                  // For monthly booking - check availability for 30 days from selected date
+                  if (range.from) {
+                    checkMonthlyBookingConflicts(range.from);
+                  }
+                }
+                else if (selectedMode === 'checkin') {
                   // When selecting check-in, clear any existing checkout date
                   setSelectedDates({ from: range.from, to: undefined });
                   if (range.from) {
@@ -567,14 +777,16 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                       <h3 className="font-medium">Price details</h3>
                       <div className="p-4 bg-muted/50 rounded-lg space-y-4">
                         <div className="space-y-3">
-                          <div className="flex justify-between">
-                            <span>
-                              {nights === 1 
-                                ? "Price for 1 night" 
-                                : `Price × ${nights} nights`}
-                            </span>
-                            <span>{formatPrice(subtotal)} AED</span>
-                          </div>
+                                        <div className="flex justify-between">
+                <span>
+                  {isMonthlyBooking
+                    ? "Monthly booking rate"
+                    : nights === 1 
+                      ? "Price for 1 night" 
+                      : `Price × ${nights} nights`}
+                </span>
+                <span>{formatPrice(subtotal)} AED</span>
+              </div>
                           <div className="flex justify-between">
                             <span>Cleaning fee</span>
                             <span>{formatPrice(cleaningFee)} AED</span>
@@ -607,8 +819,70 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                 </div>
 
                 {/* Chat with Owner Section for Mobile */}
-                <div className="p-3 sm:p-4 border-t bg-background">
-                  <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 mb-4">
+                        <div className="p-3 sm:p-4 border-t bg-background">
+          {/* Monthly Booking Option */}
+          <div className="mb-4 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium">Looking for a longer stay?</h3>
+                <p className="text-xs text-muted-foreground">Get special rates for monthly bookings</p>
+              </div>
+              <Button 
+                variant="secondary" 
+                className="bg-blue-500 hover:bg-blue-600 text-white" 
+                onClick={handleMonthlyBooking}
+                disabled={isMonthlyBooking || isCheckingAvailability}
+              >
+                {isMonthlyBooking ? "Selected" : isCheckingAvailability ? "Checking..." : "Monthly Booking"}
+                {isCheckingAvailability && (
+                  <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
+                )}
+              </Button>
+            </div>
+            {isMonthlyBooking && (
+              <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
+                <div className="flex justify-between items-center">
+                  <p className="font-medium flex items-center gap-1">
+                    <span className="text-green-500 text-base">✓</span> Monthly booking selected
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                    onClick={() => {
+                      setIsMonthlyBooking(false);
+                      setSelectedDates(undefined);
+                      setSelectedMode('checkin');
+                      setConflictDates([]);
+                      
+                      toast({
+                        description: "Monthly booking reset. You can now select regular dates or try monthly booking again.",
+                        duration: 3000
+                      });
+                    }}
+                  >
+                    <X className="w-3 h-3 mr-1" /> Reset
+                  </Button>
+                </div>
+                <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
+                  <p className="flex justify-between">
+                    <span>Check-in:</span>
+                    <span className="font-medium">{format(selectedDates?.from || new Date(), "MMM d, yyyy")}</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Check-out:</span>
+                    <span className="font-medium">{format(selectedDates?.to || new Date(), "MMM d, yyyy")}</span>
+                  </p>
+                  <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
+                    <span>Monthly rate:</span>
+                    <span className="font-medium text-blue-600 dark:text-blue-400">{formatPrice(monthlyPrice)} AED</span>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 mb-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -774,13 +1048,15 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         </span>
         <span>{formatPrice(subtotal)} AED</span>
       </div>
-      {nights > 0 && (
-        <div className="text-xs text-muted-foreground">
-          {nights === 1 
-            ? "Single night rate applied" 
-            : "Variable daily rates applied for your stay"}
-        </div>
-      )}
+                    {nights > 0 && (
+                <div className="text-xs text-muted-foreground">
+                  {isMonthlyBooking
+                    ? "Special monthly rate applied"
+                    : nights === 1 
+                      ? "Single night rate applied" 
+                      : "Variable daily rates applied for your stay"}
+                </div>
+              )}
     </div>
   )}
   <Separator />
@@ -799,7 +1075,69 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 </div>
 
         {/* Chat with Owner Section */}
-        <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+                  {/* Monthly Booking Button for Desktop */}
+          <div className="space-y-3 p-3 sm:p-4 mb-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-medium">Looking for a longer stay?</h3>
+                <p className="text-xs text-muted-foreground">Get special rates for monthly bookings</p>
+              </div>
+              <Button 
+                variant="secondary" 
+                className="bg-blue-500 hover:bg-blue-600 text-white" 
+                onClick={handleMonthlyBooking}
+                disabled={isMonthlyBooking || isCheckingAvailability}
+              >
+                {isMonthlyBooking ? "Selected" : isCheckingAvailability ? "Checking..." : "Monthly Booking"}
+                {isCheckingAvailability && (
+                  <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
+                )}
+              </Button>
+            </div>
+            {isMonthlyBooking && (
+              <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
+                <div className="flex justify-between items-center">
+                  <p className="font-medium flex items-center gap-1">
+                    <span className="text-green-500 text-base">✓</span> Monthly booking selected
+                  </p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                    onClick={() => {
+                      setIsMonthlyBooking(false);
+                      setSelectedDates(undefined);
+                      setSelectedMode('checkin');
+                      setConflictDates([]);
+                      
+                      toast({
+                        description: "Monthly booking reset. You can now select regular dates or try monthly booking again.",
+                        duration: 3000
+                      });
+                    }}
+                  >
+                    <X className="w-3 h-3 mr-1" /> Reset
+                  </Button>
+                </div>
+                <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
+                  <p className="flex justify-between">
+                    <span>Check-in:</span>
+                    <span className="font-medium">{format(selectedDates?.from || new Date(), "MMM d, yyyy")}</span>
+                  </p>
+                  <p className="flex justify-between">
+                    <span>Check-out:</span>
+                    <span className="font-medium">{format(selectedDates?.to || new Date(), "MMM d, yyyy")}</span>
+                  </p>
+                  <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
+                    <span>Monthly rate:</span>
+                    <span className="font-medium text-blue-600 dark:text-blue-400">{formatPrice(monthlyPrice)} AED</span>
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+            
+          <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -840,9 +1178,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           <DialogHeader>
             <DialogTitle>Confirm Your Booking</DialogTitle>
             <DialogDescription>
-              {nights === 1 
-                ? "Please review your 1-night stay details" 
-                : `Please review your ${nights}-night stay details`}
+              {isMonthlyBooking 
+                ? "Please review your monthly stay details" 
+                : nights === 1 
+                  ? "Please review your 1-night stay details" 
+                  : `Please review your ${nights}-night stay details`}
             </DialogDescription>
           </DialogHeader>
 
@@ -880,7 +1220,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <div>
               <h4 className="font-medium text-foreground">Duration</h4>
               <p className="text-sm text-muted-foreground">
-                {nights} {nights === 1 ? "night" : "nights"}
+                {isMonthlyBooking 
+                  ? "Monthly booking (30 days)" 
+                  : `${nights} ${nights === 1 ? "night" : "nights"}`}
               </p>
             </div>
             <Separator />
@@ -888,9 +1230,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               <h4 className="font-medium text-foreground">Total Price</h4>
               <p className="text-2xl font-bold text-foreground">{formatPrice(total)} AED</p>
               <p className="text-xs text-muted-foreground mt-1">
-                {nights === 1 
-                  ? "Single night rate with applicable fees" 
-                  : "Includes all applicable fees and taxes"}
+                {isMonthlyBooking
+                  ? "Monthly rate with applicable fees" 
+                  : nights === 1 
+                    ? "Single night rate with applicable fees" 
+                    : "Includes all applicable fees and taxes"}
               </p>
             </div>
           </div>
