@@ -2,10 +2,9 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Star, Users, Bed, Bath, Maximize, Medal, MessageCircle } from "lucide-react"
+import { Star, Users, Bed, Bath, Maximize, Medal } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
-import { ChatWithOwner } from "./chat-with-owner"
 
 interface PropertyInfoProps {
   title: string
@@ -77,11 +76,8 @@ export function PropertyInfo({
               </>
             )}
           </div>
-          <ChatWithOwner propertyId={propertyId} variant="outline" />
         </div>
       </div>
-
-
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
         <div className="flex items-start gap-3">

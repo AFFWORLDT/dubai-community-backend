@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import { ChatButton } from "@/components/chat/chat-button"
 import { ChatNotification } from "@/components/chat/chat-notification"
+import { ChatProvider } from "@/components/chat/chat-context"
 import "./globals.css"
 import QueryProvider from "@/Providers/querry-provider"
 
@@ -58,13 +59,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex min-h-screen flex-col bg-background text-foreground">
-            <Navbar />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <ChatButton />
-            <ChatNotification />
-          </div>
+          <ChatProvider>
+            <div className="flex min-h-screen flex-col bg-background text-foreground">
+              <Navbar />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <ChatButton />
+              <ChatNotification />
+            </div>
+          </ChatProvider>
           {/* <Toaster richColors closeButton position="top-center" /> */}
         </ThemeProvider>
        </QueryProvider>

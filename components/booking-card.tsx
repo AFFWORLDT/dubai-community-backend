@@ -36,6 +36,7 @@ import { AuthForm } from "@/features/user/SignupForm"
 import axios from "axios"
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
+import { ChatWithOwner } from "@/components/property/chat-with-owner"
 
 interface DailyPrice {
   date: string
@@ -605,7 +606,20 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                   </div>
                 </div>
 
-                <div className="p-4 border-t bg-background">
+                {/* Chat with Owner Section for Mobile */}
+                <div className="p-3 sm:p-4 border-t bg-background">
+                  <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 mb-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-xs sm:text-sm font-medium text-foreground">Need help with booking?</span>
+                      </div>
+                    </div>
+                    <div className="w-full">
+                      <ChatWithOwner propertyId={id} variant="outline" />
+                    </div>
+                  </div>
+                  
                   <Button
                     className="w-full"
                     size="lg"
@@ -783,6 +797,19 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
     </span>
   </div>
 </div>
+
+        {/* Chat with Owner Section */}
+        <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-xs sm:text-sm font-medium text-foreground">Need help with booking?</span>
+            </div>
+          </div>
+          <div className="w-full">
+            <ChatWithOwner propertyId={id} variant="outline" />
+          </div>
+        </div>
       </CardContent>
 
       <CardFooter className="flex-col gap-4 p-4 sm:p-6">

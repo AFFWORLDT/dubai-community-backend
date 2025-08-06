@@ -8,6 +8,7 @@ import { initializeChat } from '@/service/chat.service';
 import { useAuthStore } from '@/Providers/auth-provider';
 import { useRouter } from 'next/navigation';
 import { ChatWindow } from '../chat/chat-window';
+import { useChatContext } from '../chat/chat-context';
 
 interface ChatWithOwnerProps {
   propertyId: string;
@@ -25,6 +26,7 @@ export function ChatWithOwner({
   const { toast } = useToast();
   const { user, isAuthenticated } = useAuthStore();
   const router = useRouter();
+  const { setIsChatting, setHasActiveChats } = useChatContext();
 
   const handleChatWithOwner = async () => {
     if (!isAuthenticated || !user) {
@@ -41,6 +43,8 @@ export function ChatWithOwner({
       setIsLoading(true);
       const chat = await initializeChat(propertyId, user._id);
       setShowChat(true);
+      setIsChatting(true);
+      setHasActiveChats(true);
     } catch (error) {
       toast({
         title: "Failed to start conversation",
@@ -53,19 +57,25 @@ export function ChatWithOwner({
     }
   };
 
+  const handleCloseChat = () => {
+    setShowChat(false);
+    setIsChatting(false);
+  };
+
   return (
     <>
       <Button 
         onClick={handleChatWithOwner} 
         disabled={isLoading}
         variant={variant}
-        className="flex items-center gap-2"
+        className="flex items-center gap-1.5 sm:gap-2 w-full text-xs sm:text-sm h-8 sm:h-10"
       >
-        <MessageCircle className="w-4 h-4" />
-        Chat with Owner
+        <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" />
+        <span className="hidden xs:inline">Chat with Owner</span>
+        <span className="xs:hidden">Chat</span>
       </Button>
       
-      {showChat && <ChatWindow onClose={() => setShowChat(false)} />}
+      {showChat && <ChatWindow onClose={handleCloseChat} />}
     </>
   );
 }
