@@ -10,6 +10,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { useInView } from 'react-intersection-observer';
 import PrettyLoader from './property/Pagination';
 import Link from 'next/link';
+import { Heart } from 'lucide-react';
 
 interface FilterValues {
   address: string;
@@ -115,44 +116,58 @@ export function PropertyGrid() {
       </div>
       
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProperties.map((property: any) => (
-          <Card
-            key={property._id}
-            className="overflow-hidden cursor-pointer group transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-            onClick={() => handleViewDetails(property._id)}
-          >
-            <CardHeader className="p-0">
-              <div className="relative aspect-video overflow-hidden">
-                <Image
-                  src={property?.photos?.[0]?.url || "/placeholder.svg"}
-                  alt={property?.title || "Property"}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  loading="lazy"
-                />
-                <Badge className="absolute top-4 right-4 bg-primary text-white">
-                  {property?.property_type || property?.category}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <h3 className="font-semibold text-xl mb-3 line-clamp-1 group-hover:text-primary transition-colors">
-                {property?.title || "Untitled Property"}
-              </h3>
-              <p className="text-muted-foreground line-clamp-2 text-sm">
-                {property?.description || "No description available"}
-              </p>
-            </CardContent>
-            {/* <CardFooter className="px-6 py-4 border-t flex justify-between items-center">
-              <div>
-                <span className="text-2xl font-bold text-blue-600">
-                  {getCurrentDailyPrice(property?.dailyPrices) || property?.price} AED
-                </span>
-                <span className="text-sm text-muted-foreground ml-1">/night</span>
-              </div>
-            </CardFooter> */}
-          </Card>
-        ))}
+        {filteredProperties.map((property: any) => {
+          const currentPrice = getCurrentDailyPrice(property?.dailyPrices) || property?.price;
+          return (
+            <Card
+              key={property._id}
+              className="overflow-hidden cursor-pointer group transition-all duration-300 hover:shadow-lg hover:-translate-y-1 bg-white"
+              onClick={() => handleViewDetails(property._id)}
+            >
+              <CardHeader className="p-0">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={property?.photos?.[0]?.url || "/placeholder.svg"}
+                    alt={property?.title || "Property"}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  {/* Pink Apartment Badge - Top Right */}
+                  <Badge className="absolute top-4 right-4 bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+                    {property?.property_type || property?.category || "Apartment"}
+                  </Badge>
+                  {/* Heart Icon - Top Left */}
+                  <button className="absolute top-4 left-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
+                    <Heart className="w-4 h-4 text-gray-600" />
+                  </button>
+                </div>
+              </CardHeader>
+              <CardContent className="p-4">
+                {/* Bold Title */}
+                <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+                  {property?.title || "Untitled Property"}
+                </h3>
+                {/* Description */}
+                <p className="text-gray-600 line-clamp-2 text-sm mb-3">
+                  {property?.description || "No description available"}
+                </p>
+                {/* Price Section */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-lg font-bold text-gray-900">
+                      {currentPrice} AED
+                    </span>
+                    <span className="text-sm text-gray-500">per night</span>
+                  </div>
+                  <Badge className="bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+                    {property?.property_type || property?.category || "Apartment"}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       <PrettyLoader

@@ -1,61 +1,67 @@
 "use client"
-import Image from "next/image"
-import Link from "next/link"
+import { useState, useRef, useEffect } from "react"
+import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Star, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star, ArrowRight, Heart } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 import { useProperties } from "@/features/Properties/useProperties"
-import { useRef } from 'react'
 
-interface DailyPrice {
-  date: string;
-  price: number;
-}
-
-const formatPrice = (price: number | undefined) => {
-  if (!price) return "0";
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
-const getCurrentDailyPrice = (dailyPrices?: DailyPrice[]): number | null => {
+const getCurrentDailyPrice = (dailyPrices: any[]) => {
   if (!dailyPrices || !Array.isArray(dailyPrices) || dailyPrices.length === 0) return null;
-  
+
   const today = new Date();
-  const matchingPrice = dailyPrices.find(dp => {
+  const matchingPrice = dailyPrices.find((dp) => {
     const priceDate = new Date(dp.date);
     return priceDate.toDateString() === today.toDateString();
   });
-  
+
   return matchingPrice?.price || null;
 };
 
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('en-US').format(price);
+};
+
 export function FeaturedProperties() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const { data: properties } = useProperties();
-  const propertyList: any[] = properties?.filter((property: any) => property.status === true) || [];
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const { data: propertyList = [] } = useProperties({
+    page: 1,
+    limit: 10,
+    filters: {}
+  });
 
   const scroll = (direction: 'left' | 'right') => {
-    if (scrollContainerRef.current) {
-      const scrollAmount = 400;
-      scrollContainerRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
+    if (!scrollContainerRef.current) return
+
+    const container = scrollContainerRef.current
+    const scrollAmount = 400
+
+    if (direction === 'left') {
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
+    } else {
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' })
     }
-  };
+  }
 
   return (
-    <section className="py-8 sm:py-12 bg-gradient-to-b from-background to-muted/50">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-            Featured Properties
-          </h2>
-          <p className="text-muted-foreground text-base sm:text-lg">
-            Discover our handpicked selection of the most exclusive properties in Dubai
+    <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-12"
+        >
+          <h2 className="text-3xl font-bold mb-4">Featured Properties</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Discover our handpicked selection of premium properties in Dubai's most sought-after locations
           </p>
-        </div>
+        </motion.div>
 
         <div className="relative">
           <button 
@@ -75,48 +81,44 @@ export function FeaturedProperties() {
               return(
                 <div key={property._id} className="min-w-[280px] sm:min-w-[300px] lg:min-w-[400px] snap-start">
                   <Link href={`/properties/${property._id}`}>
-                    <Card className="group cursor-pointer overflow-hidden bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl">
+                    <Card className="group cursor-pointer overflow-hidden bg-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl">
                       <div className="relative aspect-[4/3]">
                         <Image
-                          src={property.photos[0]?.url}
+                          src={property.photos[0]?.url || "/placeholder.svg"}
                           alt={property.title}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <Badge className="absolute top-4 left-4 bg-primary text-white font-medium px-3 py-1 rounded-full">
-                          {property.property_type}
+                        {/* Pink Apartment Badge - Top Right */}
+                        <Badge className="absolute top-4 right-4 bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+                          {property.property_type || "Apartment"}
                         </Badge>
+                        {/* Heart Icon - Top Left */}
+                        <button className="absolute top-4 left-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-colors">
+                          <Heart className="w-4 h-4 text-gray-600" />
+                        </button>
                       </div>
-                      <CardContent className="p-6 space-y-4">
-                        <div className="space-y-2">
-                          <h3 className="text-xl font-semibold line-clamp-1 group-hover:text-primary transition-colors">
-                            {property.title}
-                          </h3>
-                          <p className="text-muted-foreground flex items-center gap-2">
-                            <Star className="w-4 h-4 text-yellow-400" />
-                            {property.city}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="rounded-full hover:bg-primary hover:text-white transition-colors"
-                            >
-                              <ArrowRight className="w-4 h-4" />
-                            </Button>
-                          </p>
-                        </div>
-                        {/* <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
-                          <div className="flex items-center justify-between">
-                            <div className="space-y-1">
-                              <p className="text-sm text-muted-foreground">Starting from</p>
-                              <p className="text-lg font-bold text-primary">
-                                {dailyPrice ? `${formatPrice(dailyPrice)} AED` : `${formatPrice(property.price)} AED`}
-                                <span className="text-sm font-normal text-muted-foreground"> /night</span>
-                              </p>
-                            </div>
-                           
+                      <CardContent className="p-4">
+                        {/* Bold Title */}
+                        <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+                          {property.title}
+                        </h3>
+                        {/* Description */}
+                        <p className="text-gray-600 line-clamp-2 text-sm mb-3">
+                          {property.description}
+                        </p>
+                        {/* Price Section */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-lg font-bold text-gray-900">
+                              {dailyPrice ? formatPrice(dailyPrice) : formatPrice(property.price)} AED
+                            </span>
+                            <span className="text-sm text-gray-500">per night</span>
                           </div>
-                        </div> */}
+                          <Badge className="bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+                            {property.property_type || "Apartment"}
+                          </Badge>
+                        </div>
                       </CardContent>
                     </Card>
                   </Link>
@@ -131,19 +133,6 @@ export function FeaturedProperties() {
           >
             <ChevronRight className="w-6 h-6" />
           </button>
-        </div>
-
-        <div className="text-center mt-12">
-          <Link href="/properties">
-            <Button
-              variant="outline"
-              size="lg"
-              className="group"
-            >
-              View All Properties
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-          </Link>
         </div>
       </div>
     </section>
