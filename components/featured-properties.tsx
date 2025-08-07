@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight, Star, ArrowRight, Heart } from "lucide-react"
+import { ChevronLeft, ChevronRight, Star, ArrowRight, Heart, MapPin } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useProperties } from "@/features/Properties/useProperties"
@@ -23,6 +23,20 @@ const getCurrentDailyPrice = (dailyPrices: any[]) => {
 
 const formatPrice = (price: number) => {
   return new Intl.NumberFormat('en-US').format(price);
+};
+
+// Function to get short address
+const getShortAddress = (address: string) => {
+  if (!address) return "Dubai";
+  
+  // Split address by commas and take the first part (usually the street/area)
+  const parts = address.split(',').map(part => part.trim());
+  if (parts.length > 0) {
+    // Return first part (area/street) + city if available
+    return parts[0] + (parts.length > 1 ? `, ${parts[parts.length - 1]}` : '');
+  }
+  
+  return address.length > 30 ? address.substring(0, 30) + '...' : address;
 };
 
 export function FeaturedProperties() {
@@ -78,6 +92,8 @@ export function FeaturedProperties() {
           >
             {propertyList.map((property:any) => {
               const dailyPrice = getCurrentDailyPrice(property.dailyPrices);
+              const shortAddress = getShortAddress(property?.address?.address || property?.city || "Dubai");
+              
               return(
                 <div key={property._id} className="min-w-[280px] sm:min-w-[300px] lg:min-w-[400px] snap-start">
                   <Link href={`/properties/${property._id}`}>
@@ -103,10 +119,16 @@ export function FeaturedProperties() {
                         <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
                           {property.title}
                         </h3>
-                        {/* Description */}
-                        <p className="text-gray-600 line-clamp-2 text-sm mb-3">
-                          {property.description}
-                        </p>
+                        
+                        {/* Location with Star Icon */}
+                        <div className="flex items-center gap-2 mb-3 text-sm text-gray-600">
+                          <Star className="w-4 h-4 text-yellow-400" />
+                          <span className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {shortAddress}
+                          </span>
+                        </div>
+                        
                         {/* Price Section */}
                         <div className="flex items-center justify-between">
                           <div className="flex items-baseline gap-1">
@@ -115,9 +137,6 @@ export function FeaturedProperties() {
                             </span>
                             <span className="text-sm text-gray-500">per night</span>
                           </div>
-                          <Badge className="bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
-                            {property.property_type || "Apartment"}
-                          </Badge>
                         </div>
                       </CardContent>
                     </Card>
