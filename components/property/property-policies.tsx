@@ -50,7 +50,6 @@ export function PropertyPolicies({ data }: PropertyPoliciesProps) {
     data.term.children===false && "No Child Allowed below 12",
     // data.term.drinking && 'No Alchol Allowed'
   ].filter(Boolean) // Remove falsy values
-console.log(data);
 
   const policies = {
     check_in: data.Check_in_time,

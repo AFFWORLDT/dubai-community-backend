@@ -49,12 +49,12 @@ export const ChatButton = () => {
   return (
     <>
       <Button
-        className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 rounded-full w-12 h-12 sm:w-14 sm:h-14 shadow-lg z-50 bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="fixed bottom-4 sm:bottom-6 left-4 sm:left-6 rounded-full w-12 h-12 sm:w-14 sm:h-14 shadow-lg z-50 bg-primary hover:bg-primary/90 text-primary-foreground"
         onClick={() => setShowChat(!showChat)}
       >
         <MessageCircle className="h-5 w-5 sm:h-6 sm:w-6" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 bg-red-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs font-medium">
+          <span className="absolute -top-1 -left-1 sm:-top-2 sm:-left-2 bg-red-500 text-white rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center text-xs font-medium">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}

@@ -33,7 +33,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({ onClose }) => {
   };
 
   return (
-    <Card className="fixed bottom-20 right-2 sm:right-6 w-[calc(100vw-1rem)] sm:w-[380px] h-[400px] sm:h-[480px] shadow-xl border-2 border-primary/20 flex flex-col z-50 animate-in slide-in-from-bottom duration-300">
+    <Card className="fixed bottom-20 left-2 sm:left-6 w-[calc(100vw-1rem)] sm:w-[380px] h-[400px] sm:h-[480px] shadow-xl border-2 border-primary/20 flex flex-col z-50 animate-in slide-in-from-bottom duration-300">
       <CardHeader className="py-2 sm:py-3 px-3 sm:px-4 flex flex-row justify-between items-center bg-gradient-to-r from-primary/10 to-primary/5">
         <CardTitle className="text-base sm:text-lg font-medium flex items-center gap-2">
           <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5" />

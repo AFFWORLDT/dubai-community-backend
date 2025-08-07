@@ -1,30 +1,9 @@
 "use client"
-
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import {
-  Wifi,
-  Bath,
-  Car,
-  TreePine,
-  Mountain,
-  Shield,
-  Home,
-  Tv,
-  Briefcase,
-  Waves,
-  Flame,
-  Heart,
-  BellRing,
-  Timer,
-  TableIcon as TableTennis,
-  Snowflake,
-  WashingMachine,
-  Droplets,
-  ChevronRight,
-} from "lucide-react"
+import { Wifi, Bath, Car, TreePine, Mountain, Shield, Home, Tv, Briefcase, Waves, Flame, Heart, BellRing, Timer, TableIcon as TableTennis, Snowflake, WashingMachine, Droplets, ChevronRight } from 'lucide-react'
 
 // Amenity categories with icons
 const amenityCategories = {
@@ -67,6 +46,9 @@ interface PropertyAmenitiesProps {
   amenities: string[]
 }
 
+// Helper function to normalize amenity names for consistent comparison
+const normalizeAmenityName = (name: string) => name.toLowerCase().replace(/[\s_]/g, '')
+
 export function PropertyAmenities({ amenities }: PropertyAmenitiesProps) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -74,19 +56,19 @@ export function PropertyAmenities({ amenities }: PropertyAmenitiesProps) {
     return null
   }
 
+  // Normalize the input amenities array once for efficient lookup
+  const normalizedInputAmenities = amenities.map(normalizeAmenityName)
+
   // Group amenities by category
-  const groupedAmenities = Object.entries(amenityCategories).reduce(
-    (acc, [category, categoryAmenities]) => {
-      const matchingAmenities = categoryAmenities.filter(
-        (amenity) => amenities.includes(amenity.name.toLowerCase()) || amenities.includes(amenity.name),
-      )
-      if (matchingAmenities.length > 0) {
-        acc[category] = matchingAmenities
-      }
-      return acc
-    },
-    {} as Record<string, (typeof amenityCategories)[keyof typeof amenityCategories]>,
-  )
+  const groupedAmenities = Object.entries(amenityCategories).reduce((acc, [category, categoryAmenities]) => {
+    const matchingAmenities = categoryAmenities.filter((amenity) =>
+      normalizedInputAmenities.includes(normalizeAmenityName(amenity.name)),
+    )
+    if (matchingAmenities.length > 0) {
+      acc[category] = matchingAmenities
+    }
+    return acc
+  }, {} as Record<string, (typeof amenityCategories)[keyof typeof amenityCategories]>)
 
   if (Object.keys(groupedAmenities).length === 0) {
     return null
@@ -102,7 +84,6 @@ export function PropertyAmenities({ amenities }: PropertyAmenitiesProps) {
   return (
     <section className="py-8">
       <h2 className="text-2xl font-semibold mb-8">What this place offers</h2>
-
       {/* Preview Section - Now using a single grid for all preview amenities */}
       <div className="mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -122,7 +103,6 @@ export function PropertyAmenities({ amenities }: PropertyAmenitiesProps) {
           ))}
         </div>
       </div>
-
       {/* Show All Button */}
       {totalAmenities > 6 && (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -170,4 +150,3 @@ export function PropertyAmenities({ amenities }: PropertyAmenitiesProps) {
     </section>
   )
 }
-
