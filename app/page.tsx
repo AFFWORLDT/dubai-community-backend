@@ -21,7 +21,7 @@ export default function HomePage() {
       <LocationHighlight />
       <WorldwideRecognition />
       <LuxuryServices />
-      <WhatsAppAssistant />
+      {/* <WhatsAppAssistant /> */}
     </main>
   )
 }

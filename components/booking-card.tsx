@@ -1,8 +1,8 @@
-"use client"
-import { useState, useMemo, useEffect } from "react"
-import { DayPicker } from "react-day-picker"
-import { addDays, format, isWithinInterval, parseISO } from "date-fns"
-import { Button } from "@/components/ui/button"
+"use client";
+import { useState, useMemo, useEffect } from "react";
+import { DayPicker } from "react-day-picker";
+import { addDays, format, isWithinInterval, parseISO } from "date-fns";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,9 +10,21 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+} from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Sheet,
   SheetContent,
@@ -21,75 +33,98 @@ import {
   SheetTitle,
   SheetTrigger,
   SheetClose,
-} from "@/components/ui/sheet"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { CreditCard, Info, Lock, Shield, Calendar, Users, ChevronUp, X, ChevronDown } from "lucide-react"
-import { useGetBookingonProperty } from "@/features/Booking/useGetBookingonProperty"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import useCreatePropert from "@/features/Booking/useCreateProperty"
-import { getCookie } from "@/utils/cookies"
-import { cn } from "@/lib/utils"
-import { useAuthStore } from "@/Providers/auth-provider"
-import { AuthForm } from "@/features/user/SignupForm"
-import axios from "axios"
-import { useToast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
-import { ChatWithOwner } from "@/components/property/chat-with-owner"
-import { getMonthlyBookingPrice } from "@/service/booking"
+} from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  CreditCard,
+  Info,
+  Lock,
+  Shield,
+  Calendar,
+  Users,
+  ChevronUp,
+  X,
+  ChevronDown,
+} from "lucide-react";
+import { useGetBookingonProperty } from "@/features/Booking/useGetBookingonProperty";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import useCreatePropert from "@/features/Booking/useCreateProperty";
+import { getCookie } from "@/utils/cookies";
+import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/Providers/auth-provider";
+import { AuthForm } from "@/features/user/SignupForm";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { ChatWithOwner } from "@/components/property/chat-with-owner";
+import { getMonthlyBookingPrice } from "@/service/booking";
 
 interface DailyPrice {
-  date: string
-  price: number
+  date: string;
+  price: number;
 }
 
 interface BookingDetails {
-  checkIn: Date | undefined
-  checkOut: Date | undefined
-  guest: string
-  manualPrice: number
-  property: string
-  userId: string
-  bookingType: 'day' | 'custom' | 'month'
+  checkIn: Date | undefined;
+  checkOut: Date | undefined;
+  guest: string;
+  manualPrice: number;
+  property: string;
+  userId: string;
+  bookingType: "day" | "custom" | "month";
 }
 
 interface BookingCardProps {
-  price: number
-  dailyPrice?: DailyPrice[]
-  id: string
-  cleaningFee: number
-  variant?: "default" | "mobile"
+  price: number;
+  dailyPrice?: DailyPrice[];
+  id: string;
+  cleaningFee: number;
+  variant?: "default" | "mobile";
 }
 // Add this helper function at the top of your component
 const formatPrice = (price: number | undefined) => {
-  if (!price) return "0"
-  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
+  if (!price) return "0";
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
 
-export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }: BookingCardProps) => {
-  const [selectedDates, setSelectedDates] = useState<any | undefined>()
-  const [guests, setGuests] = useState("1")
-  const [showBookingModal, setShowBookingModal] = useState(false)
-  const [bookingStatus, setBookingStatus] = useState({ type: "", message: "" })
-  const { isAuthenticated } = useAuthStore()
-  const { data: booking } = useGetBookingonProperty(id)
-  const { createBookings, isPending } = useCreatePropert()
-  const [showSignupForm, setShowSignupForm] = useState(false)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [showPriceBreakdown, setShowPriceBreakdown] = useState(false)
-  const [numberOfMonths, setNumberOfMonths] = useState(window?.innerWidth >= 640 ? 2 : 1)
-  const [isSheetOpen, setIsSheetOpen] = useState(false)
-  const [selectedMode, setSelectedMode] = useState('checkin');
-  const [isMonthlyBooking, setIsMonthlyBooking] = useState(false)
-  const [monthlyPrice, setMonthlyPrice] = useState(0)
-  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false)
-  const [conflictDates, setConflictDates] = useState<Date[]>([])
-  const userCookie = getCookie("user")
-  const userId = userCookie?._id || ""
-  const guestName = userCookie?.fullName
-  const { toast } = useToast()
+export const BookingCard = ({
+  price,
+  id,
+  dailyPrice = [],
+  cleaningFee,
+  variant,
+}: BookingCardProps) => {
+  const [selectedDates, setSelectedDates] = useState<any | undefined>();
+  const [guests, setGuests] = useState("1");
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [bookingStatus, setBookingStatus] = useState({ type: "", message: "" });
+  const { isAuthenticated } = useAuthStore();
+  const { data: booking } = useGetBookingonProperty(id);
+  const { createBookings, isPending } = useCreatePropert();
+  const [showSignupForm, setShowSignupForm] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showPriceBreakdown, setShowPriceBreakdown] = useState(false);
+  const [numberOfMonths, setNumberOfMonths] = useState(
+    window?.innerWidth >= 640 ? 2 : 1
+  );
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [selectedMode, setSelectedMode] = useState("checkin");
+  const [isMonthlyBooking, setIsMonthlyBooking] = useState(false);
+  const [monthlyPrice, setMonthlyPrice] = useState(0);
+  const [isCheckingAvailability, setIsCheckingAvailability] = useState(false);
+  const [conflictDates, setConflictDates] = useState<Date[]>([]);
+  const userCookie = getCookie("user");
+  const userId = userCookie?._id || "";
+  const guestName = userCookie?.fullName;
+  const { toast } = useToast();
 
   // Fetch monthly booking price
   useEffect(() => {
@@ -99,7 +134,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           const result = await getMonthlyBookingPrice();
           setMonthlyPrice(Number(result?.data) || price * 25); // Use the monthly price or fallback to 25 days of regular price
         } catch (error) {
-          console.error('Failed to fetch monthly price:', error);
+          console.error("Failed to fetch monthly price:", error);
           setMonthlyPrice(price * 25); // Fallback to 25 days of regular price
         }
       };
@@ -109,11 +144,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
   // Reset form function
   const resetForm = () => {
-    setSelectedDates(undefined)
-    setGuests("1")
-    setBookingStatus({ type: "", message: "" })
-    setIsMonthlyBooking(false)
-  }
+    setSelectedDates(undefined);
+    setGuests("1");
+    setBookingStatus({ type: "", message: "" });
+    setIsMonthlyBooking(false);
+  };
 
   const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -121,154 +156,162 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
       "Content-Type": "application/json",
     },
   });
-  
+
   // Reset dates function
   const resetDates = () => {
     setSelectedDates(undefined);
-    setSelectedMode('checkin');
+    setSelectedMode("checkin");
     setIsMonthlyBooking(false);
-  }
+  };
 
   // Handle monthly booking selection
   const handleMonthlyBooking = async () => {
+    if (!isAuthenticated) {
+      setShowSignupForm(true);
+      return;
+    }
     try {
       // Fetch monthly price first
       const result = await getMonthlyBookingPrice();
       setMonthlyPrice(Number(result?.data) || price * 25);
-      
+
       // Set monthly booking mode
       setIsMonthlyBooking(true);
-      
+
       // Open calendar and set to monthly selection mode
-      setSelectedMode('monthly-select');
+      setSelectedMode("monthly-select");
       setShowCalendar(true);
-      
+
       // Only show informational toast - this one is needed to guide the user
       toast({
-        description: "Please select your preferred start date for a 30-day stay.",
-        duration: 3000
+        description:
+          "Please select your preferred start date for a 30-day stay.",
+        duration: 3000,
       });
     } catch (error) {
-      console.error('Failed to fetch monthly price:', error);
+      console.error("Failed to fetch monthly price:", error);
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to get monthly booking price. Please try again."
+        description: "Failed to get monthly booking price. Please try again.",
       });
     }
-  }
+  };
 
   const disabledDates = useMemo(() => {
-    if (!booking?.data?.bookings) return []
+    if (!booking?.data?.bookings) return [];
     return booking.data.bookings
       .map((booking: any) => {
         try {
-          const checkIn = parseISO(booking.checkIn)
-          const checkOut = parseISO(booking.checkOut)
-          
+          const checkIn = parseISO(booking.checkIn);
+          const checkOut = parseISO(booking.checkOut);
+
           // Validate that the dates are valid
           if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
-            console.warn('Invalid booking dates:', booking)
-            return null
+            console.warn("Invalid booking dates:", booking);
+            return null;
           }
-          
+
           return {
             from: checkIn,
             to: addDays(checkOut, -1),
-          }
+          };
         } catch (error) {
-          console.warn('Error parsing booking dates:', error, booking)
-          return null
+          console.warn("Error parsing booking dates:", error, booking);
+          return null;
         }
       })
-      .filter(Boolean) // Remove null entries
-  }, [booking])
+      .filter(Boolean); // Remove null entries
+  }, [booking]);
   const priceByDate = useMemo(() => {
-    const map = new Map()
+    const map = new Map();
     dailyPrice.forEach(({ date, price }) => {
       try {
-        const parsedDate = parseISO(date)
+        const parsedDate = parseISO(date);
         if (!isNaN(parsedDate.getTime())) {
-          map.set(format(parsedDate, "yyyy-MM-dd"), price)
+          map.set(format(parsedDate, "yyyy-MM-dd"), price);
         } else {
-          console.warn('Invalid date in dailyPrice:', date)
+          console.warn("Invalid date in dailyPrice:", date);
         }
       } catch (error) {
-        console.warn('Error parsing date in dailyPrice:', error, date)
+        console.warn("Error parsing date in dailyPrice:", error, date);
       }
-    })
-    return map
-  }, [dailyPrice])
+    });
+    return map;
+  }, [dailyPrice]);
 
   const calculateTotal = (from: Date | undefined, to: Date | undefined) => {
-    if (!from || !to) return { subtotal: 0, nights: 0 }
+    if (!from || !to) return { subtotal: 0, nights: 0 };
 
     // For monthly bookings, use the monthly price
     if (isMonthlyBooking) {
-      return { subtotal: monthlyPrice, nights: 30 }
+      return { subtotal: monthlyPrice, nights: 30 };
     }
 
     // For same day bookings (check-in and check-out on the same day)
     if (format(from, "yyyy-MM-dd") === format(to, "yyyy-MM-dd")) {
-      const dateStr = format(from, "yyyy-MM-dd")
-      const dailyRate = priceByDate.get(dateStr) || price
-      return { subtotal: dailyRate, nights: 1 }
+      const dateStr = format(from, "yyyy-MM-dd");
+      const dailyRate = priceByDate.get(dateStr) || price;
+      return { subtotal: dailyRate, nights: 1 };
     }
 
-    let total = 0
-    let current = from
-    let nights = 0
+    let total = 0;
+    let current = from;
+    let nights = 0;
 
     // Calculate nights between check-in and check-out (inclusive of check-in, exclusive of check-out)
     while (current < to) {
-      const dateStr = format(current, "yyyy-MM-dd")
-      const dailyRate = priceByDate.get(dateStr) || price
-      total += dailyRate
-      nights += 1
-      current = addDays(current, 1)
+      const dateStr = format(current, "yyyy-MM-dd");
+      const dailyRate = priceByDate.get(dateStr) || price;
+      total += dailyRate;
+      nights += 1;
+      current = addDays(current, 1);
     }
 
-    return { subtotal: total, nights }
-  }
+    return { subtotal: total, nights };
+  };
 
   const { subtotal, nights } = useMemo(
     () => calculateTotal(selectedDates?.from, selectedDates?.to),
-    [selectedDates, priceByDate, price],
-  )
+    [selectedDates, priceByDate, price]
+  );
 
-  const vat = Math.floor(subtotal * 0.05) // 5% VAT
-  const dtcmFee = nights * 15
-  const serviceFee = Math.floor(subtotal * 0.025)
-  const cleaningFeeAmount = cleaningFee || 0
-  const total = subtotal + cleaningFeeAmount + serviceFee + vat + dtcmFee
+  const vat = Math.floor(subtotal * 0.05); // 5% VAT
+  const dtcmFee = nights * 15;
+  const serviceFee = Math.floor(subtotal * 0.025);
+  const cleaningFeeAmount = cleaningFee || 0;
+  const total = subtotal + cleaningFeeAmount + serviceFee + vat + dtcmFee;
 
   const proceedToCheckout = async () => {
-    if (!isFormValid || !selectedDates?.from || !selectedDates?.to) return
+    if (!isFormValid || !selectedDates?.from || !selectedDates?.to) return;
     if (!isAuthenticated) {
-      setShowSignupForm(true)
-      return
+      setShowSignupForm(true);
+      return;
     }
 
-    setIsProcessing(true)
+    setIsProcessing(true);
     try {
       // Ensure we're using the correct pricing for the booking
       const bookingTotal = total;
-      
+
       // Determine booking type based on selection and duration
       const determineBookingType = () => {
-        if (isMonthlyBooking) return 'month';
-        
+        if (isMonthlyBooking) return "month";
+
         // Calculate nights between dates
         const checkInDate = selectedDates.from;
         const checkOutDate = selectedDates.to;
-        const daysInterval = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (daysInterval === 1) return 'day';
-        return 'custom';
+        const daysInterval = Math.round(
+          (checkOutDate.getTime() - checkInDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+
+        if (daysInterval === 1) return "day";
+        return "custom";
       };
 
       const bookingType = determineBookingType();
-      
+
       const formData = {
         userId,
         checkIn: selectedDates.from.toISOString(),
@@ -283,74 +326,85 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             price_data: {
               currency: "aed",
               product_data: {
-                name: `${bookingType === 'month' ? 'Monthly' : bookingType === 'day' ? 'Single-day' : 'Custom'} Booking for ${guestName.trim()} - ${nights} ${nights === 1 ? 'night' : 'nights'}`,
+                name: `${
+                  bookingType === "month"
+                    ? "Monthly"
+                    : bookingType === "day"
+                    ? "Single-day"
+                    : "Custom"
+                } Booking for ${guestName.trim()} - ${nights} ${
+                  nights === 1 ? "night" : "nights"
+                }`,
               },
               unit_amount: bookingTotal * 100,
             },
             quantity: 1,
           },
         ],
-      }
+      };
 
-      console.log("this is form data", formData)
+      console.log("this is form data", formData);
 
-      const token = getCookie("accessToken")
-      console.log("this is token", token)
+      const token = getCookie("accessToken");
+      console.log("this is token", token);
 
       const response = await api.post(`/api/v1/booking/checkout`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
+      });
 
-      console.log("this is response", response)
+      console.log("this is response", response);
 
       if (response.data.statusCode === 200) {
-        const { checkoutUrl } = response.data.data
-        window.location.href = checkoutUrl
+        const { checkoutUrl } = response.data.data;
+        window.location.href = checkoutUrl;
       } else {
         setBookingStatus({
           type: "error",
           message: response.data.message || "Failed to process payment",
-        })
+        });
       }
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
         description: error?.response?.data?.message || "Something went wrong",
-      })
+      });
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   const handleBookingSubmit = async () => {
-    if (!isFormValid) return
+    if (!isFormValid) return;
     if (!isAuthenticated) {
-      setShowSignupForm(true)
-      return
+      setShowSignupForm(true);
+      return;
     }
 
     try {
       // Ensure we're using the correct pricing for the booking
       const bookingTotal = total;
-      
+
       // Determine booking type based on selection and duration
       const determineBookingType = () => {
-        if (isMonthlyBooking) return 'month';
-        
+        if (isMonthlyBooking) return "month";
+
         // Calculate nights between dates
         const checkInDate = selectedDates!.from!;
         const checkOutDate = selectedDates!.to!;
-        const daysInterval = Math.round((checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (daysInterval === 1) return 'day';
-        return 'custom';
+        const daysInterval = Math.round(
+          (checkOutDate.getTime() - checkInDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        );
+
+        if (daysInterval === 1) return "day";
+        return "custom";
       };
 
       const bookingType = determineBookingType();
-      
+
       const bookingDetails: BookingDetails = {
         checkIn: selectedDates?.from,
         checkOut: selectedDates?.to,
@@ -359,70 +413,87 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         property: id,
         userId,
         bookingType,
-      }
+      };
 
-      await createBookings(bookingDetails)
+      await createBookings(bookingDetails);
 
       setBookingStatus({
         type: "success",
-        message: `Booking for ${nights} ${nights === 1 ? 'night' : 'nights'} submitted successfully!`,
-      })
+        message: `Booking for ${nights} ${
+          nights === 1 ? "night" : "nights"
+        } submitted successfully!`,
+      });
 
       setTimeout(() => {
-        setShowBookingModal(false)
-        resetForm()
-      }, 2000)
+        setShowBookingModal(false);
+        resetForm();
+      }, 2000);
     } catch (error) {
-      console.log(error)
+      console.log(error);
 
       setBookingStatus({
         type: "error",
         message: "Failed to submit booking. Please try again.",
-      })
+      });
     }
-  }
+  };
 
-  const isFormValid = selectedDates?.from && selectedDates?.to
+  const isFormValid = selectedDates?.from && selectedDates?.to;
 
   const DayContent = ({ date }: { date: Date }) => {
-    const dateStr = format(date, "yyyy-MM-dd")
-    const dayPrice = priceByDate.get(dateStr) || price
+    const dateStr = format(date, "yyyy-MM-dd");
+    const dayPrice = priceByDate.get(dateStr) || price;
 
     // Check if this date is booked
     const isBooked = disabledDates.some((interval: any) => {
       try {
         // Additional validation to ensure interval dates are valid
-        if (!interval?.from || !interval?.to || 
-            isNaN(interval.from.getTime()) || isNaN(interval.to.getTime())) {
-          return false
+        if (
+          !interval?.from ||
+          !interval?.to ||
+          isNaN(interval.from.getTime()) ||
+          isNaN(interval.to.getTime())
+        ) {
+          return false;
         }
-        return isWithinInterval(date, { start: interval.from, end: interval.to })
+        return isWithinInterval(date, {
+          start: interval.from,
+          end: interval.to,
+        });
       } catch (error) {
-        console.warn('Error checking if date is within interval:', error, interval)
-        return false
+        console.warn(
+          "Error checking if date is within interval:",
+          error,
+          interval
+        );
+        return false;
       }
-    })
-    
+    });
+
     // Check if this date is part of a conflict for monthly booking
-    const isConflict = conflictDates.some(conflictDate => 
-      format(conflictDate, "yyyy-MM-dd") === dateStr
+    const isConflict = conflictDates.some(
+      (conflictDate) => format(conflictDate, "yyyy-MM-dd") === dateStr
     );
-    
+
     // For monthly booking, show which dates would be selected
-    const isMonthlyPreview = selectedMode === 'monthly-select' && selectedDates?.from && 
+    const isMonthlyPreview =
+      selectedMode === "monthly-select" &&
+      selectedDates?.from &&
       isWithinInterval(date, {
         start: selectedDates.from,
-        end: addDays(selectedDates.from, 29)
+        end: addDays(selectedDates.from, 29),
       });
 
     return (
       <div className="relative flex flex-col items-center justify-center w-full h-14 p-1">
-        <div className={cn(
-          "text-sm font-medium mb-1", 
-          isBooked ? "text-muted-foreground" : "",
-          isConflict ? "text-red-500" : "",
-          isMonthlyPreview ? "text-blue-500 font-bold" : ""
-        )}>
+        <div
+          className={cn(
+            "text-sm font-medium mb-1",
+            isBooked ? "text-muted-foreground" : "",
+            isConflict ? "text-red-500" : "",
+            isMonthlyPreview ? "text-blue-500 font-bold" : ""
+          )}
+        >
           {format(date, "d")}
         </div>
         <div
@@ -433,7 +504,7 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             isMonthlyPreview ? "text-blue-500" : ""
           )}
         >
-          {isMonthlyPreview && selectedMode === 'monthly-select' ? (
+          {isMonthlyPreview && selectedMode === "monthly-select" ? (
             <span className="text-xs animate-pulse">✓</span>
           ) : (
             <>
@@ -442,63 +513,76 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             </>
           )}
         </div>
-        {isBooked && <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />}
-        {isConflict && <div className="absolute inset-0 bg-red-100/50 dark:bg-red-900/25 rounded-md" />}
-        {isMonthlyPreview && <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800" />}
-        {isCheckingAvailability && selectedMode === 'monthly-select' && 
+        {isBooked && (
+          <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />
+        )}
+        {isConflict && (
+          <div className="absolute inset-0 bg-red-100/50 dark:bg-red-900/25 rounded-md" />
+        )}
+        {isMonthlyPreview && (
+          <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800" />
+        )}
+        {isCheckingAvailability && selectedMode === "monthly-select" && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-4 h-4 border-2 border-t-primary rounded-full animate-spin"></div>
           </div>
-        }
+        )}
       </div>
-    )
-  }
+    );
+  };
 
   // Replace the existing CalendarDialog component with this:
   const CalendarDialog = () => {
     const today = new Date();
-    
+
     // Check if a date would create conflicts for a 30-day booking
     const checkMonthlyBookingConflicts = async (startDate: Date) => {
       setIsCheckingAvailability(true);
       try {
         // Clear previous conflicts
         setConflictDates([]);
-        
+
         // Check each day in the 30-day period
         let hasConflict = false;
         const conflicts: Date[] = [];
-        
+
         for (let i = 0; i < 30; i++) {
           const currentDate = addDays(startDate, i);
           const dateStr = format(currentDate, "yyyy-MM-dd");
-          
+
           // Check if date is disabled (already booked)
           const isDisabled = disabledDates.some((interval: any) => {
             try {
-              if (!interval?.from || !interval?.to || 
-                  isNaN(interval.from.getTime()) || isNaN(interval.to.getTime())) {
+              if (
+                !interval?.from ||
+                !interval?.to ||
+                isNaN(interval.from.getTime()) ||
+                isNaN(interval.to.getTime())
+              ) {
                 return false;
               }
-              return isWithinInterval(currentDate, { start: interval.from, end: interval.to });
+              return isWithinInterval(currentDate, {
+                start: interval.from,
+                end: interval.to,
+              });
             } catch (error) {
               return false;
             }
           });
-          
+
           if (isDisabled) {
             hasConflict = true;
             conflicts.push(currentDate);
           }
         }
-        
+
         if (hasConflict) {
           setConflictDates(conflicts);
           toast({
             variant: "destructive",
             title: "Booking Conflict",
             description: `Some dates in the 30-day period are already booked. Please select another start date.`,
-            duration: 5000
+            duration: 5000,
           });
           return false;
         } else {
@@ -506,58 +590,61 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           const endDate = addDays(startDate, 30);
           setSelectedDates({
             from: startDate,
-            to: endDate
+            to: endDate,
           });
-          
+
           setShowCalendar(false);
           // Only show toast if not already in monthly booking mode
           if (!isMonthlyBooking) {
             toast({
               title: "Monthly Booking Confirmed",
-              description: `Your 30-day stay from ${format(startDate, "MMM d, yyyy")} to ${format(endDate, "MMM d, yyyy")} is available!`,
-              duration: 3000
+              description: `Your 30-day stay from ${format(
+                startDate,
+                "MMM d, yyyy"
+              )} to ${format(endDate, "MMM d, yyyy")} is available!`,
+              duration: 3000,
             });
           }
           return true;
         }
       } catch (error) {
-        console.error('Error checking availability:', error);
+        console.error("Error checking availability:", error);
         toast({
           variant: "destructive",
           title: "Error",
-          description: "Failed to check availability. Please try again."
+          description: "Failed to check availability. Please try again.",
         });
         return false;
       } finally {
         setIsCheckingAvailability(false);
       }
     };
-    
+
     // Combine existing disabled dates with dates before check-in for checkout selection
     const getDisabledDates = () => {
       let disabledRanges = [...disabledDates];
-      
+
       // When selecting checkout date, disable all dates before check-in
-      if (selectedMode === 'checkout' && selectedDates?.from) {
-        disabledRanges.push({ 
+      if (selectedMode === "checkout" && selectedDates?.from) {
+        disabledRanges.push({
           from: new Date(0), // Beginning of time
-          to: selectedDates.from // Include check-in date for same-day booking
+          to: selectedDates.from, // Include check-in date for same-day booking
         });
       }
-      
+
       // Always disable past dates
       disabledRanges.push({
         from: new Date(0),
-        to: addDays(today, -1)
+        to: addDays(today, -1),
       });
-      
+
       return disabledRanges;
     };
 
     // Reset date selection function
     const handleResetDates = () => {
       setSelectedDates(undefined);
-      setSelectedMode('checkin');
+      setSelectedMode("checkin");
     };
 
     return (
@@ -567,25 +654,27 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <div className="flex items-center justify-between">
               <div>
                 <DialogTitle>
-                  {selectedMode === 'monthly-select' 
-                    ? 'Select monthly booking start date' 
-                    : selectedMode === 'checkin' 
-                      ? 'Select check-in date' 
-                      : 'Select check-out date'}
+                  {selectedMode === "monthly-select"
+                    ? "Select monthly booking start date"
+                    : selectedMode === "checkin"
+                    ? "Select check-in date"
+                    : "Select check-out date"}
                 </DialogTitle>
                 <DialogDescription>
-                  {selectedMode === 'monthly-select'
-                    ? 'Pick your preferred start date for a 30-day stay'
-                    : selectedMode === 'checkin' 
-                      ? 'Pick your check-in date'
-                      : selectedDates?.from && format(selectedDates.from, "yyyy-MM-dd") === format(today, "yyyy-MM-dd")
-                        ? 'You can select the same day for a single night stay'
-                        : 'Pick your check-out date'}
+                  {selectedMode === "monthly-select"
+                    ? "Pick your preferred start date for a 30-day stay"
+                    : selectedMode === "checkin"
+                    ? "Pick your check-in date"
+                    : selectedDates?.from &&
+                      format(selectedDates.from, "yyyy-MM-dd") ===
+                        format(today, "yyyy-MM-dd")
+                    ? "You can select the same day for a single night stay"
+                    : "Pick your check-out date"}
                 </DialogDescription>
               </div>
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 onClick={handleResetDates}
                 className="flex items-center gap-1"
               >
@@ -600,28 +689,27 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               selected={selectedDates}
               onSelect={(range) => {
                 if (!range) return;
-                
-                if (selectedMode === 'monthly-select') {
+
+                if (selectedMode === "monthly-select") {
                   // For monthly booking - check availability for 30 days from selected date
                   if (range.from) {
                     checkMonthlyBookingConflicts(range.from);
                   }
-                }
-                else if (selectedMode === 'checkin') {
+                } else if (selectedMode === "checkin") {
                   // When selecting check-in, clear any existing checkout date
                   setSelectedDates({ from: range.from, to: undefined });
                   if (range.from) {
-                    setSelectedMode('checkout');
+                    setSelectedMode("checkout");
                   }
                 } else {
                   // When selecting checkout, maintain the existing check-in date
-                  setSelectedDates({ 
-                    from: selectedDates?.from, 
-                    to: range.to 
+                  setSelectedDates({
+                    from: selectedDates?.from,
+                    to: range.to,
                   });
                   if (range.to) {
                     setShowCalendar(false);
-                    setSelectedMode('checkin'); // Reset for next selection
+                    setSelectedMode("checkin"); // Reset for next selection
                   }
                 }
               }}
@@ -630,9 +718,11 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               components={{ DayContent }}
               className="custom-calendar"
               defaultMonth={selectedDates?.from || today}
-              fromDate={selectedMode === 'checkout' && selectedDates?.from 
-                ? selectedDates.from 
-                : today}
+              fromDate={
+                selectedMode === "checkout" && selectedDates?.from
+                  ? selectedDates.from
+                  : today
+              }
               styles={{
                 months: { display: "flex", gap: "1rem" },
                 caption: { color: "var(--primary)" },
@@ -657,12 +747,12 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
 
   useEffect(() => {
     const handleResize = () => {
-      setNumberOfMonths(window.innerWidth >= 640 ? 2 : 1)
-    }
+      setNumberOfMonths(window.innerWidth >= 640 ? 2 : 1);
+    };
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   if (variant === "mobile") {
     return (
@@ -672,7 +762,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <SheetTrigger asChild>
               <div className="flex flex-col cursor-pointer">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-bold">{formatPrice(price)} AED</span>
+                  <span className="text-xl font-bold">
+                    {formatPrice(price)} AED
+                  </span>
                   <span className="text-sm text-muted-foreground">/ night</span>
                 </div>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
@@ -706,9 +798,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                       <div className="flex items-center justify-between">
                         <h3 className="font-medium">Dates</h3>
                         {(selectedDates?.from || selectedDates?.to) && (
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
+                          <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={resetDates}
                             className="h-6 px-2 text-xs"
                           >
@@ -719,35 +811,40 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                       <div className="p-4 bg-muted/50 rounded-lg space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1.5">
-                            <label className="text-sm text-muted-foreground">Check-in</label>
+                            <label className="text-sm text-muted-foreground">
+                              Check-in
+                            </label>
                             <Button
-  variant="outline"
-  className="w-full justify-start text-left font-normal"
-  onClick={() => {
-    setSelectedMode('checkin');
-    setShowCalendar(true);
-  }}
->
-  <Calendar className="mr-2 h-4 w-4" />
-  {selectedDates?.from ? format(selectedDates.from, "MMM d, yyyy") : "Select date"}
-</Button>
-
-
-
+                              variant="outline"
+                              className="w-full justify-start text-left font-normal"
+                              onClick={() => {
+                                setSelectedMode("checkin");
+                                setShowCalendar(true);
+                              }}
+                            >
+                              <Calendar className="mr-2 h-4 w-4" />
+                              {selectedDates?.from
+                                ? format(selectedDates.from, "MMM d, yyyy")
+                                : "Select date"}
+                            </Button>
                           </div>
                           <div className="space-y-1.5">
-                            <label className="text-sm text-muted-foreground">Check-out</label>
+                            <label className="text-sm text-muted-foreground">
+                              Check-out
+                            </label>
                             <Button
-  variant="outline"
-  className="w-full justify-start text-left font-normal"
-  onClick={() => {
-    setSelectedMode('checkout');
-    setShowCalendar(true);
-  }}
->
-  <Calendar className="mr-2 h-4 w-4" />
-  {selectedDates?.to ? format(selectedDates.to, "MMM d, yyyy") : "Select date"}
-</Button>
+                              variant="outline"
+                              className="w-full justify-start text-left font-normal"
+                              onClick={() => {
+                                setSelectedMode("checkout");
+                                setShowCalendar(true);
+                              }}
+                            >
+                              <Calendar className="mr-2 h-4 w-4" />
+                              {selectedDates?.to
+                                ? format(selectedDates.to, "MMM d, yyyy")
+                                : "Select date"}
+                            </Button>
                           </div>
                         </div>
                       </div>
@@ -777,16 +874,16 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                       <h3 className="font-medium">Price details</h3>
                       <div className="p-4 bg-muted/50 rounded-lg space-y-4">
                         <div className="space-y-3">
-                                        <div className="flex justify-between">
-                <span>
-                  {isMonthlyBooking
-                    ? "Monthly booking rate"
-                    : nights === 1 
-                      ? "Price for 1 night" 
-                      : `Price × ${nights} nights`}
-                </span>
-                <span>{formatPrice(subtotal)} AED</span>
-              </div>
+                          <div className="flex justify-between">
+                            <span>
+                              {isMonthlyBooking
+                                ? "Monthly booking rate"
+                                : nights === 1
+                                ? "Price for 1 night"
+                                : `Price × ${nights} nights`}
+                            </span>
+                            <span>{formatPrice(subtotal)} AED</span>
+                          </div>
                           <div className="flex justify-between">
                             <span>Cleaning fee</span>
                             <span>{formatPrice(cleaningFee)} AED</span>
@@ -801,8 +898,8 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                           </div>
                           <div className="flex justify-between">
                             <span>
-                              {nights === 1 
-                                ? "DTCM fee (1 night × 15 AED)" 
+                              {nights === 1
+                                ? "DTCM fee (1 night × 15 AED)"
                                 : `DTCM fee (${nights} nights × 15 AED)`}
                             </span>
                             <span>{formatPrice(dtcmFee)} AED</span>
@@ -819,91 +916,115 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                 </div>
 
                 {/* Chat with Owner Section for Mobile */}
-                        <div className="p-3 sm:p-4 border-t bg-background">
-          {/* Monthly Booking Option */}
-          <div className="mb-4 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-medium">Looking for a longer stay?</h3>
-                <p className="text-xs text-muted-foreground">Get special rates for monthly bookings</p>
-              </div>
-              <Button 
-                variant="secondary" 
-                className="bg-blue-500 hover:bg-blue-600 text-white" 
-                onClick={handleMonthlyBooking}
-                disabled={isMonthlyBooking || isCheckingAvailability}
-              >
-                {isMonthlyBooking ? "Selected" : isCheckingAvailability ? "Checking..." : "Monthly Booking"}
-                {isCheckingAvailability && (
-                  <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
-                )}
-              </Button>
-            </div>
-            {isMonthlyBooking && (
-              <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
-                <div className="flex justify-between items-center">
-                  <p className="font-medium flex items-center gap-1">
-                    <span className="text-green-500 text-base">✓</span> Monthly booking selected
-                  </p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
-                    onClick={() => {
-                      setIsMonthlyBooking(false);
-                      setSelectedDates(undefined);
-                      setSelectedMode('checkin');
-                      setConflictDates([]);
-                      
-                      toast({
-                        description: "Monthly booking reset. You can now select regular dates or try monthly booking again.",
-                        duration: 3000
-                      });
-                    }}
-                  >
-                    <X className="w-3 h-3 mr-1" /> Reset
-                  </Button>
-                </div>
-                <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
-                  <p className="flex justify-between">
-                    <span>Check-in:</span>
-                    <span className="font-medium">{format(selectedDates?.from || new Date(), "MMM d, yyyy")}</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Check-out:</span>
-                    <span className="font-medium">{format(selectedDates?.to || new Date(), "MMM d, yyyy")}</span>
-                  </p>
-                  <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
-                    <span>Monthly rate:</span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">{formatPrice(monthlyPrice)} AED</span>
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-          
-          <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 mb-4">
+                <div className="p-3 sm:p-4 border-t bg-background">
+                  {/* Monthly Booking Option */}
+                  <div className="mb-4 p-3 sm:p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-sm font-medium">
+                          Looking for a longer stay?
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          Get special rates for monthly bookings
+                        </p>
+                      </div>
+                      <Button
+                        variant="secondary"
+                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                        onClick={handleMonthlyBooking}
+                        disabled={isMonthlyBooking || isCheckingAvailability}
+                      >
+                        {isMonthlyBooking
+                          ? "Selected"
+                          : isCheckingAvailability
+                          ? "Checking..."
+                          : "Monthly Booking"}
+                        {isCheckingAvailability && (
+                          <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
+                        )}
+                      </Button>
+                    </div>
+                    {isMonthlyBooking && (
+                      <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
+                        <div className="flex justify-between items-center">
+                          <p className="font-medium flex items-center gap-1">
+                            <span className="text-green-500 text-base">✓</span>{" "}
+                            Monthly booking selected
+                          </p>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                            onClick={() => {
+                              setIsMonthlyBooking(false);
+                              setSelectedDates(undefined);
+                              setSelectedMode("checkin");
+                              setConflictDates([]);
+
+                              toast({
+                                description:
+                                  "Monthly booking reset. You can now select regular dates or try monthly booking again.",
+                                duration: 3000,
+                              });
+                            }}
+                          >
+                            <X className="w-3 h-3 mr-1" /> Reset
+                          </Button>
+                        </div>
+                        <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
+                          <p className="flex justify-between">
+                            <span>Check-in:</span>
+                            <span className="font-medium">
+                              {format(
+                                selectedDates?.from || new Date(),
+                                "MMM d, yyyy"
+                              )}
+                            </span>
+                          </p>
+                          <p className="flex justify-between">
+                            <span>Check-out:</span>
+                            <span className="font-medium">
+                              {format(
+                                selectedDates?.to || new Date(),
+                                "MMM d, yyyy"
+                              )}
+                            </span>
+                          </p>
+                          <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
+                            <span>Monthly rate:</span>
+                            <span className="font-medium text-blue-600 dark:text-blue-400">
+                              {formatPrice(monthlyPrice)} AED
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20 mb-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="text-xs sm:text-sm font-medium text-foreground">Need help with booking?</span>
+                        <span className="text-xs sm:text-sm font-medium text-foreground">
+                          Need help with booking?
+                        </span>
                       </div>
                     </div>
                     <div className="w-full">
                       <ChatWithOwner propertyId={id} variant="outline" />
                     </div>
                   </div>
-                  
+
                   <Button
                     className="w-full"
                     size="lg"
                     onClick={() => {
                       if (selectedDates?.from && selectedDates?.to) {
-                        proceedToCheckout()
-                        setIsSheetOpen(false)
+                        proceedToCheckout();
+                        setIsSheetOpen(false);
                       } else {
-                        setShowCalendar(true)
-                        setIsSheetOpen(false)
+                        setShowCalendar(true);
+                        setIsSheetOpen(false);
                       }
                     }}
                     disabled={isProcessing}
@@ -923,9 +1044,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             className="flex-shrink-0"
             onClick={() => {
               if (selectedDates?.from && selectedDates?.to) {
-                proceedToCheckout()
+                proceedToCheckout();
               } else {
-                setShowCalendar(true)
+                setShowCalendar(true);
               }
             }}
             disabled={isProcessing}
@@ -945,13 +1066,12 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         {/* Add padding to prevent content from being hidden behind the fixed bottom bar */}
         <div className="h-[80px]" />
       </>
-    )
+    );
   }
-
 
   return (
     <Card className="sticky top-4 md:top-24 w-full max-w-md mx-auto shadow-lg bg-card border-none">
-      <CardHeader >
+      <CardHeader>
         {/* <div className="flex justify-between items-start flex-wrap gap-2">
           <div>
             <CardTitle className="text-xl sm:text-2xl font-bold text-foreground">
@@ -977,11 +1097,13 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-foreground">Check-in</label>
+              <label className="text-sm font-medium text-foreground">
+                Check-in
+              </label>
               {selectedDates?.from && (
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={resetDates}
                   className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground"
                 >
@@ -993,26 +1115,32 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               variant="outline"
               className="w-full justify-start text-left font-normal"
               onClick={() => {
-                setSelectedMode('checkin');
+                setSelectedMode("checkin");
                 setShowCalendar(true);
               }}
             >
               <Calendar className="mr-2 h-4 w-4" />
-              {selectedDates?.from ? format(selectedDates.from, "MMM d, yyyy") : "Select date"}
+              {selectedDates?.from
+                ? format(selectedDates.from, "MMM d, yyyy")
+                : "Select date"}
             </Button>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">Check-out</label>
+            <label className="text-sm font-medium text-foreground">
+              Check-out
+            </label>
             <Button
               variant="outline"
               className="w-full justify-start text-left font-normal"
               onClick={() => {
-                setSelectedMode('checkout');
+                setSelectedMode("checkout");
                 setShowCalendar(true);
               }}
             >
               <Calendar className="mr-2 h-4 w-4" />
-              {selectedDates?.to ? format(selectedDates.to, "MMM d, yyyy") : "Select date"}
+              {selectedDates?.to
+                ? format(selectedDates.to, "MMM d, yyyy")
+                : "Select date"}
             </Button>
           </div>
         </div>
@@ -1038,110 +1166,126 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         </div>
 
         <div className="space-y-3 p-4 bg-muted/50 dark:bg-muted/10 rounded-lg">
-  {selectedDates?.from && selectedDates?.to && (
-    <div className="space-y-2">
-      <div className="flex justify-between text-sm">
-        <span>
-          {nights === 1 
-            ? "Price for 1 night" 
-            : `Price × ${nights} nights`}
-        </span>
-        <span>{formatPrice(subtotal)} AED</span>
-      </div>
-                    {nights > 0 && (
+          {selectedDates?.from && selectedDates?.to && (
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>
+                  {nights === 1
+                    ? "Price for 1 night"
+                    : `Price × ${nights} nights`}
+                </span>
+                <span>{formatPrice(subtotal)} AED</span>
+              </div>
+              {nights > 0 && (
                 <div className="text-xs text-muted-foreground">
                   {isMonthlyBooking
                     ? "Special monthly rate applied"
-                    : nights === 1 
-                      ? "Single night rate applied" 
-                      : "Variable daily rates applied for your stay"}
+                    : nights === 1
+                    ? "Single night rate applied"
+                    : "Variable daily rates applied for your stay"}
                 </div>
               )}
-    </div>
-  )}
-  <Separator />
-  <div className="flex justify-between font-semibold text-lg text-foreground">
-    <span 
-      onClick={() => setShowPriceBreakdown(true)}
-      className="flex items-center gap-2 cursor-pointer hover:text-gray-600 text-sm"
-    >
-      Total before taxes
-      <ChevronDown className="h-4 w-4" />
-    </span>
-    <span>
-      {formatPrice(total)} AED
-    </span>
-  </div>
-</div>
+            </div>
+          )}
+          <Separator />
+          <div className="flex justify-between font-semibold text-lg text-foreground">
+            <span
+              onClick={() => setShowPriceBreakdown(true)}
+              className="flex items-center gap-2 cursor-pointer hover:text-gray-600 text-sm"
+            >
+              Total before taxes
+              <ChevronDown className="h-4 w-4" />
+            </span>
+            <span>{formatPrice(total)} AED</span>
+          </div>
+        </div>
 
         {/* Chat with Owner Section */}
-                  {/* Monthly Booking Button for Desktop */}
-          <div className="space-y-3 p-3 sm:p-4 mb-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-sm font-medium">Looking for a longer stay?</h3>
-                <p className="text-xs text-muted-foreground">Get special rates for monthly bookings</p>
-              </div>
-              <Button 
-                variant="secondary" 
-                className="bg-blue-500 hover:bg-blue-600 text-white" 
-                onClick={handleMonthlyBooking}
-                disabled={isMonthlyBooking || isCheckingAvailability}
-              >
-                {isMonthlyBooking ? "Selected" : isCheckingAvailability ? "Checking..." : "Monthly Booking"}
-                {isCheckingAvailability && (
-                  <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
-                )}
-              </Button>
+        {/* Monthly Booking Button for Desktop */}
+        <div className="space-y-3 p-3 sm:p-4 mb-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-medium">
+                Looking for a longer stay?
+              </h3>
+              <p className="text-xs text-muted-foreground">
+                Get special rates for monthly bookings
+              </p>
             </div>
-            {isMonthlyBooking && (
-              <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
-                <div className="flex justify-between items-center">
-                  <p className="font-medium flex items-center gap-1">
-                    <span className="text-green-500 text-base">✓</span> Monthly booking selected
-                  </p>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
-                    onClick={() => {
-                      setIsMonthlyBooking(false);
-                      setSelectedDates(undefined);
-                      setSelectedMode('checkin');
-                      setConflictDates([]);
-                      
-                      toast({
-                        description: "Monthly booking reset. You can now select regular dates or try monthly booking again.",
-                        duration: 3000
-                      });
-                    }}
-                  >
-                    <X className="w-3 h-3 mr-1" /> Reset
-                  </Button>
-                </div>
-                <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
-                  <p className="flex justify-between">
-                    <span>Check-in:</span>
-                    <span className="font-medium">{format(selectedDates?.from || new Date(), "MMM d, yyyy")}</span>
-                  </p>
-                  <p className="flex justify-between">
-                    <span>Check-out:</span>
-                    <span className="font-medium">{format(selectedDates?.to || new Date(), "MMM d, yyyy")}</span>
-                  </p>
-                  <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
-                    <span>Monthly rate:</span>
-                    <span className="font-medium text-blue-600 dark:text-blue-400">{formatPrice(monthlyPrice)} AED</span>
-                  </p>
-                </div>
-              </div>
-            )}
+            <Button
+              variant="secondary"
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+              onClick={handleMonthlyBooking}
+              disabled={isMonthlyBooking || isCheckingAvailability}
+            >
+              {isMonthlyBooking
+                ? "Selected"
+                : isCheckingAvailability
+                ? "Checking..."
+                : "Monthly Booking"}
+              {isCheckingAvailability && (
+                <div className="ml-2 w-4 h-4 border-2 border-t-white rounded-full animate-spin"></div>
+              )}
+            </Button>
           </div>
-            
-          <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
+          {isMonthlyBooking && (
+            <div className="mt-2 bg-blue-100/50 dark:bg-blue-900/30 p-2 rounded text-xs">
+              <div className="flex justify-between items-center">
+                <p className="font-medium flex items-center gap-1">
+                  <span className="text-green-500 text-base">✓</span> Monthly
+                  booking selected
+                </p>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                  onClick={() => {
+                    setIsMonthlyBooking(false);
+                    setSelectedDates(undefined);
+                    setSelectedMode("checkin");
+                    setConflictDates([]);
+
+                    toast({
+                      description:
+                        "Monthly booking reset. You can now select regular dates or try monthly booking again.",
+                      duration: 3000,
+                    });
+                  }}
+                >
+                  <X className="w-3 h-3 mr-1" /> Reset
+                </Button>
+              </div>
+              <div className="mt-1 p-1 border border-blue-200 dark:border-blue-800 rounded bg-white dark:bg-slate-900">
+                <p className="flex justify-between">
+                  <span>Check-in:</span>
+                  <span className="font-medium">
+                    {format(selectedDates?.from || new Date(), "MMM d, yyyy")}
+                  </span>
+                </p>
+                <p className="flex justify-between">
+                  <span>Check-out:</span>
+                  <span className="font-medium">
+                    {format(selectedDates?.to || new Date(), "MMM d, yyyy")}
+                  </span>
+                </p>
+                <p className="flex justify-between mt-1 pt-1 border-t border-blue-100 dark:border-blue-900">
+                  <span>Monthly rate:</span>
+                  <span className="font-medium text-blue-600 dark:text-blue-400">
+                    {formatPrice(monthlyPrice)} AED
+                  </span>
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-3 p-3 sm:p-4 bg-primary/5 dark:bg-primary/10 rounded-lg border border-primary/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-xs sm:text-sm font-medium text-foreground">Need help with booking?</span>
+              <span className="text-xs sm:text-sm font-medium text-foreground">
+                Need help with booking?
+              </span>
             </div>
           </div>
           <div className="w-full">
@@ -1155,7 +1299,12 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           {/* <Button className="w-full" size="lg" onClick={() => setShowBookingModal(true)} disabled={!isFormValid}>
             {isPending ? "Processing..." : "Reserve Now"}
           </Button> */}
-          <Button className="w-full" size="lg" onClick={proceedToCheckout} disabled={!isFormValid || isProcessing}>
+          <Button
+            className="w-full"
+            size="lg"
+            onClick={proceedToCheckout}
+            disabled={!isFormValid || isProcessing}
+          >
             {isProcessing ? "Processing Payment..." : "Pay Now"}
           </Button>
         </div>
@@ -1168,7 +1317,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         <div className="hidden md:flex flex-col gap-2 p-4 rounded-lg bg-primary/5 dark:bg-primary/10">
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-primary" />
-            <span className="text-sm text-foreground">Premium Protection included</span>
+            <span className="text-sm text-foreground">
+              Premium Protection included
+            </span>
           </div>
         </div>
       </CardFooter>
@@ -1178,16 +1329,20 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           <DialogHeader>
             <DialogTitle>Confirm Your Booking</DialogTitle>
             <DialogDescription>
-              {isMonthlyBooking 
-                ? "Please review your monthly stay details" 
-                : nights === 1 
-                  ? "Please review your 1-night stay details" 
-                  : `Please review your ${nights}-night stay details`}
+              {isMonthlyBooking
+                ? "Please review your monthly stay details"
+                : nights === 1
+                ? "Please review your 1-night stay details"
+                : `Please review your ${nights}-night stay details`}
             </DialogDescription>
           </DialogHeader>
 
           {bookingStatus.message && (
-            <Alert variant={bookingStatus.type === "error" ? "destructive" : "default"}>
+            <Alert
+              variant={
+                bookingStatus.type === "error" ? "destructive" : "default"
+              }
+            >
               <AlertDescription>{bookingStatus.message}</AlertDescription>
             </Alert>
           )}
@@ -1201,7 +1356,8 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
               <div>
                 <h4 className="font-medium text-foreground">Check-in</h4>
                 <p className="text-sm text-muted-foreground">
-                  {selectedDates?.from && format(selectedDates.from, "MMM d, yyyy")}
+                  {selectedDates?.from &&
+                    format(selectedDates.from, "MMM d, yyyy")}
                 </p>
               </div>
               <div>
@@ -1220,21 +1376,23 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <div>
               <h4 className="font-medium text-foreground">Duration</h4>
               <p className="text-sm text-muted-foreground">
-                {isMonthlyBooking 
-                  ? "Monthly booking (30 days)" 
+                {isMonthlyBooking
+                  ? "Monthly booking (30 days)"
                   : `${nights} ${nights === 1 ? "night" : "nights"}`}
               </p>
             </div>
             <Separator />
             <div>
               <h4 className="font-medium text-foreground">Total Price</h4>
-              <p className="text-2xl font-bold text-foreground">{formatPrice(total)} AED</p>
+              <p className="text-2xl font-bold text-foreground">
+                {formatPrice(total)} AED
+              </p>
               <p className="text-xs text-muted-foreground mt-1">
                 {isMonthlyBooking
-                  ? "Monthly rate with applicable fees" 
-                  : nights === 1 
-                    ? "Single night rate with applicable fees" 
-                    : "Includes all applicable fees and taxes"}
+                  ? "Monthly rate with applicable fees"
+                  : nights === 1
+                  ? "Single night rate with applicable fees"
+                  : "Includes all applicable fees and taxes"}
               </p>
             </div>
           </div>
@@ -1242,30 +1400,32 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
             <Button
               variant="outline"
               onClick={() => {
-                setShowBookingModal(false)
-                setBookingStatus({ type: "", message: "" })
+                setShowBookingModal(false);
+                setBookingStatus({ type: "", message: "" });
               }}
               disabled={isPending}
             >
               Cancel
             </Button>
-            <Button onClick={handleBookingSubmit} disabled={isPending || !isFormValid}>
+            <Button
+              onClick={handleBookingSubmit}
+              disabled={isPending || !isFormValid}
+            >
               {isPending ? "Processing..." : "Confirm Booking"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-
       <AuthForm open={showSignupForm} onOpenChange={setShowSignupForm} />
-      
+
       <Dialog open={showPriceBreakdown} onOpenChange={setShowPriceBreakdown}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Price Breakdown</DialogTitle>
             <DialogDescription>
-              {nights === 1 
-                ? "Detailed breakdown for your 1-night stay" 
+              {nights === 1
+                ? "Detailed breakdown for your 1-night stay"
                 : `Detailed breakdown for your ${nights}-night stay`}
             </DialogDescription>
           </DialogHeader>
@@ -1275,15 +1435,15 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                 <Tooltip>
                   <TooltipTrigger className="flex items-center gap-1">
                     <span>
-                      {nights === 1 
-                        ? "Price for 1 night" 
+                      {nights === 1
+                        ? "Price for 1 night"
                         : `Price × ${nights} nights`}
                     </span>
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    {nights === 1 
-                      ? "Single night rate" 
+                    {nights === 1
+                      ? "Single night rate"
                       : "Variable daily rates applied"}
                   </TooltipContent>
                 </Tooltip>
@@ -1321,7 +1481,9 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                     <span>VAT (5%)</span>
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
-                  <TooltipContent>Value Added Tax applied on subtotal</TooltipContent>
+                  <TooltipContent>
+                    Value Added Tax applied on subtotal
+                  </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <span>{formatPrice(vat)} AED</span>
@@ -1331,8 +1493,8 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
                 <Tooltip>
                   <TooltipTrigger className="flex items-center gap-1 text-sm">
                     <span>
-                      {nights === 1 
-                        ? "DTCM fee (1 night × 15 AED)" 
+                      {nights === 1
+                        ? "DTCM fee (1 night × 15 AED)"
                         : `DTCM fee (${nights} nights × 15 AED)`}
                     </span>
                     <Info className="w-4 h-4" />
@@ -1405,20 +1567,20 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
           .custom-calendar {
             width: 100%;
           }
-          
+
           .custom-calendar .rdp-month {
             width: 100%;
           }
-          
+
           .custom-calendar .rdp-table {
             width: 100%;
           }
-          
+
           .custom-calendar .rdp-day {
             width: 100%;
             height: 40px;
           }
-          
+
           .custom-calendar .rdp-nav {
             padding: 0 1rem;
           }
@@ -1428,17 +1590,16 @@ export const BookingCard = ({ price, id, dailyPrice = [], cleaningFee,variant }:
         }
 
         /* Dark mode adjustments */
-        :root[class~='dark'] .custom-calendar .rdp-day_selected {
+        :root[class~="dark"] .custom-calendar .rdp-day_selected {
           background-color: hsl(var(--primary));
           color: hsl(var(--primary-foreground));
         }
 
-        :root[class~='dark'] .custom-calendar .rdp-day_range_middle {
+        :root[class~="dark"] .custom-calendar .rdp-day_range_middle {
           background-color: hsl(var(--primary) / 0.2);
         }
       `}</style>
       <Toaster />
     </Card>
-  )
-}
-
+  );
+};
