@@ -89,7 +89,7 @@ export function PropertyGrid() {
         return [...prevProperties, ...newProperties];
       });
     }
-  }, [propertyData]);
+  }, [isLoading]);
 
   React.useEffect(() => {
     if (inView && !isLoading && currentPage < (pagination?.totalPages || 0)) {
@@ -259,12 +259,35 @@ export function PropertyGrid() {
           </div>
           
           {/* Price Section */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-baseline gap-1">
-              <span className="text-lg font-bold text-gray-900">
-                {currentPrice} AED
-              </span>
-              <span className="text-sm text-gray-500">per night</span>
+          <div className="space-y-2">
+            {/* Daily Price */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-baseline gap-1">
+                <span className="text-lg font-bold text-gray-900">
+                  {currentPrice} AED
+                </span>
+                <span className="text-sm text-gray-500">per night</span>
+              </div>
+            </div>
+            
+            {/* Monthly and Yearly Rent */}
+            <div className="flex items-center justify-between text-sm">
+              {property?.monthlyRent && (
+                <div className="flex items-baseline gap-1">
+                  <span className="font-semibold text-gray-800">
+                    {property.monthlyRent.toLocaleString()} AED
+                  </span>
+                  <span className="text-gray-500">/month</span>
+                </div>
+              )}
+              {property?.yearlyRent && (
+                <div className="flex items-baseline gap-1">
+                  <span className="font-semibold text-gray-800">
+                    {property.yearlyRent.toLocaleString()} AED
+                  </span>
+                  <span className="text-gray-500">/year</span>
+                </div>
+              )}
             </div>
           </div>
         </CardContent>
