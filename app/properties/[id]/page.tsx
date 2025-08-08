@@ -152,6 +152,8 @@ const PropertyPage = ({ params }: PageProps) => {
                       id={property?._id}
                       dailyPrice={property?.dailyPrices}
                       cleaningFee={property?.cleaningfee}
+                      monthlyRent={property?.monthlyRent}
+                      yearlyRent={property?.yearlyRent}
                     />
                   </Suspense>
                 </Card>

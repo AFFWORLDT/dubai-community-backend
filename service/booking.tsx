@@ -11,6 +11,16 @@ export const getMonthlyBookingPrice = async (): Promise<any> => {
   }
 };
 
+export const getPropertyMonthlyRent = async (propertyId: string): Promise<any> => {
+  try {
+    const response: AxiosResponse<any> = await api.get(`/api/v1/booking/property/${propertyId}/monthly-rent`);
+    return response?.data;
+  } catch (error:any) {
+    console.error('Error getting property monthly rent:', error);
+    throw new Error(error);
+  }
+};
+
 export const createBooking = async (payload:any): Promise<any> => {
     try {
       const response: AxiosResponse<any> = await api.post(`/api/v1/booking/bookings`, payload);
