@@ -1,5 +1,10 @@
-    name = "my-worker"
-    main = "_worker.js"
-    compatibility_date = "2024-09-23" 
-    [compatibility_flags]
-    nodejs_compat = true
+# Required for Pages build
+pages_build_output_dir = ".vercel/output/static"
+
+# Worker compatibility config
+name = "my-worker"
+main = "_worker.js"
+compatibility_date = "2024-09-23"
+
+[compatibility_flags]
+nodejs_compat = true
