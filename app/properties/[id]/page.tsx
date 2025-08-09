@@ -14,6 +14,8 @@ import { PropertyReviews } from "@/components/property/property-reviews";
 import { PropertyPolicies } from "@/components/property/property-policies";
 import { MapPin } from "lucide-react";
 
+export const runtime = 'edge';
+
 interface PageProps {
   params: {
     id: string;

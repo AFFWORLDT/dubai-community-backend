@@ -11,6 +11,8 @@ import { useCancelBooking } from "@/features/Booking/useCancleBooking"
 import { useState } from "react"
 import { CancellationModal } from "@/features/Order/CancleBookingTable"
 
+export const runtime = 'edge';
+
 interface PageProps {
   params: {
     id: string

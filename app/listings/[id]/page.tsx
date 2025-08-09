@@ -12,6 +12,8 @@ import { BookingCard } from "@/components/booking-card"
 import { HostInfo } from "@/components/property/host-info"
 import { SkeletonCard } from "@/components/ui/skeleton-card"
 
+export const runtime = 'edge';
+
 interface PageProps {
   params: {
     id: string
