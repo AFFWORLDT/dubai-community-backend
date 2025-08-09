@@ -154,6 +154,10 @@ const PropertyPage = ({ params }: PageProps) => {
                       cleaningFee={property?.cleaningfee}
                       monthlyRent={property?.monthlyRent}
                       yearlyRent={property?.yearlyRent}
+                      depositMonth={property?.depositMonth}
+                      depositYear={property?.depositYear}
+                      commisionMonth={property?.commisionMonth}
+                      commisionYear={property?.commisionYear}
                     />
                   </Suspense>
                 </Card>

@@ -89,6 +89,11 @@ interface BookingCardProps {
   variant?: "default" | "mobile";
   monthlyRent?: number;
   yearlyRent?: number;
+  depositMonth?: number;
+  depositYear?: number;
+  commisionMonth?: number;
+  commisionYear?: number;
+ 
 }
 // Add this helper function at the top of your component
 const formatPrice = (price: number | undefined) => {
@@ -104,6 +109,10 @@ export const BookingCard = ({
   variant,
   monthlyRent,
   yearlyRent,
+  depositMonth,
+  depositYear,
+  commisionMonth,
+  commisionYear,
 }: BookingCardProps) => {
   const [selectedDates, setSelectedDates] = useState<any | undefined>();
   const [guests, setGuests] = useState("1");
@@ -325,14 +334,54 @@ export const BookingCard = ({
 
   const { subtotal, nights } = useMemo(
     () => calculateTotal(selectedDates?.from, selectedDates?.to),
-    [selectedDates, priceByDate, price]
+    [selectedDates, priceByDate, price, isMonthlyBooking, isYearlyBooking, monthlyPrice, yearlyPrice]
   );
 
-  const vat = Math.floor(subtotal * 0.05); // 5% VAT
-  const dtcmFee = nights * 15;
-  const serviceFee = Math.floor(subtotal * 0.025);
-  const cleaningFeeAmount = cleaningFee || 0;
-  const total = subtotal + cleaningFeeAmount + serviceFee + vat + dtcmFee;
+  // Define commission and deposit fees for monthly/yearly bookings
+  const commissionMonth = commisionMonth || 20;
+  const commissionYear = commisionYear || 40;
+  const depositMonth1 = depositMonth || 50;
+  const depositYear1 = depositYear || 100;
+
+  // Calculate fees based on booking type
+  const calculateFees = () => {
+    if (isMonthlyBooking) {
+      return {
+        commission: commissionMonth,
+        deposit: depositMonth1,
+        vat: 0,
+        dtcmFee: 0,
+        serviceFee: 0,
+        cleaningFeeAmount: 0,
+      };
+    } else if (isYearlyBooking) {
+      return {
+        commission: commissionYear,
+        deposit: depositYear1,
+        vat: 0,
+        dtcmFee: 0,
+        serviceFee: 0,
+        cleaningFeeAmount: 0,
+      };
+    } else {
+      // Regular booking fees
+      return {
+        commission: 0,
+        deposit: 0,
+        vat: Math.floor(subtotal * 0.05), // 5% VAT
+        dtcmFee: nights * 15,
+        serviceFee: Math.floor(subtotal * 0.025),
+        cleaningFeeAmount: cleaningFee || 0,
+      };
+    }
+  };
+
+  const fees = calculateFees();
+  const { commission, deposit, vat, dtcmFee, serviceFee, cleaningFeeAmount } = fees;
+  
+  const total = isMonthlyBooking || isYearlyBooking 
+    ? subtotal + commission + deposit
+    : subtotal + cleaningFeeAmount + serviceFee + vat + dtcmFee;
 
   const proceedToCheckout = async () => {
     if (!isFormValid || !selectedDates?.from || !selectedDates?.to) return;
@@ -970,7 +1019,9 @@ export const BookingCard = ({
                         <div className="space-y-3">
                           <div className="flex justify-between">
                             <span>
-                              {isMonthlyBooking
+                              {isYearlyBooking
+                                ? "Yearly booking rate"
+                                : isMonthlyBooking
                                 ? "Monthly booking rate"
                                 : nights === 1
                                 ? "Price for 1 night"
@@ -978,26 +1029,43 @@ export const BookingCard = ({
                             </span>
                             <span>{formatPrice(subtotal)} AED</span>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Cleaning fee</span>
-                            <span>{formatPrice(cleaningFee)} AED</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>Service fee</span>
-                            <span>{formatPrice(serviceFee)} AED</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>VAT (5%)</span>
-                            <span>{formatPrice(vat)} AED</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span>
-                              {nights === 1
-                                ? "DTCM fee (1 night × 15 AED)"
-                                : `DTCM fee (${nights} nights × 15 AED)`}
-                            </span>
-                            <span>{formatPrice(dtcmFee)} AED</span>
-                          </div>
+                          
+                          {/* Show commission and deposit for monthly/yearly bookings */}
+                          {(isMonthlyBooking || isYearlyBooking) ? (
+                            <>
+                              <div className="flex justify-between">
+                                <span>Commission fee</span>
+                                <span>{formatPrice(commission)} AED</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Deposit fee</span>
+                                <span>{formatPrice(deposit)} AED</span>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="flex justify-between">
+                                <span>Cleaning fee</span>
+                                <span>{formatPrice(cleaningFeeAmount)} AED</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>Service fee</span>
+                                <span>{formatPrice(serviceFee)} AED</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>VAT (5%)</span>
+                                <span>{formatPrice(vat)} AED</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span>
+                                  {nights === 1
+                                    ? "DTCM fee (1 night × 15 AED)"
+                                    : `DTCM fee (${nights} nights × 15 AED)`}
+                                </span>
+                                <span>{formatPrice(dtcmFee)} AED</span>
+                              </div>
+                            </>
+                          )}
                         </div>
                         <Separator />
                         <div className="flex justify-between font-semibold text-lg">
@@ -1347,16 +1415,37 @@ export const BookingCard = ({
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span>
-                  {nights === 1
+                  {isYearlyBooking
+                    ? "Yearly booking rate"
+                    : isMonthlyBooking
+                    ? "Monthly booking rate"
+                    : nights === 1
                     ? "Price for 1 night"
                     : `Price × ${nights} nights`}
                 </span>
                 <span>{formatPrice(subtotal)} AED</span>
               </div>
+              
+              {/* Show commission and deposit for monthly/yearly bookings */}
+              {(isMonthlyBooking || isYearlyBooking) && (
+                <>
+                  <div className="flex justify-between text-sm">
+                    <span>Commission fee</span>
+                    <span>{formatPrice(commission)} AED</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span>Deposit fee</span>
+                    <span>{formatPrice(deposit)} AED</span>
+                  </div>
+                </>
+              )}
+              
               {nights > 0 && (
                 <div className="text-xs text-muted-foreground">
-                  {isMonthlyBooking
-                    ? "Special monthly rate applied"
+                  {isYearlyBooking
+                    ? "Special yearly rate with commission and deposit"
+                    : isMonthlyBooking
+                    ? "Special monthly rate with commission and deposit"
                     : nights === 1
                     ? "Single night rate applied"
                     : "Variable daily rates applied for your stay"}
@@ -1694,7 +1783,11 @@ export const BookingCard = ({
           <DialogHeader>
             <DialogTitle>Price Breakdown</DialogTitle>
             <DialogDescription>
-              {nights === 1
+              {isYearlyBooking
+                ? "Detailed breakdown for your yearly booking"
+                : isMonthlyBooking
+                ? "Detailed breakdown for your monthly booking"
+                : nights === 1
                 ? "Detailed breakdown for your 1-night stay"
                 : `Detailed breakdown for your ${nights}-night stay`}
             </DialogDescription>
@@ -1705,14 +1798,22 @@ export const BookingCard = ({
                 <Tooltip>
                   <TooltipTrigger className="flex items-center gap-1">
                     <span>
-                      {nights === 1
+                      {isYearlyBooking
+                        ? "Yearly booking rate"
+                        : isMonthlyBooking
+                        ? "Monthly booking rate"
+                        : nights === 1
                         ? "Price for 1 night"
                         : `Price × ${nights} nights`}
                     </span>
                     <Info className="w-4 h-4" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    {nights === 1
+                    {isYearlyBooking
+                      ? "Special yearly rate"
+                      : isMonthlyBooking
+                      ? "Special monthly rate"
+                      : nights === 1
                       ? "Single night rate"
                       : "Variable daily rates applied"}
                   </TooltipContent>
@@ -1720,60 +1821,97 @@ export const BookingCard = ({
               </TooltipProvider>
               <span className="font-medium">{formatPrice(subtotal)} AED</span>
             </div>
-            <div className="flex justify-between text-foreground">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-1">
-                    <span>Cleaning fee</span>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>One-time cleaning fee</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <span>{formatPrice(cleaningFee)} AED</span>
-            </div>
-            <div className="flex justify-between text-foreground">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-1">
-                    <span>Service fee</span>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>Platform service charge</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <span>{formatPrice(serviceFee)} AED</span>
-            </div>
-            <div className="flex justify-between text-foreground">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-1">
-                    <span>VAT (5%)</span>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Value Added Tax applied on subtotal
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <span>{formatPrice(vat)} AED</span>
-            </div>
-            <div className="flex justify-between text-foreground">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger className="flex items-center gap-1 text-sm">
-                    <span>
-                      {nights === 1
-                        ? "DTCM fee (1 night × 15 AED)"
-                        : `DTCM fee (${nights} nights × 15 AED)`}
-                    </span>
-                    <Info className="w-4 h-4" />
-                  </TooltipTrigger>
-                  <TooltipContent>Dubai Tourism Dirham fee</TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <span>{formatPrice(dtcmFee)} AED</span>
-            </div>
+            
+            {/* Show commission and deposit for monthly/yearly bookings */}
+            {(isMonthlyBooking || isYearlyBooking) ? (
+              <>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        <span>Commission fee</span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {isMonthlyBooking ? "Monthly" : "Yearly"} booking commission fee
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(commission)} AED</span>
+                </div>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        <span>Deposit fee</span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        {isMonthlyBooking ? "Monthly" : "Yearly"} booking deposit fee
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(deposit)} AED</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        <span>Cleaning fee</span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>One-time cleaning fee</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(cleaningFeeAmount)} AED</span>
+                </div>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        <span>Service fee</span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>Platform service charge</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(serviceFee)} AED</span>
+                </div>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1">
+                        <span>VAT (5%)</span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        Value Added Tax applied on subtotal
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(vat)} AED</span>
+                </div>
+                <div className="flex justify-between text-foreground">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-1 text-sm">
+                        <span>
+                          {nights === 1
+                            ? "DTCM fee (1 night × 15 AED)"
+                            : `DTCM fee (${nights} nights × 15 AED)`}
+                        </span>
+                        <Info className="w-4 h-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>Dubai Tourism Dirham fee</TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span>{formatPrice(dtcmFee)} AED</span>
+                </div>
+              </>
+            )}
           </div>
           <Separator className="my-4" />
           <div className="flex justify-between font-semibold text-lg">
