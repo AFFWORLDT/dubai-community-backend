@@ -1,10 +1,10 @@
-# Required for Pages build
+# Tell Pages where to find static output from next-on-pages
 pages_build_output_dir = ".vercel/output/static"
 
-# Worker compatibility config
+# Worker name & entry point
 name = "my-worker"
 main = "_worker.js"
 compatibility_date = "2024-09-23"
 
-[compatibility_flags]
-nodejs_compat = true
+# Enable Node.js built-in APIs for Workers
+compatibility_flags = ["nodejs_compat"]
