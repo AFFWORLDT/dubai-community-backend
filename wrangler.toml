@@ -2,3 +2,6 @@ name = "mybooking24"
 main = ".vercel/output/static/_worker.js/index.js"
 compatibility_date = "2025-08-10"
 compatibility_flags = ["nodejs_compat"]
+
+# Optional: Silence Pages-specific validation
+pages_build_output_dir = ""
