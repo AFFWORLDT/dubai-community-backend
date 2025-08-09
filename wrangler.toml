@@ -1,3 +1,8 @@
 name = "mybooking24"
-pages_build_output_dir = ".vercel/output/static" # or your actual build folder
+main = "./worker.js" 
 compatibility_date = "2025-08-09"
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://24-bookingbackend.example.com/" 
+
+
