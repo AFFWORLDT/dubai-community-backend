@@ -224,7 +224,7 @@ export function HeroSection() {
               </h1>
             </div>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl font-light leading-relaxed tracking-wide animate-fade-up [animation-delay:400ms] [text-shadow:_0_2px_8px_rgb(0_0_0_/_10%)]">
-            Uncover the best deals on stays worldwide
+            Find Every Luxury Home, All in One Destination.
             </p>
           </div>
 
