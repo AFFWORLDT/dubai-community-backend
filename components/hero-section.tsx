@@ -218,13 +218,13 @@ export function HeroSection() {
           <div className="space-y-6 sm:space-y-8 text-left">
             <div className="overflow-hidden">
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] sm:leading-[1.2] tracking-tight animate-fade-up [animation-delay:200ms] [text-shadow:_0_4px_12px_rgb(0_0_0_/_20%)]">
-                Discover <br className="hidden sm:block" />
+              Plan Your Escape  <br className="hidden sm:block" />
                 <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light tracking-widest inline-block bg-gradient-to-r from-white via-white to-white/70 text-transparent bg-clip-text">Ultimate</span>
                 <span className="inline-block bg-gradient-to-r from-white via-white to-primary-200 text-transparent bg-clip-text"> Luxury</span>
               </h1>
             </div>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 max-w-2xl font-light leading-relaxed tracking-wide animate-fade-up [animation-delay:400ms] [text-shadow:_0_2px_8px_rgb(0_0_0_/_10%)]">
-              Experience unparalleled luxury in Dubai's most prestigious locations
+            Uncover the best deals on stays worldwide
             </p>
           </div>
 
