@@ -148,12 +148,12 @@ export function PropertyGrid() {
                 className="object-cover"
                 loading="lazy"
               />
-              <Badge className="absolute top-1 right-1 bg-pink-500 text-white text-xs px-1 py-0.5 rounded-full">
+              <Badge className="absolute top-1 right-1 bg-blue-500 text-white text-xs px-1 py-0.5 rounded-full">
                 {property?.property_type || property?.category || "Apartment"}
               </Badge>
             </div>
             <CardContent className="p-3 flex-1">
-              <h3 className="font-bold text-sm mb-1 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+              <h3 className="font-bold text-sm mb-1 text-gray-900 line-clamp-1 group-hover:text-blue-500 transition-colors">
                 {property?.title || "Untitled Property"}
               </h3>
               <div className="flex items-center gap-1 mb-1 text-xs text-gray-600">
@@ -191,12 +191,12 @@ export function PropertyGrid() {
                 className="object-cover"
                 loading="lazy"
               />
-              <Badge className="absolute top-2 right-2 bg-pink-500 text-white text-xs px-2 py-1 rounded-full">
+              <Badge className="absolute top-2 right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full">
                 {property?.property_type || property?.category || "Apartment"}
               </Badge>
             </div>
             <CardContent className="p-4 flex-1">
-              <h3 className="font-bold text-base mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+              <h3 className="font-bold text-base mb-2 text-gray-900 line-clamp-1 group-hover:text-blue-500 transition-colors">
                 {property?.title || "Untitled Property"}
               </h3>
               <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
@@ -234,7 +234,7 @@ export function PropertyGrid() {
               loading="lazy"
             />
             {/* Pink Apartment Badge - Top Right */}
-            <Badge className="absolute top-4 right-4 bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+            <Badge className="absolute top-4 right-4 bg-blue-500 text-white font-medium px-3 py-1 rounded-full">
               {property?.property_type || property?.category || "Apartment"}
             </Badge>
             {/* Heart Icon - Top Left */}
@@ -245,7 +245,7 @@ export function PropertyGrid() {
         </CardHeader>
         <CardContent className="p-4">
           {/* Bold Title */}
-          <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+          <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-blue-500 transition-colors">
             {property?.title || "Untitled Property"}
           </h3>
           

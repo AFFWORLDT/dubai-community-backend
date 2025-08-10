@@ -8,11 +8,13 @@ import { WorldwideRecognition } from "@/components/worldwide-recognition"
 import { WhatsAppAssistant } from "@/components/ai-assistant"
 import { Testimonials } from "./components/testimonials"
 import { Amenities } from "./components/amenities"
+import { BookingSearchBar } from "@/components/booking-search-bar"
 
 export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <HeroSection />
+      <BookingSearchBar />
       <FeaturedProperties />
       <ExperienceShowcase />
       <Amenities />

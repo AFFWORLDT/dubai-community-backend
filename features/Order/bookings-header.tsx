@@ -9,7 +9,7 @@ export function BookingsHeader() {
         <p className="text-muted-foreground">Manage your bookings and reservations</p>
       </div>
       <div className="flex items-center gap-2">
-        <Button className="bg-red-500 text-white hover:bg-red-600">
+        <Button className="bg-blue-500 text-white hover:bg-blue-600">
           <PlusCircle className="mr-2 h-4 w-4" />
           New Booking
         </Button>

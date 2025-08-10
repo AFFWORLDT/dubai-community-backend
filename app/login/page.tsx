@@ -119,7 +119,7 @@ export default function LoginPage() {
                   })}
                 />
                 {errors.email && (
-                  <p className="text-sm text-red-500">{errors.email.message}</p>
+                  <p className="text-sm text-blue-500">{errors.email.message}</p>
                 )}
               </div>
               <div className="grid gap-2">
@@ -158,7 +158,7 @@ export default function LoginPage() {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-sm text-red-500">{errors.password.message}</p>
+                  <p className="text-sm text-blue-500">{errors.password.message}</p>
                 )}
               </div>
             </CardContent>

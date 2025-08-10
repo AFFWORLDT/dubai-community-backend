@@ -604,7 +604,7 @@ export const BookingCard = ({
           className={cn(
             "text-sm font-medium mb-1",
             isBooked ? "text-muted-foreground" : "",
-            isConflict ? "text-red-500" : "",
+            isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500 font-bold" : "",
             isYearlyPreview ? "text-green-500 font-bold" : ""
           )}
@@ -615,7 +615,7 @@ export const BookingCard = ({
           className={cn(
             "text-[10px] leading-none font-medium flex items-center gap-0.5",
             isBooked ? "text-muted-foreground" : "text-primary",
-            isConflict ? "text-red-500" : "",
+            isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500" : "",
             isYearlyPreview ? "text-green-500" : ""
           )}
@@ -635,7 +635,7 @@ export const BookingCard = ({
           <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />
         )}
         {isConflict && (
-          <div className="absolute inset-0 bg-red-100/50 dark:bg-red-900/25 rounded-md" />
+          <div className="absolute inset-0 bg-blue-100/50 dark:bg-blue-900/25 rounded-md" />
         )}
         {isMonthlyPreview && (
           <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800" />
@@ -1154,7 +1154,7 @@ export const BookingCard = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                            className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                             onClick={() => {
                               setIsMonthlyBooking(false);
                               setSelectedDates(undefined);
@@ -1205,7 +1205,7 @@ export const BookingCard = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                            className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                             onClick={() => {
                               setIsYearlyBooking(false);
                               setSelectedDates(undefined);
@@ -1542,7 +1542,7 @@ export const BookingCard = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                  className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                   onClick={() => {
                     setIsMonthlyBooking(false);
                     setSelectedDates(undefined);
@@ -1593,8 +1593,8 @@ export const BookingCard = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
-                  onClick={() => {
+                  className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
+                          onClick={() => {
                     setIsYearlyBooking(false);
                     setSelectedDates(undefined);
                     setSelectedMode("checkin");

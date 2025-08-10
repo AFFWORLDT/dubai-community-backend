@@ -106,7 +106,7 @@ export function FeaturedProperties() {
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         {/* Pink Apartment Badge - Top Right */}
-                        <Badge className="absolute top-4 right-4 bg-pink-500 text-white font-medium px-3 py-1 rounded-full">
+                        <Badge className="absolute top-4 right-4 bg-blue-500 text-white font-medium px-3 py-1 rounded-full">
                           {property.property_type || "Apartment"}
                         </Badge>
                         {/* Heart Icon - Top Left */}
@@ -116,7 +116,7 @@ export function FeaturedProperties() {
                       </div>
                       <CardContent className="p-4">
                         {/* Bold Title */}
-                        <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-pink-500 transition-colors">
+                        <h3 className="font-bold text-lg mb-2 text-gray-900 line-clamp-1 group-hover:text-blue-500 transition-colors">
                           {property.title}
                         </h3>
                         

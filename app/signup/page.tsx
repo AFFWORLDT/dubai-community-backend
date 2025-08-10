@@ -114,7 +114,7 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit(onSubmit)}>
             <CardContent className="grid gap-4">
               {error && (
-                <div className="text-sm text-red-500">
+                <div className="text-sm text-blue-500">
                   {error}
                 </div>
               )}
@@ -131,7 +131,7 @@ export default function SignUpPage() {
                   })}
                 />
                 {errors.fullName && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-blue-500">
                     {errors.fullName.message}
                   </span>
                 )}
@@ -151,7 +151,7 @@ export default function SignUpPage() {
                   })}
                 />
                 {errors.email && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-blue-500">
                     {errors.email.message}
                   </span>
                 )}
@@ -168,7 +168,7 @@ export default function SignUpPage() {
                   })}
                 />
                 {errors.phone && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-blue-500">
                     {errors.phone.message}
                   </span>
                 )}
@@ -188,7 +188,7 @@ export default function SignUpPage() {
                   })}
                 />
                 {errors.password && (
-                  <span className="text-sm text-red-500">
+                  <span className="text-sm text-blue-500">
                     {errors.password.message}
                   </span>
                 )}

@@ -261,7 +261,7 @@ export function HeroSection() {
                   {/* Enhanced Search Button */}
                   <button
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white rounded-xl md:rounded-full px-6 sm:px-8 py-4 sm:py-5 flex items-center justify-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-3 shadow-xl shadow-red-500/30 hover:shadow-red-600/40 w-full md:w-auto hover:scale-105 transform font-bold border border-red-400/20"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl md:rounded-full px-6 sm:px-8 py-4 sm:py-5 flex items-center justify-center gap-3 transition-all duration-300 mt-4 md:mt-0 md:ml-3 shadow-xl shadow-blue-500/30 hover:shadow-blue-600/40 w-full md:w-auto hover:scale-105 transform font-bold border border-blue-400/20"
                   >
                     <Search className="w-6 h-6 sm:w-7 sm:h-7 text-white stroke-2" />
                     <span className="font-bold text-base sm:text-lg text-white">Search</span>
