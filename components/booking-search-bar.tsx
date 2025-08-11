@@ -37,7 +37,7 @@ export function BookingSearchBar({ onSearch }: BookingSearchBarProps) {
   }
 
   return (
-    <div className="w-full bg-blue-900 py-8 px-4">
+    <div className="w-full">
       <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-xl border-2 border-yellow-400 p-6 shadow-xl">
           <div className="flex flex-col lg:flex-row items-center gap-4">
