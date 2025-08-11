@@ -14,7 +14,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col">
       <HeroSection />
-      <BookingSearchBar />
+      {/* <BookingSearchBar /> */}
       <FeaturedProperties />
       <ExperienceShowcase />
       <Amenities />
