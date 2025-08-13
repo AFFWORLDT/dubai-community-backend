@@ -84,9 +84,9 @@ export function SafetyInformation() {
 
         {/* Emergency Contacts */}
         <section>
-          <Card className="border-destructive border-teal-300">
+          <Card className="border-primary border-blue-300">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-destructive">
+              <CardTitle className="flex items-center gap-2 text-primary">
                 <Phone className="h-5 w-5 text-primary" />
              <span className="text-primary">   Emergency Contacts</span>
               </CardTitle>

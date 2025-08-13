@@ -210,7 +210,7 @@ const PropertyPage = ({ params }: PageProps) => {
                   property?.location?.longitude || "0"
                 }!2s${encodeURIComponent(
                   property?.address?.address || "Dubai"
-                )}!5e0!3m2!1sen!2sae!4v1644856015000!5m2!1sen!2sae&markers=color:red%7C${
+                )}!5e0!3m2!1sen!2sae!4v1644856015000!5m2!1sen!2sae&markers=color:blue%7C${
                   property?.location?.latitude || "25.197197"
                 },${property?.location?.longitude || "55.2707828"}`}
                 width="100%"
@@ -246,6 +246,12 @@ const PropertyPage = ({ params }: PageProps) => {
               dailyPrice={property?.dailyPrices}
               cleaningFee={property?.cleaningfee}
               variant="mobile"
+              monthlyRent={property?.monthlyRent}
+              yearlyRent={property?.yearlyRent}
+              depositMonth={property?.depositMonth}
+              depositYear={property?.depositYear}
+              commisionMonth={property?.commisionMonth}
+              commisionYear={property?.commisionYear}
             />
           </Suspense>
         </div>

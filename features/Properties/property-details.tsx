@@ -66,7 +66,7 @@ export function PropertyDetails({ id }: PropertyDetailsProps) {
     <div className="max-w-7xl mx-auto p-8 bg-gray-50">
       {/* Hero Section */}
      <div className="mb-12">
-  <div className="grid grid-cols-2 gap-4" style={{border:"1px solid red"}}>
+  <div className="grid grid-cols-2 gap-4" style={{border:"1px solid #006CE4"}}>
     <div className="h-[480px]">
       <img 
         src={propertyData.photos[0]}

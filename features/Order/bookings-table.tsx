@@ -104,7 +104,7 @@ const handleCancelBooking = (reason: any) => {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem 
-            className="text-red-600" 
+            className="text-blue-600" 
             onClick={() => setSelectedBookingId(booking._id)}
           >
             Cancel Request
