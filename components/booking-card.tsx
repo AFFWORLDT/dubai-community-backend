@@ -548,6 +548,9 @@ export const BookingCard = ({
   const DayContent = ({ date }: { date: Date }) => {
     const dateStr = format(date, "yyyy-MM-dd");
     const dayPrice = priceByDate.get(dateStr) || price;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const isPastDate = date < today;
 
     // Check if this date is booked
     const isBooked = disabledDates.some((interval: any) => {
@@ -603,6 +606,7 @@ export const BookingCard = ({
         <div
           className={cn(
             "text-sm font-medium mb-1",
+            isPastDate ? "text-gray-400" : "",
             isBooked ? "text-muted-foreground" : "",
             isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500 font-bold" : "",
@@ -614,6 +618,7 @@ export const BookingCard = ({
         <div
           className={cn(
             "text-[10px] leading-none font-medium flex items-center gap-0.5",
+            isPastDate ? "text-gray-400" : "",
             isBooked ? "text-muted-foreground" : "text-primary",
             isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500" : "",
@@ -631,6 +636,9 @@ export const BookingCard = ({
             </>
           )}
         </div>
+        {isPastDate && (
+          <div className="absolute inset-0 bg-gray-100/50 dark:bg-gray-800/25 rounded-md" />
+        )}
         {isBooked && (
           <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />
         )}
