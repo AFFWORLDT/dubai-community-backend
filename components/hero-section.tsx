@@ -223,28 +223,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Enhanced Floating Features with glass effect */}
-      <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent py-2 sm:py-4 z-20">
-        <div className="container mx-auto px-2 sm:px-4">
-          <div className="flex gap-1 sm:gap-2 flex-wrap justify-center">
-            {[
-              { icon: "✨", label: "Exclusive Properties" },
-              { icon: "🔐", label: "VIP Concierge Service" },
-              { icon: "👑", label: "Luxury Amenities" },
-              { icon: "🌊", label: "Stunning Views" },
-              { icon: "✈️", label: "Helipad Access", className: "text-blue-400" },
-            ].map((feature) => (
-              <div
-                key={feature.label}
-                className="flex items-center gap-1 sm:gap-2 bg-white/15 backdrop-blur-xl rounded-full px-2 sm:px-3 py-1 sm:py-1.5 text-white hover:bg-white/25 transition-all duration-300 border border-white/10 shadow-lg hover:scale-105 transform whitespace-nowrap"
-              >
-                <span className={`text-sm sm:text-base ${feature.className || ''}`}>{feature.icon}</span>
-                <span className="text-xs font-medium tracking-wide hidden sm:inline">{feature.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+
 
       {/* Decorative elements */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.02] pointer-events-none" />

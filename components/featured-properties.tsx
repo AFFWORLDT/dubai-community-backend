@@ -64,6 +64,36 @@ export function FeaturedProperties() {
 
   return (
     <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+      {/* Features Section */}
+      <div className="container mx-auto px-4 mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-2xl font-bold mb-6 text-gray-800">Why Choose My Bookings</h2>
+        </motion.div>
+        
+        <div className="flex gap-2 sm:gap-4 flex-wrap justify-center">
+          {[
+            { icon: "✨", label: "Exclusive Properties" },
+            { icon: "🔐", label: "VIP Concierge Service" },
+            { icon: "👑", label: "Luxury Amenities" },
+            { icon: "🌊", label: "Stunning Views" },
+            { icon: "✈️", label: "Helipad Access", className: "text-blue-400" },
+          ].map((feature) => (
+            <div
+              key={feature.label}
+              className="flex items-center gap-1 sm:gap-2 bg-blue-600 text-white rounded-full px-3 sm:px-4 py-2 sm:py-3 hover:bg-blue-700 transition-all duration-300 border border-blue-500 shadow-lg hover:scale-105 transform whitespace-nowrap"
+            >
+              <span className={`text-sm sm:text-base ${feature.className || ''}`}>{feature.icon}</span>
+              <span className="text-xs sm:text-sm font-medium tracking-wide">{feature.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
