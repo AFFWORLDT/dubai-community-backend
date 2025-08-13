@@ -34,7 +34,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center">
               <Logo variant="mobile" />
-              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-8">MYBOOKINGS</span>
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-10">MYBOOKINGS</span>
             </Link>
           </div>
         </div>
