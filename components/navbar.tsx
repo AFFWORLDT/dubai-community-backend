@@ -52,9 +52,9 @@ const Navbar = () => {
               onClick={() => window.location.href = '/'}
               className="flex items-center cursor-pointer"
             >
-              <Logo variant="mobile" className="md:hidden" />
-              <Logo variant="large" className="hidden md:block" />
-              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-10">MY BOOKINGS</span>
+              <Logo variant="small" className="md:hidden -ms-5"/>
+              <Logo variant="small" className="hidden md:block"  />
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-2xl">MY BOOKINGS</span>
             </div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 ml-10">
