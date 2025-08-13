@@ -33,7 +33,7 @@ const Navbar = () => {
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Logo variant="default" />
+              <Logo variant="large" />
             </Link>
           </div>
         </div>
@@ -51,7 +51,7 @@ const Navbar = () => {
               onClick={() => window.location.href = '/'}
               className="flex items-center space-x-2 cursor-pointer"
             >
-              <Logo variant="default" />
+              <Logo variant="large" />
             </div>
             <div className="hidden md:flex items-center space-x-8 ml-10">
               <div
