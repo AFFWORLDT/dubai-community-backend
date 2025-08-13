@@ -46,7 +46,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-blue-600 shadow-lg border-b border-blue-700">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 md:h-16 items-center justify-between">
-          {/* Logo and Desktop Navigation */}
+          {/* Left side - Logo */}
           <div className="flex items-center">
             <div 
               onClick={() => window.location.href = '/'}
@@ -56,6 +56,7 @@ const Navbar = () => {
               <Logo variant="large" className="hidden md:block" />
               <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-2">MYBOOKINGS</span>
             </div>
+            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 ml-10">
               <div
                 onClick={() => window.location.href = '/properties'}
@@ -74,8 +75,13 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Desktop Right Section */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Right side - User Controls */}
+          <div className="flex items-center space-x-4">
+
+                      </div>
+
+            {/* Desktop Right Section */}
+            <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
