@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight, Star, ArrowRight, Heart, MapPin } from "luci
 import Image from "next/image"
 import Link from "next/link"
 import { useProperties } from "@/features/Properties/useProperties"
+import { BookingSearchBar } from "@/components/booking-search-bar"
 
 const getCurrentDailyPrice = (dailyPrices: any[]) => {
   if (!dailyPrices || !Array.isArray(dailyPrices) || dailyPrices.length === 0) return null;
@@ -64,6 +65,29 @@ export function FeaturedProperties() {
 
   return (
     <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+      {/* Search Bar Section */}
+      <div className="container mx-auto px-4 mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-8"
+        >
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Find Your Perfect Stay</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
+            Search for luxury properties in Dubai's most exclusive locations
+          </p>
+        </motion.div>
+        
+        <div className="max-w-4xl mx-auto">
+          <BookingSearchBar onSearch={(searchData) => {
+            // Handle search functionality
+            console.log('Search data:', searchData);
+            // You can add navigation to properties page with search params here
+          }} />
+        </div>
+      </div>
+
       {/* Features Section */}
       <div className="container mx-auto px-4 mb-16">
         <motion.div

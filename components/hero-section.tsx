@@ -217,8 +217,7 @@ export function HeroSection() {
         <div className="w-full mx-auto grid lg:grid-cols-1 gap-8 sm:gap-16 items-center mt-[-50px]">
 
 
-          {/* Search Bar Container with enhanced styling */}
-          <BookingSearchBar onSearch={handleSubmit}/>
+
         
         </div>
       </div>
