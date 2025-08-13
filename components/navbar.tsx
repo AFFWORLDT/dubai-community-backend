@@ -32,8 +32,9 @@ const Navbar = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-blue-600 border-b border-blue-700">
         <div className="flex h-16 items-center px-4">
           <div className="flex items-center space-x-4">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href="/" className="flex items-center">
               <Logo variant="large" />
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-2">MyBookings</span>
             </Link>
           </div>
         </div>
@@ -49,9 +50,10 @@ const Navbar = () => {
           <div className="flex items-center">
             <div 
               onClick={() => window.location.href = '/'}
-              className="flex items-center space-x-2 cursor-pointer"
+              className="flex items-center cursor-pointer"
             >
               <Logo variant="large" />
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-2">MYBOOKINGS</span>
             </div>
             <div className="hidden md:flex items-center space-x-8 ml-10">
               <div
