@@ -244,13 +244,13 @@ export function HeroSection() {
               { icon: "🔐", label: "VIP Concierge Service" },
               { icon: "👑", label: "Luxury Amenities" },
               { icon: "🌊", label: "Stunning Views" },
-              { icon: "🚁", label: "Helipad Access" },
+              { icon: "✈️", label: "Helipad Access", className: "text-blue-400" },
             ].map((feature) => (
               <div
                 key={feature.label}
                 className="flex items-center gap-1 sm:gap-2 bg-white/15 backdrop-blur-xl rounded-full px-2 sm:px-3 py-1 sm:py-1.5 text-white hover:bg-white/25 transition-all duration-300 border border-white/10 shadow-lg hover:scale-105 transform whitespace-nowrap"
               >
-                <span className="text-sm sm:text-base">{feature.icon}</span>
+                <span className={`text-sm sm:text-base ${feature.className || ''}`}>{feature.icon}</span>
                 <span className="text-xs font-medium tracking-wide hidden sm:inline">{feature.label}</span>
               </div>
             ))}

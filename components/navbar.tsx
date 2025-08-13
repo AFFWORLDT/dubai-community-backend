@@ -34,7 +34,7 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center">
               <Logo variant="mobile" />
-              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-2">MYBOOKINGS</span>
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-8">MYBOOKINGS</span>
             </Link>
           </div>
         </div>
@@ -54,7 +54,7 @@ const Navbar = () => {
             >
               <Logo variant="mobile" className="md:hidden" />
               <Logo variant="large" className="hidden md:block" />
-              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-2">MYBOOKINGS</span>
+              <span className="text-white font-bold text-xl sm:text-2xl md:text-3xl -ml-8">MY BOOKINGS</span>
             </div>
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8 ml-10">
@@ -77,9 +77,6 @@ const Navbar = () => {
 
           {/* Right side - User Controls */}
           <div className="flex items-center space-x-4">
-
-                      </div>
-
             {/* Desktop Right Section */}
             <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
