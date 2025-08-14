@@ -18,6 +18,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { AxiosError } from "axios"
 import { useAuthStore } from "@/Providers/auth-provider"
+import { GoogleAuthButton } from "@/components/GoogleAuthButton"
 
 interface AuthFormProps {
   open: boolean
@@ -166,6 +167,20 @@ export function AuthForm({ open, onOpenChange }: AuthFormProps) {
               : (isSignup ? "Sign up" : "Log in")
             }
           </Button>
+          
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">
+                Or continue with
+              </span>
+            </div>
+          </div>
+          
+          <GoogleAuthButton />
+          
           <div className="text-center text-sm sm:text-base mt-4">
             <span className="text-muted-foreground">
               {isSignup ? "Already have an account? " : "Don't have an account? "}

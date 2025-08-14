@@ -21,6 +21,7 @@ import { AxiosError } from "axios"
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { useAuthStore } from "@/Providers/auth-provider"
+import { GoogleAuthButton } from "@/components/GoogleAuthButton"
 
 // Types for our form
 interface SignUpFormData {
@@ -204,6 +205,20 @@ export default function SignUpPage() {
               >
                 {mutation.isPending ? "Creating Account..." : "Create Account"}
               </Button>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+              
+              <GoogleAuthButton />
+              
               <div className="text-sm text-center text-muted-foreground">
                 Already have an account?{" "}
                 <Link

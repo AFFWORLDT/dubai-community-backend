@@ -21,6 +21,7 @@ import { login } from "@/service/Auth"
 import { AxiosError } from "axios"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
+import { GoogleAuthButton } from "@/components/GoogleAuthButton"
 
 interface LoginFormData {
   email: string
@@ -166,6 +167,20 @@ export default function LoginPage() {
               <Button className="w-full" type="submit">
                 Sign in
               </Button>
+              
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+              
+              <GoogleAuthButton />
+              
               <div className="text-sm text-center text-muted-foreground">
                 Don't have an account?{" "}
                 <Link

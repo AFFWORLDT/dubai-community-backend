@@ -9,6 +9,7 @@ import { ChatNotification } from "@/components/chat/chat-notification"
 import { ChatProvider } from "@/components/chat/chat-context"
 import "./globals.css"
 import QueryProvider from "@/Providers/querry-provider"
+import { GoogleOAuthProvider } from '@react-oauth/google'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -49,26 +50,28 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-       <QueryProvider>
-       <Toaster />
-       <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ChatProvider>
-            <div className="flex min-h-screen flex-col bg-background text-foreground">
-              <Navbar />
-              <main className="flex-1">{children}</main>
-              <Footer />
-              <ChatButton />
-              <ChatNotification />
-            </div>
-          </ChatProvider>
-          {/* <Toaster richColors closeButton position="top-center" /> */}
-        </ThemeProvider>
-       </QueryProvider>
+       <GoogleOAuthProvider clientId="85619322786-so039or9l7dfqovbfcmlkc99vant0o9p.apps.googleusercontent.com">
+         <QueryProvider>
+         <Toaster />
+         <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ChatProvider>
+              <div className="flex min-h-screen flex-col bg-background text-foreground">
+                <Navbar />
+                <main className="flex-1">{children}</main>
+                <Footer />
+                <ChatButton />
+                <ChatNotification />
+              </div>
+            </ChatProvider>
+            {/* <Toaster richColors closeButton position="top-center" /> */}
+          </ThemeProvider>
+         </QueryProvider>
+       </GoogleOAuthProvider>
       </body>
     </html>
   )

@@ -9,7 +9,7 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ProfileAvatar from "@/components/ProfileAvatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Calendar,
@@ -175,18 +175,11 @@ export default function UserProfile() {
         <Card className="relative overflow-hidden">
           <CardContent className="pt-6 px-4 md:px-6">
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <Avatar className="h-24 w-24 border-2 border-red-500/10">
-                {user?.profileImg ? (
-                  <AvatarImage src={user.profileImg} alt="User profile" />
-                ) : (
-                  <AvatarFallback>
-                    {user?.fullName
-                      ?.split(" ")
-                      .map((name: string) => name.charAt(0))
-                      .join("") || "U"}
-                  </AvatarFallback>
-                )}
-              </Avatar>
+              <ProfileAvatar 
+                profileImg={user?.profileImg}
+                fullName={user?.fullName}
+                size="lg"
+              />
               <div className="text-center md:text-left flex-1">
                 <h1 className="text-2xl font-bold">{user?.fullName}</h1>
                 <p className="text-muted-foreground">
