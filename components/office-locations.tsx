@@ -8,7 +8,7 @@ import { MapPin, Phone, Mail } from 'lucide-react'
 const offices = [
   {
     city: "Dubai",
-    address: "Coming Soon",
+    address: "2/137 Great Eastern Highway, Rivervale. 6103, Western Australia",
     email: "info@mybookings.ae",
   },
   // {

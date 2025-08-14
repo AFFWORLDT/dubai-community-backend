@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Star, Users, Bed, Bath, Maximize, Medal } from "lucide-react"
+import { Star, Users, Bed, Bath, Maximize, Medal, Calendar } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Badge } from "@/components/ui/badge"
 
@@ -19,6 +19,7 @@ interface PropertyInfoProps {
   isSuperhost?: boolean
   bedrooms?:any;
   propertyId: string;
+  createdAt?: string;
 }
 
 export function PropertyInfo({
@@ -32,7 +33,8 @@ export function PropertyInfo({
   reviews = 284,
   isSuperhost = true,
   bedrooms,
-  propertyId
+  propertyId,
+  createdAt
 }: PropertyInfoProps) {
   const [showFullDescription, setShowFullDescription] = useState(false)
 
@@ -45,6 +47,16 @@ export function PropertyInfo({
     const truncated = words.slice(0, 60).join(" ")
 
     return words.length > 60 ? `${truncated}...` : description
+  }
+
+  const formatListingDate = (dateString?: string) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   }
 
   return (
@@ -101,6 +113,14 @@ export function PropertyInfo({
           </div>
         </div>
       </div>
+
+      {/* Listing Date */}
+      {createdAt && (
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Calendar className="w-4 h-4" />
+          <span>Listed on {formatListingDate(createdAt)}</span>
+        </div>
+      )}
 
       <Separator />
 
