@@ -60,7 +60,7 @@ export function Amenities() {
     <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8 sm:mb-16">
-          <Badge variant="secondary" className="mb-4">
+          <Badge variant="default" className="mb-4">
             <Sparkles className="w-4 h-4 mr-2" />
             Premium Amenities
           </Badge>

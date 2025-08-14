@@ -104,7 +104,7 @@ const handleCancelBooking = (reason: any) => {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem 
-            className="text-red-600" 
+            className="text-blue-600" 
             onClick={() => setSelectedBookingId(booking._id)}
           >
             Cancel Request
@@ -149,7 +149,7 @@ const statusConfigs: Record<StatusType, StatusConfig> = {
     label: "Confirmed",
   },
   Fail: {
-    className: "bg-red-500/10 text-red-500 hover:bg-red-500/20",
+    className: "bg-blue-500/10 text-blue-500 hover:bg-blue-500/20",
     label: "Fail",
   },
   Hosting: {

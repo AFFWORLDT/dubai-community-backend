@@ -79,6 +79,24 @@ interface BookingDetails {
   property: string;
   userId: string;
   bookingType: "day" | "custom" | "month" | "year";
+  // Additional fields for detailed booking information
+  subtotal?: number;
+  nights?: number;
+  totalAmount?: number;
+  cleaningFee?: number;
+  serviceFee?: number;
+  vat?: number;
+  dtcmFee?: number;
+  commission?: number;
+  deposit?: number;
+  isMonthlyBooking?: boolean;
+  isYearlyBooking?: boolean;
+  monthlyPrice?: number;
+  yearlyPrice?: number;
+  commissionMonth?: number;
+  commissionYear?: number;
+  depositMonth?: number;
+  depositYear?: number;
 }
 
 interface BookingCardProps {
@@ -423,6 +441,24 @@ export const BookingCard = ({
         manualPrice: bookingTotal,
         intrest: 10,
         bookingType,
+        // Additional booking details
+        subtotal,
+        nights,
+        totalAmount: total,
+        cleaningFee: cleaningFeeAmount,
+        serviceFee,
+        vat,
+        dtcmFee,
+        commission,
+        deposit,
+        isMonthlyBooking,
+        isYearlyBooking,
+        monthlyPrice,
+        yearlyPrice,
+        commissionMonth: commisionMonth,
+        commissionYear: commisionYear,
+        depositMonth,
+        depositYear,
         line_items: [
           {
             price_data: {
@@ -518,6 +554,24 @@ export const BookingCard = ({
         property: id,
         userId,
         bookingType,
+        // Additional booking details
+        subtotal,
+        nights,
+        totalAmount: total,
+        cleaningFee: cleaningFeeAmount,
+        serviceFee,
+        vat,
+        dtcmFee,
+        commission,
+        deposit,
+        isMonthlyBooking,
+        isYearlyBooking,
+        monthlyPrice,
+        yearlyPrice,
+        commissionMonth: commisionMonth,
+        commissionYear: commisionYear,
+        depositMonth,
+        depositYear,
       };
 
       await createBookings(bookingDetails);
@@ -548,6 +602,9 @@ export const BookingCard = ({
   const DayContent = ({ date }: { date: Date }) => {
     const dateStr = format(date, "yyyy-MM-dd");
     const dayPrice = priceByDate.get(dateStr) || price;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const isPastDate = date < today;
 
     // Check if this date is booked
     const isBooked = disabledDates.some((interval: any) => {
@@ -603,8 +660,9 @@ export const BookingCard = ({
         <div
           className={cn(
             "text-sm font-medium mb-1",
+            isPastDate ? "text-gray-400" : "",
             isBooked ? "text-muted-foreground" : "",
-            isConflict ? "text-red-500" : "",
+            isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500 font-bold" : "",
             isYearlyPreview ? "text-green-500 font-bold" : ""
           )}
@@ -614,8 +672,9 @@ export const BookingCard = ({
         <div
           className={cn(
             "text-[10px] leading-none font-medium flex items-center gap-0.5",
+            isPastDate ? "text-gray-400" : "",
             isBooked ? "text-muted-foreground" : "text-primary",
-            isConflict ? "text-red-500" : "",
+            isConflict ? "text-blue-500" : "",
             isMonthlyPreview ? "text-blue-500" : "",
             isYearlyPreview ? "text-green-500" : ""
           )}
@@ -631,11 +690,14 @@ export const BookingCard = ({
             </>
           )}
         </div>
+        {isPastDate && (
+          <div className="absolute inset-0 bg-gray-100/50 dark:bg-gray-800/25 rounded-md" />
+        )}
         {isBooked && (
           <div className="absolute inset-0 bg-muted/50 dark:bg-muted/25 rounded-md" />
         )}
         {isConflict && (
-          <div className="absolute inset-0 bg-red-100/50 dark:bg-red-900/25 rounded-md" />
+          <div className="absolute inset-0 bg-blue-100/50 dark:bg-blue-900/25 rounded-md" />
         )}
         {isMonthlyPreview && (
           <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800" />
@@ -900,26 +962,41 @@ export const BookingCard = ({
   if (variant === "mobile") {
     return (
       <>
-        <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-t p-4 flex items-center justify-between gap-4 w-full">
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <div className="flex flex-col cursor-pointer">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-xl font-bold">
-                    {formatPrice(price)} AED
-                  </span>
-                  <span className="text-sm text-muted-foreground">/ night</span>
+        <div className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-t p-4 flex items-center justify-between gap-2 w-full">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+              <SheetTrigger asChild>
+                <div className="flex flex-col cursor-pointer min-w-0">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl font-bold">
+                      {formatPrice(price)} AED
+                    </span>
+                    <span className="text-sm text-muted-foreground">/ night</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <span>
+                      {selectedDates?.from && selectedDates?.to
+                        ? `Total: ${formatPrice(total)} AED`
+                        : "Add dates for total"}
+                    </span>
+                    <ChevronUp className="w-4 h-4" />
+                  </div>
                 </div>
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <span>
-                    {selectedDates?.from && selectedDates?.to
-                      ? `Total: ${formatPrice(total)} AED`
-                      : "Add dates for total"}
-                  </span>
-                  <ChevronUp className="w-4 h-4" />
-                </div>
-              </div>
-            </SheetTrigger>
+              </SheetTrigger>
+            {selectedDates?.from && selectedDates?.to && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => {
+                  console.log('Mobile View breakdown clicked');
+                  setShowPriceBreakdown(true);
+                }}
+                className="h-6 px-2 text-xs text-blue-600 hover:text-blue-700 flex-shrink-0"
+              >
+                View breakdown
+              </Button>
+            )}
+            
             <SheetContent side="bottom" className="h-[90vh] p-0">
               <div className="h-full flex flex-col">
                 <SheetHeader className="px-4 py-3 border-b flex flex-row items-center justify-between">
@@ -1154,7 +1231,7 @@ export const BookingCard = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                            className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                             onClick={() => {
                               setIsMonthlyBooking(false);
                               setSelectedDates(undefined);
@@ -1205,7 +1282,7 @@ export const BookingCard = ({
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                            className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                             onClick={() => {
                               setIsYearlyBooking(false);
                               setSelectedDates(undefined);
@@ -1284,6 +1361,7 @@ export const BookingCard = ({
               </div>
             </SheetContent>
           </Sheet>
+          </div>
 
           <Button
             className="flex-shrink-0"
@@ -1306,6 +1384,155 @@ export const BookingCard = ({
 
         <CalendarDialog />
         <AuthForm open={showSignupForm} onOpenChange={setShowSignupForm} />
+        
+        {/* Price Breakdown Dialog for Mobile */}
+        <Dialog 
+          open={showPriceBreakdown} 
+          onOpenChange={(open) => {
+            console.log('Mobile Dialog onOpenChange:', open);
+            setShowPriceBreakdown(open);
+          }}
+        >
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Price Breakdown</DialogTitle>
+              <DialogDescription>
+                {isYearlyBooking
+                  ? "Detailed breakdown for your yearly booking"
+                  : isMonthlyBooking
+                  ? "Detailed breakdown for your monthly booking"
+                  : nights === 1
+                  ? "Detailed breakdown for your 1-night stay"
+                  : `Detailed breakdown for your ${nights}-night stay`}
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="flex justify-between text-foreground">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger className="flex items-center gap-1">
+                      <span>
+                        {isYearlyBooking
+                          ? "Yearly booking rate"
+                          : isMonthlyBooking
+                          ? "Monthly booking rate"
+                          : nights === 1
+                          ? "Price for 1 night"
+                          : `Price × ${nights} nights`}
+                      </span>
+                      <Info className="w-4 h-4" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {isYearlyBooking
+                        ? "Special yearly rate"
+                        : isMonthlyBooking
+                        ? "Special monthly rate"
+                        : nights === 1
+                        ? "Single night rate"
+                        : "Variable daily rates applied"}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span className="font-medium">{formatPrice(subtotal)} AED</span>
+              </div>
+              
+              {/* Show commission and deposit for monthly/yearly bookings */}
+              {(isMonthlyBooking || isYearlyBooking) ? (
+                <>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>Commission fee</span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {isMonthlyBooking ? "Monthly" : "Yearly"} booking commission fee
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(commission)} AED</span>
+                  </div>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>Deposit fee</span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {isMonthlyBooking ? "Monthly" : "Yearly"} booking deposit fee
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(deposit)} AED</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>Cleaning fee</span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>One-time cleaning fee</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(cleaningFeeAmount)} AED</span>
+                  </div>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>Service fee</span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>Platform service fee</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(serviceFee)} AED</span>
+                  </div>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>VAT (5%)</span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>Value Added Tax</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(vat)} AED</span>
+                  </div>
+                  <div className="flex justify-between text-foreground">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger className="flex items-center gap-1">
+                          <span>
+                            {nights === 1
+                              ? "DTCM fee (1 night × 15 AED)"
+                              : `DTCM fee (${nights} nights × 15 AED)`}
+                          </span>
+                          <Info className="w-4 h-4" />
+                        </TooltipTrigger>
+                        <TooltipContent>Dubai Tourism and Commerce Marketing fee</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    <span>{formatPrice(dtcmFee)} AED</span>
+                  </div>
+                </>
+              )}
+            </div>
+            <Separator className="my-4" />
+            <div className="flex justify-between font-semibold text-lg">
+              <span>Total</span>
+              <span>{formatPrice(total)} AED</span>
+            </div>
+          </DialogContent>
+        </Dialog>
+        
         <Toaster />
 
         {/* Add padding to prevent content from being hidden behind the fixed bottom bar */}
@@ -1456,7 +1683,10 @@ export const BookingCard = ({
           <Separator />
           <div className="flex justify-between font-semibold text-lg text-foreground">
             <span
-              onClick={() => setShowPriceBreakdown(true)}
+              onClick={() => {
+                console.log('Price breakdown clicked');
+                setShowPriceBreakdown(true);
+              }}
               className="flex items-center gap-2 cursor-pointer hover:text-gray-600 text-sm"
             >
               Total before taxes
@@ -1542,7 +1772,7 @@ export const BookingCard = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
+                  className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
                   onClick={() => {
                     setIsMonthlyBooking(false);
                     setSelectedDates(undefined);
@@ -1593,8 +1823,8 @@ export const BookingCard = ({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-6 px-2 py-0 text-xs hover:bg-red-100 dark:hover:bg-red-900/20 text-red-500"
-                  onClick={() => {
+                  className="h-6 px-2 py-0 text-xs hover:bg-blue-100 dark:hover:bg-blue-900/20 text-blue-500"
+                          onClick={() => {
                     setIsYearlyBooking(false);
                     setSelectedDates(undefined);
                     setSelectedMode("checkin");
@@ -1778,7 +2008,13 @@ export const BookingCard = ({
 
       <AuthForm open={showSignupForm} onOpenChange={setShowSignupForm} />
 
-      <Dialog open={showPriceBreakdown} onOpenChange={setShowPriceBreakdown}>
+      <Dialog 
+        open={showPriceBreakdown} 
+        onOpenChange={(open) => {
+          console.log('Dialog onOpenChange:', open);
+          setShowPriceBreakdown(open);
+        }}
+      >
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Price Breakdown</DialogTitle>

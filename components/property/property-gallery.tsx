@@ -276,7 +276,7 @@ export function PropertyGallery({
           >
             <Heart
               className={`h-4 w-4 transition-all duration-300
-                ${isSaved ? "fill-red-500 text-red-500" : "text-gray-500"}
+                ${isSaved ? "fill-blue-500 text-blue-500" : "text-gray-500"}
                 ${isAnimating ? "animate-ping-once" : ""}
                 hover:scale-110`}
             />

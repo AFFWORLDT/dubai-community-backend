@@ -73,7 +73,7 @@ export default function GuidelinesPage() {
     {
       title: "Prohibited Activities",
       icon: XCircle,
-      color: "text-red-500",
+      color: "text-blue-500",
       subsections: [
         {
           title: "",

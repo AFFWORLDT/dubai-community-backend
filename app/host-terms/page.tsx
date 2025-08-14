@@ -276,9 +276,9 @@ export default function HostTermsPage() {
                   "Violate local housing, zoning, or safety laws.",
                   "Use the platform for illegal activities."
                 ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                    <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-red-700 dark:text-red-300">{item}</span>
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                    <AlertTriangle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-blue-700 dark:text-blue-300">{item}</span>
                   </div>
                 ))}
               </div>
@@ -376,11 +376,11 @@ export default function HostTermsPage() {
                     <p className="text-sm text-muted-foreground dark:text-gray-300">The Host is also obligated to monitor the behavior and activities of the guests during their stay. If any illegal, suspicious, or unauthorized activity is observed on the premises, the Host must take immediate action to stop it and report the matter to the relevant local authorities or to Mybookings.ae.</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
-                  <AlertTriangle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <div className="flex items-start gap-3 p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+                  <AlertTriangle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="font-medium text-red-700 dark:text-red-300">Compliance Consequences</p>
-                    <p className="text-sm text-red-600 dark:text-red-400">Failure to comply with this responsibility may result in penalties, suspension of the Host account, or legal consequences under Local law.</p>
+                    <p className="font-medium text-blue-700 dark:text-blue-300">Compliance Consequences</p>
+                    <p className="text-sm text-blue-600 dark:text-blue-400">Failure to comply with this responsibility may result in penalties, suspension of the Host account, or legal consequences under Local law.</p>
                   </div>
                 </div>
               </div>

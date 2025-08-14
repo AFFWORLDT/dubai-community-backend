@@ -212,7 +212,7 @@ export default function UserProfile() {
             <CardHeader className="text-center">
               <CardDescription>Saved Properties</CardDescription>
               <CardTitle className="flex items-center justify-center gap-2">
-                <Heart className="h-4 w-4 text-red-500 fill-current" />
+                <Heart className="h-4 w-4 text-blue-500 fill-current" />
                 {watchlist?.length}
               </CardTitle>
             </CardHeader>
@@ -344,7 +344,7 @@ export default function UserProfile() {
                         >
                           <Heart
                             className={`h-4 w-4 transition-all duration-300
-               ${isSaved ? "fill-red-500 text-red-500" : "text-gray-500"}
+               ${isSaved ? "fill-blue-500 text-blue-500" : "text-gray-500"}
                ${isAnimating ? "animate-ping-once" : ""}
                hover:scale-110`}
                           />
@@ -354,7 +354,7 @@ export default function UserProfile() {
                transition-all duration-300
                ${
                  isSaved
-                   ? "fill-red-500 text-red-500"
+                   ? "fill-blue-500 text-blue-500"
                    : "text-gray-500 opacity-0"
                }
                ${isAnimating ? "animate-pop" : ""}`}
