@@ -352,10 +352,7 @@ export const generateBookingReceiptPDF = async (
                 <span class="info-label">Phone:</span>
                 <span class="info-value">${userData.phone || 'N/A'}</span>
               </div>
-              <div class="info-row">
-                <span class="info-label">Address:</span>
-                <span class="info-value">${userData.location || 'N/A'}</span>
-              </div>
+             
             </div>
             
             <!-- Booking Details -->
