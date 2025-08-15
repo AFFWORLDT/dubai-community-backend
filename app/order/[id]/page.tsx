@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import useGetBookingById from "@/features/Booking/useGetBookingById"
-import { Calendar, Clock, Home, Mail, MapPin, Phone, User, Users } from "lucide-react"
+import { Calendar, Clock, Home, Mail, MapPin, Phone, User, Users, Download } from "lucide-react"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCancelBooking } from "@/features/Booking/useCancleBooking"
 import { useState } from "react"
 import { CancellationModal } from "@/features/Order/CancleBookingTable"
+import { generateBookingReceiptPDF } from "@/utils/bookingPdf"
+import { toast } from "sonner"
 
 export const runtime = 'edge';
 
@@ -53,6 +55,27 @@ const handleCancelBooking = (reason: any) => {
   }
 };
 
+const handleDownloadReceipt = async () => {
+  try {
+    if (!BookingDetails || !PropertyData || !Owner) {
+      toast.error("Booking data not available");
+      return;
+    }
+
+    await generateBookingReceiptPDF(
+      BookingDetails,
+      Owner,
+      PropertyData,
+      BookingDetails._id
+    );
+    
+    toast.success("Receipt downloaded successfully");
+  } catch (error) {
+    toast.error("Failed to download receipt");
+    console.error("Download receipt error:", error);
+  }
+};
+
   
   return (
     <div className="min-h-screen bg-white dark:bg-black">
@@ -66,7 +89,19 @@ const handleCancelBooking = (reason: any) => {
                 <h1 className="text-2xl font-bold text-teal-600">Booking Details</h1>
                 <p className="text-sm text-slate-500">Booking ID: {BookingDetails?._id}</p>
               </div>
-              <Badge className="bg-teal-500 text-white hover:bg-teal-400">{BookingDetails?.status}</Badge>
+              <div className="flex items-center gap-3">
+                <Badge className="bg-teal-500 text-white hover:bg-teal-400">{BookingDetails?.status}</Badge>
+                {BookingDetails?.status === "Confirmed" && (
+                  <Button
+                    onClick={handleDownloadReceipt}
+                    className="bg-teal-600 hover:bg-teal-700 text-white"
+                    size="sm"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Receipt
+                  </Button>
+                )}
+              </div>
             </div>
 
             {/* Property Details */}
@@ -148,7 +183,16 @@ const handleCancelBooking = (reason: any) => {
                   <li>The cleaning fee is always refunded if you cancel</li> */}
                 </ul>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex flex-col gap-2">
+                {BookingDetails?.status === "Confirmed" && (
+                  <Button
+                    onClick={handleDownloadReceipt}
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Download Receipt
+                  </Button>
+                )}
                 <Button
                   variant="outline"
                   className="w-full border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"

@@ -1,6 +1,6 @@
 "use client"
 
-import { CalendarDays, MoreHorizontal, Search } from 'lucide-react'
+import { CalendarDays, MoreHorizontal, Search, Download } from 'lucide-react'
 import { format } from "date-fns"
 import { useRouter } from 'next/navigation'
 import {
@@ -23,6 +23,8 @@ import { Button } from "@/components/ui/button"
 import { useCancelBooking } from '../Booking/useCancleBooking'
 import { CancellationModal } from './CancleBookingTable'
 import { useState } from 'react'
+import { generateBookingReceiptPDF } from '@/utils/bookingPdf'
+import { toast } from 'sonner'
 
 
 export function BookingsTable({bookings}:any) {
@@ -37,6 +39,27 @@ const handleCancelBooking = (reason: any) => {
       resion: reason 
     });
     setSelectedBookingId(null);
+  }
+};
+
+const handleDownloadReceipt = async (booking: any) => {
+  try {
+    if (!booking || !booking.property || !booking.user) {
+      toast.error("Booking data not available");
+      return;
+    }
+
+    await generateBookingReceiptPDF(
+      booking,
+      booking.user,
+      booking.property,
+      booking._id
+    );
+    
+    toast.success("Receipt downloaded successfully");
+  } catch (error) {
+    toast.error("Failed to download receipt");
+    console.error("Download receipt error:", error);
   }
 };
 
@@ -99,6 +122,12 @@ const handleCancelBooking = (reason: any) => {
                       <DropdownMenuItem onClick={()=>router.push(`/order/${booking?._id}`)}>
                         View details
                       </DropdownMenuItem>
+                      {booking?.status === "Confirmed" && (
+                        <DropdownMenuItem onClick={() => handleDownloadReceipt(booking)}>
+                          <Download className="h-4 w-4 mr-2" />
+                          Download Receipt
+                        </DropdownMenuItem>
+                      )}
                       <DropdownMenuItem>
                         Send reminder
                       </DropdownMenuItem>
