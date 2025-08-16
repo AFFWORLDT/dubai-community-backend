@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ChatButton } from "@/components/chat/chat-button"
 import { ChatNotification } from "@/components/chat/chat-notification"
 import { ChatProvider } from "@/components/chat/chat-context"
+import { GmailRedirectHandler } from "@/components/GmailRedirectHandler"
 import "./globals.css"
 import QueryProvider from "@/Providers/querry-provider"
 import { GoogleOAuthProvider } from '@react-oauth/google'
@@ -60,13 +61,15 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ChatProvider>
-              <div className="flex min-h-screen flex-col bg-background text-foreground">
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-                <ChatButton />
-                <ChatNotification />
-              </div>
+              <GmailRedirectHandler>
+                <div className="flex min-h-screen flex-col bg-background text-foreground">
+                  <Navbar />
+                  <main className="flex-1">{children}</main>
+                  <Footer />
+                  <ChatButton />
+                  <ChatNotification />
+                </div>
+              </GmailRedirectHandler>
             </ChatProvider>
             {/* <Toaster richColors closeButton position="top-center" /> */}
           </ThemeProvider>

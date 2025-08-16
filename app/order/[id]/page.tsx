@@ -8,10 +8,11 @@ import { Calendar, Clock, Home, Mail, MapPin, Phone, User, Users, Download } fro
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCancelBooking } from "@/features/Booking/useCancleBooking"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { CancellationModal } from "@/features/Order/CancleBookingTable"
 import { generateBookingReceiptPDF } from "@/utils/bookingPdf"
 import { toast } from "sonner"
+import { useAuthStore } from "@/Providers/auth-provider"
 
 export const runtime = 'edge';
 
@@ -36,46 +37,114 @@ function formatDate(date: any): string {
     year: "numeric",
   });
 }
+
 export default function BookingDetails({ params }: PageProps) {
-  const {data}=useGetBookingById(params.id)
-const PropertyData =data?.data?.data?.property
-const BookingDetails=data?.data?.data
-const Owner =data?.data?.data?.user
+  const {data, isLoading, error}=useGetBookingById(params.id)
+  const { isAuthenticated } = useAuthStore()
+  const PropertyData =data?.data?.data?.property
+  const BookingDetails=data?.data?.data
+  const Owner =data?.data?.data?.user
   const [selectedBookingId, setSelectedBookingId] = useState<string | any>(null);
+  const [isGmailRedirect, setIsGmailRedirect] = useState(false);
   
-const { mutate: cancelBooking, isPending } = useCancelBooking();
+  const { mutate: cancelBooking, isPending } = useCancelBooking();
 
-const handleCancelBooking = (reason: any) => {  
-  if (selectedBookingId) {
-    cancelBooking({ 
-      bookingId: selectedBookingId, 
-      resion: reason 
-    });
-    setSelectedBookingId(null);
-  }
-};
-
-const handleDownloadReceipt = async () => {
-  try {
-    if (!BookingDetails || !PropertyData || !Owner) {
-      toast.error("Booking data not available");
-      return;
-    }
-
-    await generateBookingReceiptPDF(
-      BookingDetails,
-      Owner,
-      PropertyData,
-      BookingDetails._id
-    );
+  // Check if this is a Gmail redirect
+  useEffect(() => {
+    const referer = document.referrer;
+    const isGmail = referer?.includes('google.com/url') || 
+                   referer?.includes('mail.google.com') ||
+                   window.location.search.includes('utm_source=gmail');
     
-    toast.success("Receipt downloaded successfully");
-  } catch (error) {
-    toast.error("Failed to download receipt");
-    console.error("Download receipt error:", error);
-  }
-};
+    if (isGmail) {
+      setIsGmailRedirect(true);
+      if (isAuthenticated) {
+        toast.success("Welcome back! You have been successfully redirected to your booking.");
+      }
+    }
+  }, [isAuthenticated]);
 
+  const handleCancelBooking = (reason: any) => {  
+    if (selectedBookingId) {
+      cancelBooking({ 
+        bookingId: selectedBookingId, 
+        resion: reason 
+      });
+      setSelectedBookingId(null);
+    }
+  };
+
+  const handleDownloadReceipt = async () => {
+    try {
+      if (!BookingDetails || !PropertyData || !Owner) {
+        toast.error("Booking data not available");
+        return;
+      }
+
+      await generateBookingReceiptPDF(
+        BookingDetails,
+        Owner,
+        PropertyData,
+        BookingDetails._id
+      );
+      
+      toast.success("Receipt downloaded successfully");
+    } catch (error) {
+      toast.error("Failed to download receipt");
+      console.error("Download receipt error:", error);
+    }
+  };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-teal-600 mx-auto"></div>
+          <p className="mt-4 text-lg text-gray-600">
+            {isGmailRedirect ? "Loading your booking details..." : "Loading..."}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">Error Loading Booking</h2>
+          <p className="text-gray-600 mb-4">
+            {isGmailRedirect 
+              ? "Unable to load your booking details. Please try again or contact support." 
+              : "Something went wrong while loading the booking details."
+            }
+          </p>
+          <Button onClick={() => window.location.reload()}>
+            Try Again
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Show not found state
+  if (!BookingDetails) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-600 mb-4">Booking Not Found</h2>
+          <p className="text-gray-600 mb-4">
+            The booking you're looking for could not be found.
+          </p>
+          <Button onClick={() => window.location.href = '/properties'}>
+            Browse Properties
+          </Button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="min-h-screen bg-white dark:bg-black">

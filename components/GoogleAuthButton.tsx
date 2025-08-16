@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { googleAuth } from '@/service/googleAuth';
 import { useAuthStore } from '@/Providers/auth-provider';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
 import { FcGoogle } from 'react-icons/fc';
@@ -18,6 +18,8 @@ interface GoogleAuthButtonProps {
 export function GoogleAuthButton({ className, children }: GoogleAuthButtonProps) {
   const setAuth = useAuthStore((state) => state.login);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get('returnUrl');
   const { toast } = useToast();
 
   const mutation = useMutation({
@@ -26,12 +28,23 @@ export function GoogleAuthButton({ className, children }: GoogleAuthButtonProps)
       console.log('Google auth success response:', response);
       const { accessToken, refreshToken, user } = response.data.data;
       setAuth({ accessToken, refreshToken }, user);
-      router.push('/properties');
-      toast({
-        title: "Google Authentication Successful",
-        description: "Welcome! You have been successfully authenticated.",
-        duration: 3000,
-      });
+      
+      // Redirect to return URL if available, otherwise to properties
+      if (returnUrl) {
+        router.push(returnUrl);
+        toast({
+          title: "Google Authentication Successful",
+          description: "Redirecting you to your booking...",
+          duration: 3000,
+        });
+      } else {
+        router.push('/properties');
+        toast({
+          title: "Google Authentication Successful",
+          description: "Welcome! You have been successfully authenticated.",
+          duration: 3000,
+        });
+      }
     },
     onError: (error: AxiosError<{ message: string }>) => {
       console.error('Google auth mutation error:', error);

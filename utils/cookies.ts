@@ -14,7 +14,7 @@ interface CookieOptions {
 
 const defaultOptions: CookieOptions = {
   secure: true,
-  sameSite: 'strict',
+  sameSite: 'lax', // Changed from 'strict' to 'lax' to handle Gmail redirects better
   path: '/',
   expires: 20
 }

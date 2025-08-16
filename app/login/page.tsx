@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { login } from "@/service/Auth"
 import { AxiosError } from "axios"
 import { useState } from "react"
@@ -31,6 +31,8 @@ interface LoginFormData {
 export default function LoginPage() {
   const setAuth = useAuthStore((state) => state.login)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const returnUrl = searchParams.get('returnUrl')
   const { toast } = useToast()
   const [showPassword, setShowPassword] = useState(false)
   const {
@@ -44,11 +46,22 @@ export default function LoginPage() {
    
       const { accessToken, refreshToken,user } = response.data.data
       setAuth({ accessToken, refreshToken }, user)
-      router.push('/properties')
-      toast({
-        title: "Login SuccessFull",
-        duration: 3000,
-      })
+      
+      // Redirect to return URL if available, otherwise to properties
+      if (returnUrl) {
+        router.push(returnUrl)
+        toast({
+          title: "Login Successful",
+          description: "Redirecting you to your booking...",
+          duration: 3000,
+        })
+      } else {
+        router.push('/properties')
+        toast({
+          title: "Login Successful",
+          duration: 3000,
+        })
+      }
    
     },
     onError: (error: AxiosError<{ message: string }>) => {
@@ -100,7 +113,7 @@ export default function LoginPage() {
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
             <CardDescription>
-              Enter your credentials to access your account
+              {returnUrl ? "Please login to view your booking details" : "Enter your credentials to access your account"}
             </CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)}>
