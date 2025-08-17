@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuthStore } from '@/Providers/auth-provider';
 import { useToast } from '@/components/ui/use-toast';
@@ -9,7 +9,7 @@ interface GmailRedirectHandlerProps {
   children: React.ReactNode;
 }
 
-export function GmailRedirectHandler({ children }: GmailRedirectHandlerProps) {
+function GmailRedirectHandlerInner({ children }: GmailRedirectHandlerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isAuthenticated } = useAuthStore();
@@ -50,4 +50,12 @@ export function GmailRedirectHandler({ children }: GmailRedirectHandlerProps) {
   }, [isAuthenticated, router, searchParams, toast, isHandlingRedirect]);
 
   return <>{children}</>;
+}
+
+export function GmailRedirectHandler({ children }: GmailRedirectHandlerProps) {
+  return (
+    <Suspense fallback={<>{children}</>}>
+      <GmailRedirectHandlerInner>{children}</GmailRedirectHandlerInner>
+    </Suspense>
+  );
 }

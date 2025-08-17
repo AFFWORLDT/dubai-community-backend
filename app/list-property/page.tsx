@@ -50,7 +50,11 @@ export default function ListPropertyPage() {
                   <Button 
                     size="lg" 
                     className="bg-primary hover:bg-primary/90"
-                    onClick={() => window.open('https://hosting.mybookings.ae/auth/owner/register', '_blank')}
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.open('https://hosting.mybookings.ae/auth/owner/register', '_blank')
+                      }
+                    }}
                   >
                     Start Earning Now
                   </Button>
@@ -167,7 +171,11 @@ export default function ListPropertyPage() {
                 size="lg" 
                 variant="secondary"
                 className="text-primary hover:text-primary/90"
-                onClick={() => window.open('https://hosting.mybookings.ae/auth/owner/register', '_blank')}
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.open('https://hosting.mybookings.ae/auth/owner/register', '_blank')
+                  }
+                }}
               >
                 List Your Property
               </Button>

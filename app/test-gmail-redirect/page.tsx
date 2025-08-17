@@ -10,19 +10,33 @@ export default function TestGmailRedirect() {
   const [redirectInfo, setRedirectInfo] = useState<any>({});
 
   useEffect(() => {
-    const referer = document.referrer;
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    setRedirectInfo({
-      referer,
-      isGmailRedirect: referer?.includes('google.com/url') || 
-                     referer?.includes('mail.google.com') ||
-                     urlParams.get('utm_source') === 'gmail',
-      urlParams: Object.fromEntries(urlParams.entries()),
-      isAuthenticated,
-      currentUrl: window.location.href
-    });
+    if (typeof window !== 'undefined') {
+      const referer = document.referrer;
+      const urlParams = new URLSearchParams(window.location.search);
+      
+      setRedirectInfo({
+        referer,
+        isGmailRedirect: referer?.includes('google.com/url') || 
+                       referer?.includes('mail.google.com') ||
+                       urlParams.get('utm_source') === 'gmail',
+        urlParams: Object.fromEntries(urlParams.entries()),
+        isAuthenticated,
+        currentUrl: window.location.href
+      });
+    }
   }, [isAuthenticated]);
+
+  const handleOpenOrder = () => {
+    if (typeof window !== 'undefined') {
+      window.open('/order/test-booking-id', '_blank');
+    }
+  };
+
+  const handleOpenGmailRedirect = () => {
+    if (typeof window !== 'undefined') {
+      window.open('/api/auth/gmail-redirect?url=' + encodeURIComponent('/order/test-booking-id'), '_blank');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -50,14 +64,14 @@ export default function TestGmailRedirect() {
               <h3 className="font-semibold mb-2">Test Links:</h3>
               <div className="space-y-2">
                 <Button 
-                  onClick={() => window.open('/order/test-booking-id', '_blank')}
+                  onClick={handleOpenOrder}
                   variant="outline"
                   className="w-full"
                 >
                   Test Direct Order Link
                 </Button>
                 <Button 
-                  onClick={() => window.open('/api/auth/gmail-redirect?url=' + encodeURIComponent('/order/test-booking-id'), '_blank')}
+                  onClick={handleOpenGmailRedirect}
                   variant="outline"
                   className="w-full"
                 >

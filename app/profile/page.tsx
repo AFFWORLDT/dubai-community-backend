@@ -120,7 +120,7 @@ export default function UserProfile() {
   };
 
   const handleDeleteAccount = async () => {
-    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (typeof window !== 'undefined' && !window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
       return;
     }
     try {
@@ -129,19 +129,23 @@ export default function UserProfile() {
       const logout = useAuthStore.getState().logout;
       logout();
       // Clear all caches
-      if (window.caches) {
+      if (typeof window !== 'undefined' && window.caches) {
         caches.keys().then(function(names) {
           for (let name of names) caches.delete(name);
         });
       }
-      localStorage.clear();
-      sessionStorage.clear();
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
       toast({
         title: 'Account Deleted',
         description: data.message || 'Your account has been deleted successfully.',
       });
       setTimeout(() => {
-        window.location.href = '/login';
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
       }, 500);
     } catch (error) {
       let message = 'An error occurred while deleting your account.';

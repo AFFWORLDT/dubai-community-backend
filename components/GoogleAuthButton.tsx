@@ -9,13 +9,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useToast } from '@/components/ui/use-toast';
 import { AxiosError } from 'axios';
 import { FcGoogle } from 'react-icons/fc';
+import { Suspense } from 'react';
 
 interface GoogleAuthButtonProps {
   className?: string;
   children?: React.ReactNode;
 }
 
-export function GoogleAuthButton({ className, children }: GoogleAuthButtonProps) {
+function GoogleAuthButtonInner({ className, children }: GoogleAuthButtonProps) {
   const setAuth = useAuthStore((state) => state.login);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -139,5 +140,25 @@ export function GoogleAuthButton({ className, children }: GoogleAuthButtonProps)
         </div>
       )}
     </Button>
+  );
+}
+
+export function GoogleAuthButton(props: GoogleAuthButtonProps) {
+  return (
+    <Suspense fallback={
+      <Button
+        type="button"
+        variant="outline"
+        className={`w-full ${props.className}`}
+        disabled
+      >
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+          Loading...
+        </div>
+      </Button>
+    }>
+      <GoogleAuthButtonInner {...props} />
+    </Suspense>
   );
 }
