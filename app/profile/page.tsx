@@ -468,6 +468,7 @@ export default function UserProfile() {
               {/* <Badge variant="outline">Phone Verified</Badge>
               <Badge variant="outline">ID Verified</Badge> */}
             </div>
+            {/* Delete Account Button - Commented out for safety
             <Button
               variant="destructive"
               className="mt-4"
@@ -475,6 +476,7 @@ export default function UserProfile() {
             >
               Delete Account
             </Button>
+            */}
           </CardContent>
         </Card>
       </div>
