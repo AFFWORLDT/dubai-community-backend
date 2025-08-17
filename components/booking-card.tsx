@@ -1894,12 +1894,12 @@ export const BookingCard = ({
           </Button>
         </div>
 
-        <div className="hidden md:flex items-center justify-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
           <Lock className="w-4 h-4" />
           <span>Secure checkout with</span>
           <CreditCard className="w-4 h-4" />
         </div>
-        <div className="hidden md:flex flex-col gap-2 p-4 rounded-lg bg-primary/5 dark:bg-primary/10">
+        <div className="flex flex-col gap-2 p-4 rounded-lg bg-primary/5 dark:bg-primary/10">
           <div className="flex items-center gap-2">
             <Shield className="w-4 h-4 text-primary" />
             <span className="text-sm text-foreground">

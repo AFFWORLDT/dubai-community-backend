@@ -13,6 +13,12 @@ import { Separator } from "@/components/ui/separator";
 import { PropertyReviews } from "@/components/property/property-reviews";
 import { PropertyPolicies } from "@/components/property/property-policies";
 import { MapPin } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+// Helper function to format price
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('en-US').format(price || 0);
+};
 
 export const runtime = 'edge';
 
@@ -102,7 +108,7 @@ const PropertyPage = ({ params }: PageProps) => {
         </div>
 
         {/* Main Content Section */}
-        <div className="mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-6 sm:py-8 pb-[calc(100px+1.5rem)] lg:pb-8">
+        <div className="mx-auto px-4 sm:px-6 md:px-12 lg:px-24 py-6 sm:py-8 pb-[calc(200px+1.5rem)] lg:pb-8">
           <div className="grid gap-6 lg:gap-x-24 lg:grid-cols-[1fr,auto]">
             {/* Left Column - Property Details */}
             <div className="space-y-6 sm:space-y-8">
@@ -204,6 +210,50 @@ const PropertyPage = ({ params }: PageProps) => {
             >
               <PropertyReviews propertyId={property?._id}/>
             </Suspense>
+          </div>
+
+          {/* Mobile Booking Card - Fixed Bottom */}
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t shadow-lg">
+            <div className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-lg font-semibold">{formatPrice(property?.price || 0)} AED</p>
+                  <p className="text-sm text-muted-foreground">per night</p>
+                </div>
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+                  onClick={() => {
+                    // Scroll to the booking card or open it
+                    const bookingCard = document.querySelector('.booking-card-mobile');
+                    if (bookingCard) {
+                      bookingCard.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  Check Availability
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Booking Card - Full Version */}
+          <div className="lg:hidden booking-card-mobile mt-8">
+            <Card className="border shadow-lg">
+              <Suspense fallback={<SkeletonCard />}>
+                <BookingCard
+                  price={property?.price}
+                  id={property?._id}
+                  dailyPrice={property?.dailyPrices}
+                  cleaningFee={property?.cleaningfee}
+                  monthlyRent={property?.monthlyRent}
+                  yearlyRent={property?.yearlyRent}
+                  depositMonth={property?.depositMonth}
+                  depositYear={property?.depositYear}
+                  commisionMonth={property?.commisionMonth}
+                  commisionYear={property?.commisionYear}
+                />
+              </Suspense>
+            </Card>
           </div>
 
           {/* Full Width Map Section */}
