@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Grid, Heart, Share, X, ChevronLeft, ChevronRight } from "lucide-react"
@@ -302,6 +302,7 @@ export function PropertyGallery({
       {/* Show All Photos Modal */}
       <Dialog open={showAllPhotos} onOpenChange={setShowAllPhotos}>
         <DialogContent className="max-w-7xl h-[90vh] p-0">
+          <DialogTitle className="sr-only">All Photos - {propertyData?.title}</DialogTitle>
           <div className="relative h-full overflow-y-auto bg-white">
             <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm border-b p-4">
               <div className="flex items-center justify-between max-w-6xl mx-auto">
@@ -365,6 +366,7 @@ export function PropertyGallery({
         }}
       >
         <DialogContent className="max-w-7xl h-[90vh] p-0 sm:p-0">
+          <DialogTitle className="sr-only">Image Viewer - {propertyData?.title}</DialogTitle>
           <div className="relative h-full flex items-center justify-center p-4 sm:p-6 bg-teal/90">
             <Button
               variant="outline"

@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
 interface ImageGalleryProps {
@@ -60,6 +60,7 @@ export function ImageGallery({ images, title }: ImageGalleryProps) {
 
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-3xl h-[80vh]">
+          <DialogTitle className="sr-only">Image Gallery - {title}</DialogTitle>
           {selectedImage && (
             <div className="relative w-full h-full">
               <Image
