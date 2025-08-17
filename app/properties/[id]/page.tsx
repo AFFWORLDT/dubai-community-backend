@@ -60,8 +60,27 @@ const PropertyDetailsSkeleton = () => {
 };
 
 const PropertyPage = ({ params }: PageProps) => {
-  const { isLoading, data: propertyFromHook } = useGetpropertyById(params.id);
-  const property = propertyFromHook?.data?.data;
+  const { isLoading, data: propertyFromHook, error } = useGetpropertyById(params.id);
+  const property = propertyFromHook?.data;
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-red-600 mb-4">Error Loading Property</h2>
+          <p className="text-muted-foreground mb-4">
+            {error?.message || 'Failed to load property details'}
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading || !property) {
     return <PropertyDetailsSkeleton />;

@@ -14,6 +14,9 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
             refetchOnWindowFocus: false,
             // Cache time of 5 minutes
             gcTime: 1000 * 60 * 5,
+            // Retry failed requests
+            retry: 3,
+            retryDelay: 1000,
           },
         },
       })

@@ -10,12 +10,11 @@ interface DecodedToken {
   [key: string]: any;
 }
 
-if (!process.env.NEXT_PUBLIC_API_URL) {
-  throw new Error('NEXT_PUBLIC_API_URL environment variable is not defined');
-}
+// Use a fallback URL if environment variable is not set
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: API_URL,
   headers: {
     "Content-Type": "application/json",
   },

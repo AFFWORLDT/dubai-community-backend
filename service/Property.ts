@@ -14,12 +14,13 @@ export const getAllProperties = async (filters?: PropertyFilters): Promise<Prope
   }
 };
 
-export const getPropertyById = async (id:string)=>{
-      try {
-       const res = api.get(`/api/v1/property/property/special/${id}`)
-       return res
-      } catch (error) {
-        console.log(error)
-      }
-}
+export const getPropertyById = async (id: string) => {
+  try {
+    const response = await api.get(`/api/v1/property/property/special/${id}`);
+    return response.data;
+  } catch (error: any) {
+    console.error('Error fetching property by ID:', error.message);
+    throw error;
+  }
+};
 
