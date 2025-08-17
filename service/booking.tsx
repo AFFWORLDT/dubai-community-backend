@@ -34,17 +34,18 @@ export const createBooking = async (payload:any): Promise<any> => {
   export const getBooking = async (): Promise<any> =>{
     try {
         const res = await api.get(`/api/v1/booking/bookings`)
-        return res;
+        return res.data;
     } catch (error:any) {
-        console.error('Error creating booking:', error);
+        console.error('Error getting bookings:', error);
         throw new Error(error);
     }
   }
   export const getBookingById = async (id:string): Promise<any> =>{
     try {
         const res = await api.get(`/api/v1/booking/bookings/${id}`)
-        return res;
+        return res.data;
     } catch (error:any) {
+        console.error('Error getting booking by ID:', error);
         throw new Error(error);
     }
   }
@@ -52,8 +53,9 @@ export const createBooking = async (payload:any): Promise<any> => {
   export const getPropertyBooking = async (id:string)=>{
     try {
         const response = await api.get(`/api/v1/booking/properties/${id}/bookings`);
-return response;
+        return response.data;
     } catch (error:any) {
+      console.error('Error getting property bookings:', error);
       throw new Error(error);
     }
 }
@@ -61,14 +63,19 @@ return response;
 export const ToggleWatchlist =   async (payload:any)=>{
   try {
     const res = await api.post("/api/v1/bookinguser/watchlist",payload)
-    return res;
+    return res.data;
   } catch (error:any) {
+    console.error('Error toggling watchlist:', error);
     throw new Error(error);
   }
 }
-export const CancleBooking =   async (id:any,resion:any)=>{
 
+export const CancleBooking =   async (id:any,resion:any)=>{
+  try {
     const res = await api.patch(`/api/v1/booking/bookings/${id}/cancle-request`,{resion})
-    return res;
- 
+    return res.data;
+  } catch (error:any) {
+    console.error('Error cancelling booking:', error);
+    throw new Error(error);
+  }
 }

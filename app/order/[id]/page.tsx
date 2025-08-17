@@ -42,9 +42,22 @@ function formatDate(date: any): string {
 export default function BookingDetails({ params }: PageProps) {
   const {data, isLoading, error}=useGetBookingById(params.id)
   const { isAuthenticated } = useAuthStore()
-  const PropertyData =data?.data?.data?.property
-  const BookingDetails=data?.data?.data
-  const Owner =data?.data?.data?.user
+  
+  // Safe data destructuring with fallbacks
+  const PropertyData = data?.data?.property || null
+  const BookingDetails = data?.data || null
+  const Owner = data?.data?.user || null
+  
+  // Debug logging to help identify data structure issues
+  useEffect(() => {
+    if (data) {
+      console.log('Raw API data:', data);
+      console.log('PropertyData:', PropertyData);
+      console.log('BookingDetails:', BookingDetails);
+      console.log('Owner:', Owner);
+    }
+  }, [data, PropertyData, BookingDetails, Owner]);
+  
   const [selectedBookingId, setSelectedBookingId] = useState<string | any>(null);
   const [isGmailRedirect, setIsGmailRedirect] = useState(false);
   const isMobile = useIsMobile();
@@ -272,13 +285,13 @@ Support: support@mybookings.ae
   }
 
   // Show not found state
-  if (!BookingDetails) {
+  if (!BookingDetails || !PropertyData || !Owner) {
     return (
       <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center px-4">
         <div className="text-center">
           <h2 className="text-xl md:text-2xl font-bold text-gray-600 mb-4">Booking Not Found</h2>
           <p className="text-sm md:text-base text-gray-600 mb-4 px-4">
-            The booking you're looking for could not be found.
+            The booking you're looking for could not be found or is missing required data.
           </p>
           <Button onClick={() => window.location.href = '/properties'} className="px-6 py-2">
             Browse Properties
@@ -497,10 +510,9 @@ Support: support@mybookings.ae
                         <AvatarImage src={Owner.profileImg} alt="User profile" />
                       ) : (
                         <AvatarFallback className="text-blue-500 font-semibold">
-                          {Owner?.fullName
-                            ?.split(" ")
-                            .map((name: string) => name.charAt(0))
-                            .join("") || "U"}
+                          {Owner?.fullName && Owner.fullName.trim() 
+                            ? Owner.fullName.split(" ").map((name: string) => name.charAt(0)).join("").slice(0, 2)
+                            : "U"}
                         </AvatarFallback>
                       )}
                     </Avatar>
