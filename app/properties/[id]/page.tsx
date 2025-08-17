@@ -63,7 +63,7 @@ const PropertyPage = ({ params }: PageProps) => {
   const { isLoading, data: propertyFromHook } = useGetpropertyById(params.id);
   const property = propertyFromHook?.data?.data;
 
-  if (isLoading) {
+  if (isLoading || !property) {
     return <PropertyDetailsSkeleton />;
   }
 
@@ -99,8 +99,8 @@ const PropertyPage = ({ params }: PageProps) => {
                   title={property?.title}
                   location={property?.address?.address}
                   description={property?.description}
-                  beds={property?.category}
-                  baths={property?.bathrooms}
+                  beds={property?.roomType || property?.category}
+                  baths={property?.washRoom}
                   guests={property?.guest_no}
                   size={property?.size}
                   bedrooms={property?.bedrooms}

@@ -43,7 +43,7 @@ export function HostInfo({ host }: HostInfoProps) {
               <Avatar className="w-20 h-20 border-2 border-teal-200 dark:border-teal-700">
                 <AvatarImage src={host?.image} alt={host?.fullName} />
                 <AvatarFallback className="bg-teal-50 text-teal-900 text-lg">
-                  {host?.fullName.split(' ').map(n => n[0]).join('')}
+                  {host?.fullName ? host.fullName.split(' ').map(n => n[0]).join('') : 'H'}
                 </AvatarFallback>
               </Avatar>
             </motion.div>

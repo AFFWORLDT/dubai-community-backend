@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 interface PropertyInfoProps {
   title: string
   location: string
-  description: string
+  description?: string
   beds: number
   baths: number
   guests: number
@@ -36,9 +36,24 @@ export function PropertyInfo({
   propertyId,
   createdAt
 }: PropertyInfoProps) {
+  // Early return if essential props are missing
+  if (!title || !propertyId) {
+    return (
+      <div className="space-y-6 max-w-3xl">
+        <div className="text-center py-8">
+          <p className="text-muted-foreground">Loading property information...</p>
+        </div>
+      </div>
+    );
+  }
   const [showFullDescription, setShowFullDescription] = useState(false)
 
   const renderDescription = () => {
+    // Handle undefined or null description
+    if (!description) {
+      return "No description available"
+    }
+
     if (showFullDescription) {
       return description
     }
@@ -67,7 +82,7 @@ export function PropertyInfo({
       className="space-y-6 max-w-3xl"
     >
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight mb-2">{title}</h1>
+        <h1 className="text-2xl font-semibold tracking-tight mb-2">{title || "Property Title"}</h1>
         <div className="flex items-center justify-between flex-wrap">
           <div className="flex items-center gap-4 flex-wrap text-sm">
             <div className="flex items-center gap-2">
@@ -76,7 +91,7 @@ export function PropertyInfo({
               <span className="text-muted-foreground">·</span>
               <button className="underline font-medium">{reviews} reviews</button>
               <span className="text-muted-foreground">·</span>
-              <span>{location}</span>
+              <span>{location || "Location not available"}</span>
             </div>
             {isSuperhost && (
               <>
@@ -94,17 +109,17 @@ export function PropertyInfo({
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
         <div className="flex items-start gap-3">
           <div>
-            <div className="font-medium text-sm">{guests} Guests</div>
+            <div className="font-medium text-sm">{guests || 0} Guests</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
           <div>
-            <div className="font-medium text-sm">{beds} Room</div>
+            <div className="font-medium text-sm">{beds || 0} Room</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
           <div>
-            <div className="font-medium text-sm">{baths} Bathrooms</div>
+            <div className="font-medium text-sm">{baths || 0} Bathrooms</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
@@ -126,7 +141,7 @@ export function PropertyInfo({
 
       <div>
         <p className="text-base leading-relaxed">{renderDescription()}</p>
-        {description.split(" ").length > 60 && (
+        {description && description.split(" ").length > 60 && (
           <button
             onClick={() => setShowFullDescription(!showFullDescription)}
             className="text-black font-medium underline mt-4 hover:opacity-80"
