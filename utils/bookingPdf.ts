@@ -49,6 +49,9 @@ export const generateBookingReceiptPDF = async (
   BOOKINGID: string
 ) => {
   try {
+    // Check if we're on a mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
     // Format dates
     const issuedDate = format(new Date(), 'yyyy-MM-dd');
     const checkInDate = format(new Date(bookingData.checkIn), 'yyyy-MM-dd');
@@ -494,29 +497,39 @@ export const generateBookingReceiptPDF = async (
     tempDiv.style.backgroundColor = 'white';
     document.body.appendChild(tempDiv);
 
-    // Wait for images to load
+    // Wait for images to load with timeout for mobile devices
     const images = tempDiv.querySelectorAll('img');
-    await Promise.all(
-      Array.from(images).map(img => {
-        return new Promise((resolve) => {
-          if (img.complete) {
+    const imageLoadPromises = Array.from(images).map(img => {
+      return new Promise((resolve) => {
+        if (img.complete) {
+          resolve(null);
+        } else {
+          const timeout = setTimeout(() => resolve(null), 5000); // 5 second timeout for mobile
+          img.onload = () => {
+            clearTimeout(timeout);
             resolve(null);
-          } else {
-            img.onload = () => resolve(null);
-            img.onerror = () => resolve(null);
-          }
-        });
-      })
-    );
+          };
+          img.onerror = () => {
+            clearTimeout(timeout);
+            resolve(null);
+          };
+        }
+      });
+    });
 
-    // Convert HTML to canvas
+    // Wait for images with timeout
+    await Promise.all(imageLoadPromises);
+
+    // Convert HTML to canvas with mobile-optimized settings
     const canvas = await html2canvas(tempDiv, {
-      scale: 2,
+      scale: isMobile ? 1.5 : 2, // Lower scale for mobile to avoid memory issues
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#ffffff',
       width: 794, // A4 width in pixels at 96 DPI
       height: 1123, // A4 height in pixels at 96 DPI
+      logging: false, // Disable logging on mobile
+      removeContainer: true, // Clean up automatically
     });
 
     // Remove the temporary div
@@ -524,7 +537,7 @@ export const generateBookingReceiptPDF = async (
 
     // Create PDF
     const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgData = canvas.toDataURL('image/png');
+    const imgData = canvas.toDataURL('image/png', 0.8); // Lower quality for mobile
     
     // Calculate dimensions to fit A4
     const imgWidth = 210; // A4 width in mm
@@ -546,9 +559,32 @@ export const generateBookingReceiptPDF = async (
       heightLeft -= pageHeight;
     }
 
-    // Save the PDF
+    // Save the PDF with mobile-friendly filename
     const filename = `mybooking-receipt-${bookingReference}.pdf`;
-    pdf.save(filename);
+    
+    // For mobile devices, try to use a more compatible save method
+    if (isMobile) {
+      try {
+        // Try the standard save method first
+        pdf.save(filename);
+      } catch (mobileError) {
+        console.warn('Standard PDF save failed on mobile, trying alternative method:', mobileError);
+        
+        // Alternative method for mobile: create blob and download
+        const pdfBlob = pdf.output('blob');
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.style.display = 'none';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    } else {
+      pdf.save(filename);
+    }
 
     return {
       success: true,
@@ -557,6 +593,16 @@ export const generateBookingReceiptPDF = async (
 
   } catch (error) {
     console.error('Error generating PDF receipt:', error);
-    throw new Error('Failed to generate PDF receipt');
+    
+    // Provide more specific error information
+    if (error.message?.includes('html2canvas')) {
+      throw new Error('Failed to generate PDF receipt: Canvas generation failed');
+    } else if (error.message?.includes('jsPDF')) {
+      throw new Error('Failed to generate PDF receipt: PDF creation failed');
+    } else if (error.message?.includes('network') || error.message?.includes('fetch')) {
+      throw new Error('Failed to generate PDF receipt: Network error');
+    } else {
+      throw new Error('Failed to generate PDF receipt: ' + (error.message || 'Unknown error'));
+    }
   }
 };

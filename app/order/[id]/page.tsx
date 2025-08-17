@@ -83,17 +83,111 @@ export default function BookingDetails({ params }: PageProps) {
         return;
       }
 
-      await generateBookingReceiptPDF(
+      // Show loading state for mobile users
+      if (isMobile) {
+        toast.loading("Generating receipt... Please wait");
+      }
+
+      // Add a small delay to ensure the loading toast is visible
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const result = await generateBookingReceiptPDF(
         BookingDetails,
         Owner,
         PropertyData,
         BookingDetails._id
       );
       
+      // Dismiss loading toast and show success
+      if (isMobile) {
+        toast.dismiss();
+      }
+      
       toast.success("Receipt downloaded successfully");
-    } catch (error) {
-      toast.error("Failed to download receipt");
+      
+      // For mobile devices, provide additional feedback
+      if (isMobile && result?.filename) {
+        // Check if the download actually happened
+        setTimeout(() => {
+          toast.info("If download didn't start, check your browser's download settings");
+        }, 2000);
+      }
+
+    } catch (error: any) {
+      // Dismiss loading toast if it exists
+      if (isMobile) {
+        toast.dismiss();
+      }
+      
       console.error("Download receipt error:", error);
+      
+      // Provide more specific error messages for mobile users
+      if (isMobile) {
+        if (error?.message?.includes('Failed to generate PDF')) {
+          toast.error("PDF generation failed. Please try again or contact support.");
+        } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
+          toast.error("Network error. Please check your connection and try again.");
+        } else {
+          toast.error("Download failed. Please try again or contact support.");
+        }
+      } else {
+        toast.error("Failed to download receipt");
+      }
+    }
+  };
+
+  const handleTextReceipt = () => {
+    try {
+      if (!BookingDetails || !PropertyData || !Owner) {
+        toast.error("Booking data not available");
+        return;
+      }
+
+      // Create a simple text receipt
+      const receiptText = `
+MYBOOKINGS - Booking Receipt
+
+Booking ID: ${BookingDetails._id}
+Status: ${BookingDetails.status}
+Date: ${new Date().toLocaleDateString()}
+
+PROPERTY DETAILS:
+${PropertyData.title}
+${PropertyData.address?.address}
+
+STAY DETAILS:
+Check-in: ${formatDate(BookingDetails.checkIn)} After 3:00 PM
+Check-out: ${formatDate(BookingDetails.checkOut)} Before 11:00 AM
+Nights: ${BookingDetails.nights}
+
+GUEST INFORMATION:
+Name: ${Owner.fullName}
+Email: ${Owner.email}
+Phone: ${Owner.phone}
+
+PAYMENT DETAILS:
+Total Amount: ${BookingDetails.rent} AED
+
+Thank you for choosing MYBOOKINGS!
+Support: support@mybookings.ae
+      `.trim();
+
+      // Create and download text file
+      const blob = new Blob([receiptText], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `mybooking-receipt-${BookingDetails._id}.txt`;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      toast.success("Text receipt downloaded successfully");
+    } catch (error) {
+      console.error("Text receipt error:", error);
+      toast.error("Failed to download text receipt");
     }
   };
 
@@ -205,13 +299,22 @@ export default function BookingDetails({ params }: PageProps) {
                   <span className="text-sm text-gray-600 dark:text-gray-300">Booking ID: {BookingDetails?._id?.slice(0, 8)}...</span>
                 </div>
                 {BookingDetails?.status === "Confirmed" && (
-                  <Button
-                    onClick={handleDownloadReceipt}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 h-9"
-                  >
-                    <Download className="h-4 w-4 mr-1" />
-                    Download
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={handleDownloadReceipt}
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-2 py-2 h-9"
+                    >
+                      <Download className="h-4 w-4 mr-1" />
+                      PDF
+                    </Button>
+                    <Button
+                      onClick={() => handleTextReceipt()}
+                      variant="outline"
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50 text-sm px-2 py-2 h-9"
+                    >
+                      Text
+                    </Button>
+                  </div>
                 )}
               </div>
             )}
