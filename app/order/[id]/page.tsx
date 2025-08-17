@@ -103,16 +103,30 @@ export default function BookingDetails({ params }: PageProps) {
         toast.dismiss();
       }
       
-      toast.success("Receipt downloaded successfully");
-      
-      // For mobile devices, provide additional feedback
-      if (isMobile && result?.filename) {
-        // Check if the download actually happened
+      // For mobile devices, provide specific instructions
+      if (isMobile) {
+        toast.success("Receipt generated! Check your downloads or browser tab");
+        
+        // Additional mobile-specific guidance
         setTimeout(() => {
-          toast.info("If download didn't start, check your browser's download settings");
+          toast.info("If download didn't start, check your browser's download settings or look for a new tab");
         }, 2000);
+        
+        // Check if download actually happened after a delay
+        setTimeout(() => {
+          // Try to detect if download was successful
+          const downloadStarted = sessionStorage.getItem('pdf_download_started');
+          if (!downloadStarted) {
+            toast.warning("Download may not have started. Try the Text option instead.");
+          }
+        }, 5000);
+        
+        // Mark download as attempted
+        sessionStorage.setItem('pdf_download_started', 'true');
+      } else {
+        toast.success("Receipt downloaded successfully");
       }
-
+      
     } catch (error: any) {
       // Dismiss loading toast if it exists
       if (isMobile) {
@@ -124,11 +138,13 @@ export default function BookingDetails({ params }: PageProps) {
       // Provide more specific error messages for mobile users
       if (isMobile) {
         if (error?.message?.includes('Failed to generate PDF')) {
-          toast.error("PDF generation failed. Please try again or contact support.");
+          toast.error("PDF generation failed. Please try again or use the Text option.");
         } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
           toast.error("Network error. Please check your connection and try again.");
+        } else if (error?.message?.includes('mobile device')) {
+          toast.error("Mobile download failed. Please try the Text option instead.");
         } else {
-          toast.error("Download failed. Please try again or contact support.");
+          toast.error("Download failed. Please try the Text option or contact support.");
         }
       } else {
         toast.error("Failed to download receipt");
@@ -188,6 +204,36 @@ Support: support@mybookings.ae
     } catch (error) {
       console.error("Text receipt error:", error);
       toast.error("Failed to download text receipt");
+    }
+  };
+
+  // Mobile download helper function
+  const triggerMobileDownload = (blob: Blob, filename: string) => {
+    try {
+      // Method 1: Standard download
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      return true;
+    } catch (error) {
+      console.warn('Standard download failed, trying alternative methods:', error);
+      
+      try {
+        // Method 2: Window open
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url), 5000);
+        return true;
+      } catch (fallbackError) {
+        console.error('All download methods failed:', fallbackError);
+        return false;
+      }
     }
   };
 
@@ -299,20 +345,20 @@ Support: support@mybookings.ae
                   <span className="text-sm text-gray-600 dark:text-gray-300">Booking ID: {BookingDetails?._id?.slice(0, 8)}...</span>
                 </div>
                 {BookingDetails?.status === "Confirmed" && (
-                  <div className="flex gap-2">
+                  <div className="flex flex-col gap-2">
                     <Button
                       onClick={handleDownloadReceipt}
-                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-2 py-2 h-9"
+                      className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 h-9 w-full"
                     >
                       <Download className="h-4 w-4 mr-1" />
-                      PDF
+                      Download PDF
                     </Button>
                     <Button
                       onClick={() => handleTextReceipt()}
                       variant="outline"
-                      className="border-blue-200 text-blue-600 hover:bg-blue-50 text-sm px-2 py-2 h-9"
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50 text-sm px-3 py-2 h-9 w-full"
                     >
-                      Text
+                      Download Text Receipt
                     </Button>
                   </div>
                 )}

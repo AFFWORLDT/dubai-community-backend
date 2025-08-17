@@ -562,27 +562,74 @@ export const generateBookingReceiptPDF = async (
     // Save the PDF with mobile-friendly filename
     const filename = `mybooking-receipt-${bookingReference}.pdf`;
     
-    // For mobile devices, try to use a more compatible save method
+    // For mobile devices, use a more reliable download method
     if (isMobile) {
       try {
-        // Try the standard save method first
-        pdf.save(filename);
-      } catch (mobileError) {
-        console.warn('Standard PDF save failed on mobile, trying alternative method:', mobileError);
-        
-        // Alternative method for mobile: create blob and download
+        // Create blob and use the most reliable mobile download method
         const pdfBlob = pdf.output('blob');
         const url = URL.createObjectURL(pdfBlob);
+        
+        // Method 1: Try using a hidden link with click
         const link = document.createElement('a');
         link.href = url;
         link.download = filename;
         link.style.display = 'none';
         document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        
+        // Force click on mobile
+        if (link.click) {
+          link.click();
+        } else {
+          // Fallback: try to trigger download programmatically
+          const event = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+          });
+          link.dispatchEvent(event);
+        }
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 1000);
+        
+      } catch (mobileError) {
+        console.warn('Mobile PDF save failed, trying alternative method:', mobileError);
+        
+        try {
+          // Method 2: Try using window.open for mobile
+          const pdfBlob = pdf.output('blob');
+          const url = URL.createObjectURL(pdfBlob);
+          window.open(url, '_blank');
+          
+          // Clean up after a delay
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+          }, 5000);
+          
+        } catch (fallbackError) {
+          console.error('All mobile PDF methods failed:', fallbackError);
+          
+          // Method 3: Last resort - try to save as data URL
+          try {
+            const pdfDataUrl = pdf.output('dataurlstring');
+            const link = document.createElement('a');
+            link.href = pdfDataUrl;
+            link.download = filename;
+            link.style.display = 'none';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } catch (finalError) {
+            console.error('Final PDF save attempt failed:', finalError);
+            throw new Error('Failed to save PDF on mobile device');
+          }
+        }
       }
     } else {
+      // Desktop: use standard method
       pdf.save(filename);
     }
 
