@@ -102,7 +102,7 @@ export default function BookingDetails({ params }: PageProps) {
     return (
       <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-24 w-24 md:h-32 md:w-32 border-b-2 border-teal-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-24 w-24 md:h-32 md:w-32 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-base md:text-lg text-gray-600 px-4">
             {isGmailRedirect ? "Loading your booking details..." : "Loading..."}
           </p>
@@ -152,19 +152,19 @@ export default function BookingDetails({ params }: PageProps) {
     <div className="min-h-screen bg-white dark:bg-black">
       {/* Mobile Header */}
       {isMobile && (
-        <div className="sticky top-0 z-40 bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800 px-4 py-3">
+        <div className="sticky top-0 z-40 bg-blue-600 dark:bg-blue-700 border-b border-blue-700 dark:border-blue-800 px-4 py-3">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => window.history.back()}
-              className="p-2 h-10 w-10"
+              className="p-2 h-10 w-10 text-white hover:bg-blue-500"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
             <div className="flex-1">
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">My Booking</h1>
-              <p className="text-xs text-gray-500 truncate">ID: {BookingDetails?._id?.slice(0, 8)}...</p>
+              <h1 className="text-lg font-semibold text-white">My Booking</h1>
+              <p className="text-xs text-blue-100 truncate">ID: {BookingDetails?._id?.slice(0, 8)}...</p>
             </div>
           </div>
         </div>
@@ -178,15 +178,15 @@ export default function BookingDetails({ params }: PageProps) {
             {!isMobile && (
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-2xl font-bold text-teal-600">Booking Details</h1>
+                  <h1 className="text-2xl font-bold text-blue-600">Booking Details</h1>
                   <p className="text-sm text-slate-500">Booking ID: {BookingDetails?._id}</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <Badge className="bg-teal-500 text-white hover:bg-teal-400">{BookingDetails?.status}</Badge>
+                  <Badge className="bg-blue-600 text-white hover:bg-blue-500">{BookingDetails?.status}</Badge>
                   {BookingDetails?.status === "Confirmed" && (
                     <Button
                       onClick={handleDownloadReceipt}
-                      className="bg-teal-600 hover:bg-teal-700 text-white"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                       size="sm"
                     >
                       <Download className="h-4 w-4 mr-2" />
@@ -199,15 +199,15 @@ export default function BookingDetails({ params }: PageProps) {
 
             {/* Mobile Status and Actions */}
             {isMobile && (
-              <div className="flex items-center justify-between bg-teal-50 dark:bg-teal-900/20 rounded-lg p-4">
+              <div className="flex items-center justify-between bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                 <div className="flex items-center gap-3">
-                  <Badge className="bg-teal-500 text-white text-sm px-3 py-1">{BookingDetails?.status}</Badge>
+                  <Badge className="bg-blue-600 text-white text-sm px-3 py-1">{BookingDetails?.status}</Badge>
                   <span className="text-sm text-gray-600 dark:text-gray-300">Booking ID: {BookingDetails?._id?.slice(0, 8)}...</span>
                 </div>
                 {BookingDetails?.status === "Confirmed" && (
                   <Button
                     onClick={handleDownloadReceipt}
-                    className="bg-teal-600 hover:bg-teal-700 text-white text-sm px-3 py-2 h-9"
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-2 h-9"
                   >
                     <Download className="h-4 w-4 mr-1" />
                     Download
@@ -217,9 +217,9 @@ export default function BookingDetails({ params }: PageProps) {
             )}
 
             {/* Property Details */}
-            <Card className="border border-teal-100">
+            <Card className="border border-blue-100 dark:border-blue-800">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 text-lg">Property Details</CardTitle>
+                <CardTitle className="text-blue-600 text-lg">Property Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className={`flex gap-4 ${isMobile ? 'flex-col' : ''}`}>
@@ -232,7 +232,7 @@ export default function BookingDetails({ params }: PageProps) {
                     />
                   </div>
                   <div className="flex-1 space-y-2">
-                    <h3 className="font-semibold text-teal-600 text-base">{PropertyData?.title}</h3>
+                    <h3 className="font-semibold text-blue-600 text-base">{PropertyData?.title}</h3>
                     <div className="flex items-start gap-2 text-sm text-slate-500">
                       <MapPin className="h-4 w-4 mt-0.5 flex-shrink-0" />
                       <span className="leading-relaxed">{PropertyData?.address?.address}</span>
@@ -241,11 +241,11 @@ export default function BookingDetails({ params }: PageProps) {
                 </div>
                 <div className={`grid gap-3 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2'}`}>
                   <div className="flex items-center gap-2 text-slate-600 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <Home className="h-4 w-4 text-teal-500" />
+                    <Home className="h-4 w-4 text-blue-500" />
                     <span className="text-sm">{PropertyData?.category}</span>
                   </div>
                   <div className="flex items-center gap-2 text-slate-600 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <Users className="h-4 w-4 text-teal-500" />
+                    <Users className="h-4 w-4 text-blue-500" />
                     <span className="text-sm">{PropertyData?.guest_no} Guest</span>
                   </div>
                 </div>
@@ -253,16 +253,16 @@ export default function BookingDetails({ params }: PageProps) {
             </Card>
 
             {/* Stay Details */}
-            <Card className="border border-teal-100">
+            <Card className="border border-blue-100 dark:border-blue-800">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 text-lg">Stay Details</CardTitle>
+                <CardTitle className="text-blue-600 text-lg">Stay Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'sm:grid-cols-2'}`}>
                   <div className="space-y-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="text-sm font-medium text-slate-500">Check-in</div>
                     <div className="flex items-center gap-2 text-slate-600">
-                      <Calendar className="h-4 w-4 text-teal-500" />
+                      <Calendar className="h-4 w-4 text-blue-500" />
                       <span className="text-sm">{formatDate(BookingDetails?.checkIn)}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-slate-500">
@@ -273,7 +273,7 @@ export default function BookingDetails({ params }: PageProps) {
                   <div className="space-y-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                     <div className="text-sm font-medium text-slate-500">Check-out</div>
                     <div className="flex items-center gap-2 text-slate-600">
-                      <Calendar className="h-4 w-4 text-teal-500" />
+                      <Calendar className="h-4 w-4 text-blue-500" />
                       <span className="text-sm">{formatDate(BookingDetails?.checkOut)}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-slate-500">
@@ -286,9 +286,9 @@ export default function BookingDetails({ params }: PageProps) {
             </Card>
 
             {/* Cancellation Policy */}
-            <Card className="border border-teal-100">
+            <Card className="border border-blue-100 dark:border-blue-800">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 text-lg">Cancellation Policy</CardTitle>
+                <CardTitle className="text-blue-600 text-lg">Cancellation Policy</CardTitle>
                 <CardDescription className="text-slate-500">
                 </CardDescription>
               </CardHeader>
@@ -303,7 +303,7 @@ export default function BookingDetails({ params }: PageProps) {
                 {BookingDetails?.status === "Confirmed" && (
                   <Button
                     onClick={handleDownloadReceipt}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white h-12 text-base"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 text-base"
                   >
                     <Download className="h-5 w-5 mr-2" />
                     Download Receipt
@@ -311,7 +311,7 @@ export default function BookingDetails({ params }: PageProps) {
                 )}
                 <Button
                   variant="outline"
-                  className="w-full border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700 h-12 text-base"
+                  className="w-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 h-12 text-base"
                   onClick={() => setSelectedBookingId(BookingDetails._id)}
                 >
                   Cancel Booking
@@ -323,31 +323,31 @@ export default function BookingDetails({ params }: PageProps) {
           {/* Sidebar - Stacked on mobile */}
           <div className="space-y-4 md:space-y-6">
             {/* Price Details */}
-            <Card className="border border-teal-100">
+            <Card className="border border-blue-100 dark:border-blue-800">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 text-lg">Price Details</CardTitle>
+                <CardTitle className="text-blue-600 text-lg">Price Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="text-sm text-slate-600">{BookingDetails?.nights} nights</div>
-                  <div className="font-semibold text-lg text-teal-600">{BookingDetails?.rent} AED</div>
+                  <div className="font-semibold text-lg text-blue-600">{BookingDetails?.rent} AED</div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Guest Information */}
-            <Card className="border border-teal-100 rounded-lg shadow-md">
+            <Card className="border border-blue-100 dark:border-blue-800 rounded-lg shadow-md">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 font-semibold text-lg">Guest Information</CardTitle>
+                <CardTitle className="text-blue-600 font-semibold text-lg">Guest Information</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className={`flex items-center gap-4 ${isMobile ? 'flex-col text-center' : ''}`}>
-                  <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-teal-200 mx-auto">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-blue-200 mx-auto">
                     <Avatar className="h-full w-full">
                       {Owner?.profileImg ? (
                         <AvatarImage src={Owner.profileImg} alt="User profile" />
                       ) : (
-                        <AvatarFallback className="text-teal-500 font-semibold">
+                        <AvatarFallback className="text-blue-500 font-semibold">
                           {Owner?.fullName
                             ?.split(" ")
                             .map((name: string) => name.charAt(0))
@@ -361,14 +361,14 @@ export default function BookingDetails({ params }: PageProps) {
                     <div className={`text-sm text-slate-500 ${isMobile ? 'break-words' : 'truncate w-48'}`}>{Owner?.location}</div>
                   </div>
                 </div>
-                <Separator className="bg-teal-100" />
+                <Separator className="bg-blue-100" />
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-slate-600 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <Phone className="h-5 w-5 text-teal-500 flex-shrink-0" />
+                    <Phone className="h-5 w-5 text-blue-500 flex-shrink-0" />
                     <span className="text-sm break-all">{Owner?.phone}</span>
                   </div>
                   <div className="flex items-center gap-3 text-slate-600 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <Mail className="h-5 w-5 text-teal-500 flex-shrink-0" />
+                    <Mail className="h-5 w-5 text-blue-500 flex-shrink-0" />
                     <span className="text-sm break-all">{Owner?.email}</span>
                   </div>
                 </div>
@@ -376,21 +376,21 @@ export default function BookingDetails({ params }: PageProps) {
             </Card>
 
             {/* Need Help */}
-            <Card className="border border-teal-100">
+            <Card className="border border-blue-100 dark:border-blue-800">
               <CardHeader className="pb-3">
-                <CardTitle className="text-teal-600 text-lg">Need Help?</CardTitle>
+                <CardTitle className="text-blue-600 text-lg">Need Help?</CardTitle>
                 <CardDescription className="text-slate-500">Our support team is available 24/7</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button
                   variant="outline"
-                  className="w-full border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700 h-11"
+                  className="w-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 h-11"
                 >
                   Visit Help Center
                 </Button>
                 <Button
                   variant="outline"
-                  className="w-full border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700 h-11"
+                  className="w-full border-blue-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 h-11"
                 >
                   Emergency Support
                 </Button>
