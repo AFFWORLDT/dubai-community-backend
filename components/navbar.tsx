@@ -72,6 +72,13 @@ const Navbar = () => {
                 About
                 <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
               </div>
+              <div
+                onClick={() => window.location.href = '/our-apps'}
+                className="text-sm font-medium text-white hover:text-blue-100 transition-colors duration-200 relative group cursor-pointer"
+              >
+                Our Apps
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform duration-200" />
+              </div>
             </div>
           </div>
 
@@ -163,6 +170,16 @@ const Navbar = () => {
         className="flex items-center space-x-2 p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800 transition-all duration-200 cursor-pointer"
       >
         <span className="text-lg font-medium text-blue-900 dark:text-blue-100">About</span>
+      </div>
+      
+      <div
+        onClick={() => {
+          window.location.href = '/our-apps';
+          setMobileMenuOpen(false);
+        }}
+        className="flex items-center space-x-2 p-3 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800 transition-all duration-200 cursor-pointer"
+      >
+        <span className="text-lg font-medium text-blue-900 dark:text-blue-100">Our Apps</span>
       </div>
     </div>
     

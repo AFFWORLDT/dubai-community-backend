@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Building2, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react'
+import { Building2, Facebook, Instagram, Youtube } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/ui/logo"
@@ -7,6 +7,7 @@ import { Logo } from "@/components/ui/logo"
 const footerLinks = {
   company: [
     { label: "About", href: "/about" },
+    { label: "Our Apps", href: "/our-apps" },
     { label: "Contact", href: "/contact" },
     { label: "Corporate Contact", href: "/corporate-contact" },
     // { label: "Careers", href: "/careers" },
@@ -54,27 +55,21 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-                  <Twitter className="h-4 w-4" />
-                  <span className="sr-only">Twitter</span>
-                </a>
-              </Button>
-              <Button variant="ghost" size="icon" asChild>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.facebook.com/share/1CXoN6G49z/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer">
                   <Facebook className="h-4 w-4" />
                   <span className="sr-only">Facebook</span>
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://www.instagram.com/MybookingsMybookingsdubai/" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.instagram.com/mybookings.ae?igsh=MWo3cG90dmtpN216Ng%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer">
                   <Instagram className="h-4 w-4" />
                   <span className="sr-only">Instagram</span>
                 </a>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                  <Linkedin className="h-4 w-4" />
-                  <span className="sr-only">LinkedIn</span>
+                <a href="https://youtube.com/@mybookingsae?si=Khx1LuINJC7fzK5s" target="_blank" rel="noopener noreferrer">
+                  <Youtube className="h-4 w-4" />
+                  <span className="sr-only">YouTube</span>
                 </a>
               </Button>
             </div>
