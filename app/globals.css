@@ -98,6 +98,35 @@
     background-size: 200% 100%;
   }
 
+  /* Mobile-specific optimizations */
+  @media (max-width: 768px) {
+    /* Touch-friendly button sizes */
+    .touch-target {
+      min-height: 44px;
+      min-width: 44px;
+    }
+    
+    /* Smooth scrolling for mobile */
+    .mobile-scroll {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+    
+    /* Optimize animations for mobile */
+    .mobile-optimized * {
+      will-change: auto;
+    }
+    
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .mobile-optimized * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  }
+
   .animate-tilt {
     transform-style: preserve-3d;
     transform: perspective(1000px);

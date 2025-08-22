@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Building2, Facebook, Instagram, Youtube } from 'lucide-react'
+import { Building2, Facebook, Instagram, Youtube, Apple, Play } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/ui/logo"
@@ -70,6 +70,18 @@ export function Footer() {
                 <a href="https://youtube.com/@mybookingsae?si=Khx1LuINJC7fzK5s" target="_blank" rel="noopener noreferrer">
                   <Youtube className="h-4 w-4" />
                   <span className="sr-only">YouTube</span>
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <a href="https://apps.apple.com/in/app/mybookings-ae/id6749492256" target="_blank" rel="noopener noreferrer">
+                  <Apple className="h-4 w-4" />
+                  <span className="sr-only">App Store</span>
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <a href="https://play.google.com/store/apps/details?id=com.mybookings.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
+                  <Play className="h-4 w-4" />
+                  <span className="sr-only">Google Play</span>
                 </a>
               </Button>
             </div>

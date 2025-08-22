@@ -19,18 +19,8 @@ export const metadata: Metadata = {
   viewport: {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-    viewportFit: 'cover',
-  },
-  other: {
-    'mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-capable': 'yes',
-    'apple-mobile-web-app-status-bar-style': 'default',
-    'apple-mobile-web-app-title': 'MyBookings',
-    'application-name': 'MyBookings',
-    'msapplication-TileColor': '#3b82f6',
-    'theme-color': '#3b82f6',
+    maximumScale: 5,
+    userScalable: true,
   },
 }
 
@@ -39,9 +29,5 @@ export default function OurAppsLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <div className="mobile-optimized">
-      {children}
-    </div>
-  )
+  return <>{children}</>
 }
