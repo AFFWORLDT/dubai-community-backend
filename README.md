@@ -1,346 +1,365 @@
-# Dubai Community Backend v2.1.0
+# 🗺️ Dubai Community Backend v2.1.0
 
-A comprehensive FastAPI backend for the Dubai Community Meetups Platform with advanced location-based services, Cloudinary media integration, and enhanced social features.
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green.svg)](https://www.mongodb.com/atlas)
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-API-blue.svg)](https://cloudinary.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-## 🚀 New Features in v2.1.0
+A comprehensive **FastAPI backend** for the Dubai Community Meetups Platform with advanced location-based services, Cloudinary media integration, and enhanced social networking features.
+
+## 🌟 Features
 
 ### 📍 **Location-Based Services**
-- **Real-time Location Sharing**: Users can share their current location with privacy controls
-- **Nearby User Discovery**: Find users within specified radius with distance calculations
-- **Geospatial Event Filtering**: Discover events happening near you
-- **Dubai Regions Support**: Comprehensive list of Dubai areas for filtering
-- **Location-Based Search**: Advanced user search with location filters
-- **Distance Calculations**: Accurate distance calculations using Haversine formula
+- **Real-time Location Sharing** with privacy controls
+- **Nearby User Discovery** with distance calculations using Haversine formula
+- **Geospatial Event Filtering** - discover events happening near you
+- **Dubai Regions Support** - comprehensive list of 48 Dubai areas
+- **Location-Based Search** with advanced filtering options
+- **Distance Calculations** with accurate geospatial queries
 
-### 🎯 **Advanced Filtering**
-- **Radius-based Search**: Search within customizable radius (1-50km)
-- **Interest-based Filtering**: Filter by specific interests
-- **Age & Gender Filters**: Premium filtering options
-- **Online Status**: Filter for currently active users
-- **Location Privacy**: Toggle location sharing on/off
+### 🔐 **Authentication & Security**
+- **JWT Authentication** with access and refresh tokens
+- **Secure Password Hashing** using bcrypt
+- **Token-based User Sessions** with automatic refresh
+- **Role-based Access Control** for premium features
+
+### 📸 **Media Management**
+- **Cloudinary Integration** for image and video uploads
+- **Automatic Image Optimization** and transformations
+- **Profile Picture Management** with secure deletion
+- **Event Cover Images** with cloud storage
+- **Media Attachments** in messages
+
+### 👥 **Social Networking**
+- **User Discovery** by region, interests, and location
+- **Connection Management** with friend requests
+- **Group Creation** and management (public/private)
+- **Event Organization** with RSVP functionality
+- **Real-time Messaging** with read status tracking
+
+### 🎯 **Advanced Features**
+- **Premium Filters** (age, gender, online status)
+- **Boosted Profiles** for priority display
+- **User Recommendations** based on interests
+- **Event Ticketing** with payment support
+- **Comprehensive Search** with multiple filters
 
 ## 🛠 Tech Stack
 
-- **Framework**: FastAPI 2.x
-- **Database**: MongoDB with Motor (async driver)
-- **Authentication**: JWT with refresh tokens
-- **Media Storage**: Cloudinary
-- **Geospatial**: MongoDB Geospatial indexes
-- **Password Hashing**: bcrypt
-- **Validation**: Pydantic v2
-- **Server**: Uvicorn
+| Component | Technology | Version |
+|-----------|------------|---------|
+| **Framework** | FastAPI | 2.x |
+| **Database** | MongoDB Atlas | Latest |
+| **Async Driver** | Motor | 3.3+ |
+| **Authentication** | JWT + bcrypt | Latest |
+| **Media Storage** | Cloudinary | 1.33+ |
+| **Validation** | Pydantic | 2.5+ |
+| **Server** | Uvicorn | 0.24+ |
+| **Geospatial** | MongoDB 2dsphere | Native |
 
 ## 📋 Prerequisites
 
-- Python 3.8+
-- MongoDB Atlas account
-- Cloudinary account
-- Virtual environment
+- **Python 3.8+**
+- **MongoDB Atlas** account
+- **Cloudinary** account
+- **Virtual environment** (recommended)
 
-## 🚀 Installation
+## 🚀 Quick Start
 
-1. **Clone and Setup**:
+### 1. **Clone Repository**
 ```bash
-git clone <repository>
-cd mybooking24.ae
+git clone https://github.com/AFFWORLDT/dubai-community-backend.git
+cd dubai-community-backend
+```
+
+### 2. **Setup Virtual Environment**
+```bash
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-2. **Install Dependencies**:
+### 3. **Install Dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Environment Variables**:
+### 4. **Environment Configuration**
 Create a `.env` file:
 ```env
-MONGODB_URI=mongodb+srv://affworldtechnologies:wMbiyR0ZM8JWfOYl@loc.6qmwn3p.mongodb.net/
-DATABASE_NAME=dubia meetups
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
+DATABASE_NAME=dubai_community
 JWT_SECRET_KEY=your-super-secret-jwt-key-here
 CLOUDINARY_API_SECRET=your-cloudinary-api-secret
 ```
 
-4. **Run the Application**:
+### 5. **Setup Database Indexes**
+```bash
+python setup_mongodb_indexes.py
+```
+
+### 6. **Run Application**
 ```bash
 python run.py
 ```
 
-The API will be available at `http://localhost:8000`
+The API will be available at: **http://localhost:8000**
 
 ## 📚 API Documentation
 
-- **Interactive Docs**: http://localhost:8000/docs
-- **OpenAPI Schema**: http://localhost:8000/openapi.json
-- **Health Check**: http://localhost:8000/health
+### **Interactive Docs**
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
 
-## 🗂 Database Collections
+### **Core Endpoints**
 
-### Users Collection
+#### 🔐 Authentication
+```
+POST /auth/register          # User registration
+POST /auth/login            # User login
+POST /auth/refresh          # Token refresh
+```
+
+#### 👤 User Management
+```
+GET    /users/profile       # Get user profile
+PUT    /users/profile       # Update profile
+GET    /users/search        # Search users
+GET    /users/search-location # Location-based search
+```
+
+#### 📍 Location Services
+```
+POST   /location/update     # Update user location
+GET    /location/nearby     # Find nearby users
+GET    /location/regions    # Get Dubai regions
+POST   /location/toggle-sharing # Toggle location sharing
+GET    /location/events-nearby # Find nearby events
+```
+
+#### 🎉 Events
+```
+POST   /events/create       # Create event
+GET    /events/upcoming     # Get upcoming events
+POST   /events/{id}/rsvp    # RSVP to event
+GET    /events/{id}         # Get event details
+```
+
+#### 📸 Media
+```
+POST   /media/upload/image  # Upload image
+POST   /media/upload/video  # Upload video
+DELETE /media/delete/{id}   # Delete media
+```
+
+## 🗄️ Database Schema
+
+### **Users Collection**
 ```javascript
 {
   "_id": ObjectId,
   "username": String,
   "email": String,
-  "password_hash": String,
+  "hashed_password": String,
   "region": String,
   "interests": [String],
-  "connections_count": Number,
-  "created_at": Date,
   "profile_picture": String,
   "bio": String,
-  "gender": String,
   "age": Number,
-  "boosted_until": Date,
-  "last_login": Date,
+  "gender": String,
   "location": {
     "type": "Point",
     "coordinates": [longitude, latitude],
-    "location_name": String,
-    "updated_at": Date
+    "location_name": String
   },
   "share_location": Boolean,
-  "last_location_update": Date
+  "last_location_update": Date,
+  "connections_count": Number,
+  "boosted_until": Date,
+  "created_at": Date,
+  "last_login": Date
 }
 ```
 
-### Events Collection
+### **Events Collection**
 ```javascript
 {
   "_id": ObjectId,
-  "creator_id": String,
+  "creator_id": ObjectId,
   "title": String,
+  "description": String,
   "region": String,
   "interests": [String],
-  "description": String,
-  "cover_image": String,
-  "price_aed": Number,
-  "invited_users": [String],
-  "participants": [String],
-  "created_at": Date,
   "event_date": Date,
   "location": {
     "type": "Point",
     "coordinates": [longitude, latitude],
-    "location_name": String,
-    "updated_at": Date
-  }
+    "location_name": String
+  },
+  "cover_image": String,
+  "price_aed": Number,
+  "participants": [ObjectId],
+  "invited_users": [ObjectId],
+  "created_at": Date
 }
-```
-
-## 🔐 Authentication Endpoints
-
-### POST `/auth/register`
-Register a new user with location support:
-```json
-{
-  "username": "john_doe",
-  "email": "john@example.com",
-  "password": "securepassword",
-  "region": "Dubai Marina",
-  "interests": ["fitness", "travel"],
-  "bio": "Love exploring Dubai!",
-  "age": 25,
-  "gender": "male"
-}
-```
-
-### POST `/auth/login`
-Login and get access + refresh tokens:
-```json
-{
-  "email": "john@example.com",
-  "password": "securepassword"
-}
-```
-
-### POST `/auth/refresh`
-Refresh access token using refresh token:
-```json
-{
-  "refresh_token": "your-refresh-token"
-}
-```
-
-## 📍 Location Endpoints
-
-### POST `/location/update`
-Update user's current location:
-```json
-{
-  "latitude": 25.0920,
-  "longitude": 55.1381,
-  "location_name": "Dubai Marina Mall",
-  "share_location": true
-}
-```
-
-### GET `/location/nearby`
-Find nearby users with advanced filtering:
-```
-GET /location/nearby?latitude=25.0920&longitude=55.1381&radius_km=10&interests=fitness,travel&age_min=20&age_max=30&gender=male&online_only=true&limit=20
-```
-
-### GET `/location/events-nearby`
-Find nearby events:
-```
-GET /location/events-nearby?latitude=25.0920&longitude=55.1381&radius_km=10&interests=fitness&limit=10
-```
-
-### GET `/location/regions`
-Get list of Dubai regions:
-```
-GET /location/regions
-```
-
-### POST `/location/toggle-sharing`
-Toggle location sharing:
-```json
-{
-  "share_location": true
-}
-```
-
-## 👥 User Endpoints
-
-### GET `/users/search-location`
-Location-based user search:
-```
-GET /users/search-location?latitude=25.0920&longitude=55.1381&radius_km=10&interests=fitness&age_min=20&age_max=30&gender=male&online_only=true&limit=20
-```
-
-### GET `/users/regions`
-Get available Dubai regions:
-```
-GET /users/regions
-```
-
-## 🎉 Event Endpoints
-
-### POST `/events/create`
-Create event with location:
-```json
-{
-  "title": "Marina Fitness Meetup",
-  "region": "Dubai Marina",
-  "interests": ["fitness", "social"],
-  "description": "Join us for an amazing workout!",
-  "event_date": "2024-02-15T18:00:00Z",
-  "location": {
-    "latitude": 25.0920,
-    "longitude": 55.1381,
-    "location_name": "Dubai Marina"
-  }
-}
-```
-
-### GET `/events/nearby`
-Find nearby events:
-```
-GET /events/nearby?latitude=25.0920&longitude=55.1381&radius_km=10&interests=fitness&limit=10
-```
-
-## 📸 Media Endpoints
-
-### POST `/media/upload/image`
-Upload profile picture or event cover:
-```
-POST /media/upload/image
-Content-Type: multipart/form-data
-file: [image file]
-```
-
-### POST `/media/upload/video`
-Upload video content:
-```
-POST /media/upload/video
-Content-Type: multipart/form-data
-file: [video file]
 ```
 
 ## 🔧 Configuration
 
-### MongoDB Geospatial Indexes
-Create geospatial indexes for location-based queries:
-```javascript
-// Users collection
-db.users.createIndex({ "location": "2dsphere" })
-
-// Events collection  
-db.events.createIndex({ "location": "2dsphere" })
-```
-
-### Cloudinary Configuration
-```python
-CLOUDINARY_CLOUD_NAME = "dbk0iancm"
-CLOUDINARY_API_KEY = "xUDIPFGtlbFTd3ZoQttFDPVZ728"
-CLOUDINARY_API_SECRET = "your-secret"
-CLOUDINARY_UPLOAD_PRESET = "24booking"
-```
+### **Environment Variables**
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MONGODB_URI` | MongoDB connection string | Required |
+| `DATABASE_NAME` | Database name | `dubai_community` |
+| `JWT_SECRET_KEY` | JWT signing key | Required |
+| `JWT_ALGORITHM` | JWT algorithm | `HS256` |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Access token expiry | `30` |
+| `REFRESH_TOKEN_EXPIRE_DAYS` | Refresh token expiry | `7` |
+| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name | `dbk0iancm` |
+| `CLOUDINARY_API_KEY` | Cloudinary API key | `xUDIPFGtlbFTd3ZoQttFDPVZ728` |
+| `CLOUDINARY_API_SECRET` | Cloudinary API secret | Required |
 
 ## 🧪 Testing
 
-Run the comprehensive location features test:
+### **Run Tests**
 ```bash
-python test_location_features.py
+# Install test dependencies
+pip install pytest pytest-asyncio httpx
+
+# Run tests
+pytest
 ```
 
-This will test:
-- ✅ Location Update & Sharing
-- ✅ Nearby User Discovery
-- ✅ Location-Based User Search
-- ✅ Geospatial Event Creation
-- ✅ Nearby Event Discovery
-- ✅ Dubai Regions List
-- ✅ Location Sharing Toggle
-- ✅ Distance Calculations
-- ✅ Coordinate Validation
-
-## 🚀 Production Deployment
-
-1. **Set Production Environment Variables**:
-```env
-MONGODB_URI=your-production-mongodb-uri
-JWT_SECRET_KEY=your-production-secret
-CLOUDINARY_API_SECRET=your-production-cloudinary-secret
-```
-
-2. **Create Geospatial Indexes**:
-```javascript
-use dubia_meetups
-db.users.createIndex({ "location": "2dsphere" })
-db.events.createIndex({ "location": "2dsphere" })
-```
-
-3. **Deploy with Gunicorn**:
+### **API Testing**
 ```bash
-pip install gunicorn
-gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
+# Test authentication
+curl -X POST "http://localhost:8000/auth/register" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","email":"test@example.com","password":"password123"}'
+
+# Test location update
+curl -X POST "http://localhost:8000/location/update" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"latitude":25.2048,"longitude":55.2708,"share_location":true}'
 ```
 
-## 💰 Monetization Features
+## 📱 Mobile App Integration
 
-- **Premium Filters**: Age/gender filtering for premium users
-- **Boosted Profiles**: Enhanced visibility for premium users
-- **Event Ticketing**: Support for paid events
-- **Location Analytics**: Premium location insights
+This backend is designed to work seamlessly with the **Dubai Community React Native Mobile App**. See the [React Native Guide](REACT_NATIVE_GUIDE.md) for mobile app implementation details.
 
-## 🔮 Future Enhancements
+### **Key Mobile Features**
+- **Real-time Location Updates**
+- **Push Notifications** (ready for implementation)
+- **Offline Support** with local caching
+- **Background Location** tracking
+- **Cross-platform** compatibility
 
-- **WebSocket Support**: Real-time messaging and location updates
-- **Push Notifications**: Location-based notifications
-- **Route Planning**: Integration with maps for event directions
-- **Group Location Sharing**: Share location with specific groups
-- **Location History**: Track user movement patterns
-- **Geofencing**: Automatic notifications when entering areas
+## 🚀 Deployment
 
-## 📞 Support
+### **Docker Deployment**
+```dockerfile
+FROM python:3.11-slim
 
-For support and questions:
-- Check the API documentation at `/docs`
-- Review the test files for usage examples
-- Contact the development team
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+### **Cloud Deployment**
+- **Heroku**: Ready for deployment
+- **AWS**: Lambda + API Gateway compatible
+- **Google Cloud**: Cloud Run ready
+- **Azure**: App Service compatible
+
+## 📊 Performance
+
+### **Optimizations**
+- **Async/Await** throughout the codebase
+- **Database Indexing** for geospatial queries
+- **Connection Pooling** with Motor
+- **Caching** ready for Redis integration
+- **Image Optimization** via Cloudinary
+
+### **Monitoring**
+- **Health Check**: `/health`
+- **Metrics**: Ready for Prometheus integration
+- **Logging**: Structured logging with correlation IDs
+- **Error Tracking**: Sentry integration ready
+
+## 🔒 Security
+
+### **Security Features**
+- **JWT Token Validation**
+- **Password Hashing** with bcrypt
+- **CORS Configuration**
+- **Input Validation** with Pydantic
+- **SQL Injection Protection** (MongoDB)
+- **Rate Limiting** ready for implementation
+
+### **Best Practices**
+- **Environment Variables** for secrets
+- **HTTPS Only** in production
+- **Regular Security Updates**
+- **Dependency Scanning**
+
+## 🤝 Contributing
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### **Development Setup**
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run linting
+flake8 .
+
+# Run type checking
+mypy .
+
+# Run tests with coverage
+pytest --cov=app tests/
+```
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+### **Documentation**
+- [API Documentation](http://localhost:8000/docs)
+- [React Native Guide](REACT_NATIVE_GUIDE.md)
+- [Database Schema](README.md#database-schema)
+
+### **Issues**
+- **Bug Reports**: [GitHub Issues](https://github.com/AFFWORLDT/dubai-community-backend/issues)
+- **Feature Requests**: [GitHub Discussions](https://github.com/AFFWORLDT/dubai-community-backend/discussions)
+
+### **Contact**
+- **Email**: support@dubaicommunity.com
+- **Discord**: [Dubai Community](https://discord.gg/dubaicommunity)
+
+## 🙏 Acknowledgments
+
+- **FastAPI** team for the amazing framework
+- **MongoDB** for the robust database
+- **Cloudinary** for media management
+- **Dubai Community** users for feedback and testing
 
 ---
 
-**Dubai Community Backend v2.1.0** - Connecting people through location-based discovery! 🗺️✨
+**Built with ❤️ for the Dubai Community**
+
+[![Dubai Community](https://img.shields.io/badge/Dubai-Community-blue.svg)](https://dubaicommunity.com)
+[![Made with Love](https://img.shields.io/badge/Made%20with-Love-red.svg)](https://github.com/AFFWORLDT/dubai-community-backend)
