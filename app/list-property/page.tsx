@@ -56,7 +56,7 @@ export default function ListPropertyPage() {
                       }
                     }}
                   >
-                    Start Earning Now
+                    Join Now
                   </Button>
                   <Button 
                     size="lg" 
