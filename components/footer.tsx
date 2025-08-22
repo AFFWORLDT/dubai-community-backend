@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Building2, Facebook, Instagram, Youtube, Apple, Play } from 'lucide-react'
+import { Building2, Facebook, Instagram, Youtube, Apple, Play, MessageCircle } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Logo } from "@/components/ui/logo"
@@ -82,6 +82,12 @@ export function Footer() {
                 <a href="https://play.google.com/store/apps/details?id=com.mybookings.app&pcampaignid=web_share" target="_blank" rel="noopener noreferrer">
                   <Play className="h-4 w-4" />
                   <span className="sr-only">Google Play</span>
+                </a>
+              </Button>
+              <Button variant="ghost" size="icon" asChild>
+                <a href="https://whatsapp.com/channel/0029Vb1ikGr60eBYyzypyj3p" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="h-4 w-4" />
+                  <span className="sr-only">WhatsApp Channel</span>
                 </a>
               </Button>
             </div>

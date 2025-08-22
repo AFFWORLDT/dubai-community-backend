@@ -97,6 +97,7 @@ A beautiful, eye-catching page that showcases all MyBookings.ae app links and so
 - **Instagram**: https://www.instagram.com/mybookings.ae?igsh=MWo3cG90dmtpN216Ng%3D%3D&utm_source=qr
 - **TikTok**: https://www.tiktok.com/@mybookings.ae?_t=ZS-8z4SHTnS05B&_r=1
 - **YouTube**: https://youtube.com/@mybookingsae?si=Khx1LuINJC7fzK5s
+- **WhatsApp Channel**: https://whatsapp.com/channel/0029Vb1ikGr60eBYyzypyj3p
 
 ## Technical Implementation
 

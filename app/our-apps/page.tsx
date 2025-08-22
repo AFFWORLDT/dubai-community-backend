@@ -16,7 +16,8 @@ import {
   Star,
   Users,
   TrendingUp,
-  Smartphone
+  Smartphone,
+  MessageCircle
 } from 'lucide-react';
 
 const socialPlatforms = [
@@ -51,6 +52,14 @@ const socialPlatforms = [
     color: 'bg-red-600',
     description: 'Property videos, tours, and expert insights',
     followers: '1.2K+'
+  },
+  {
+    name: 'WhatsApp',
+    icon: MessageCircle,
+    url: 'https://whatsapp.com/channel/0029Vb1ikGr60eBYyzypyj3p',
+    color: 'bg-green-500',
+    description: 'Get instant updates and exclusive offers',
+    followers: '5K+'
   }
 ];
 
@@ -201,7 +210,7 @@ export default function OurAppsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-6xl mx-auto">
             {socialPlatforms.map((platform, index) => (
               <Card 
                 key={platform.name}
